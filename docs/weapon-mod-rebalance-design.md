@@ -85,14 +85,22 @@ Enforced by the harness `tools/weapon-mod-rebalance/evaluate.py` (applies
 the diff itself, then scores all 223 weapons via
 `x4analyzer.gamedata.weaponsim`; exit 0 = all pass):
 
-- **T1** — no single mod best-in-cycle-DPS on more than ~30% of its
-  eligible weapons (within-tier advisory + cross-tier hard).
+- **T1** — no mod is best-or-tied *within its own quality tier* on more
+  than 85% of its eligible weapons (intra-tier monopoly). Cross-tier
+  dominance by higher tiers is the intended research ladder and is NOT
+  flagged; T2 ensures no mod is pointless. (Was a global >30% strict-win
+  cap — incompatible with a power ladder, where the top tier should be the
+  best you can craft.)
 - **T2** — every DPS-primary mod is best-or-tied within its own quality
-  tier on ≥1 weapon.
-- **T3** — no secondary bundle worth ≥25% cycle DPS on any weapon (raised
-  from 16%: a combo mod's secondaries are part of its identity).
+  tier on ≥1 weapon (repurposed/utility mods with a neutral 1.0 primary
+  are exempt — their draw is the utility).
+- **T3** — *removed.* A mod's secondaries are part of its stated identity
+  (Mistral = cooling+reload; the Exceptional capstones are rich forced
+  sets), so there is no secondary-bundle cap. The worst-case bundle worth
+  is still reported for information.
 - **T4** — no lower-quality mod beats a higher-quality mod of the same
-  variant anywhere (tier order can't invert).
+  variant anywhere (tier order can't invert). A primary pinned to 1.0 is a
+  repurposed container and dropped from the variant key.
 - **T5** — no roll range crosses 1.0.
 
 ## Hard constraints discovered

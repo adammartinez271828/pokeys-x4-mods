@@ -31,11 +31,16 @@ pokeys-x4-mods/
 
 ## Planned / existing mods
 
-- **weapon-mod-rebalance** — rebalance the `<weapon>` section of
+- **weapon-mod-rebalance** — rebalances the `<weapon>` section of
   `libraries/equipmentmods.xml` so equipment mods are meaningful choices.
-  Vanilla analysis, design thesis (tier-pinned damage primaries,
-  DPS-orthogonal secondaries, no roll ranges crossing 1.0) and balance
-  targets: `docs/weapon-mod-rebalance-design.md`. Not scaffolded yet.
+  **Built, all three tiers** (Basic/Enhanced/Exceptional): each mod is a
+  distinct effect-set identity on a power ladder that mirrors the in-game
+  research ladder (`research_mod_weapon_mk1/2/3`), no roll ranges crossing
+  1.0. Design: `docs/weapon-mod-rebalance-design.md`; shipped scorecard:
+  `docs/weapon-mod-rebalance-v1.md`. Validate with
+  `tools/weapon-mod-rebalance/evaluate.py` (applies the diff itself; exit 0
+  = all targets pass); prototype values in the slider tool
+  `tools/weapon-mod-rebalance/tuner.html` (rebuild via `dump_data.py`).
 
 ## Critical domain knowledge (validated in-game — do not "fix")
 

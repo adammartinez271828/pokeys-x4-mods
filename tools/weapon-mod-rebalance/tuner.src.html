@@ -214,7 +214,7 @@ tr:last-child td{border-bottom:0}
         <span><b>win guns / win turrets</b> strict-win% (best by &gt;0.5%) among same-tier mods on main guns vs turrets; <b>+N</b> = weapons where it's tied for best, not an outright win (bar red past <span id="t1lbl"></span>)</span>
         <span><b>best all</b> best-or-tied% across all tiers (what you'd actually buy)</span>
         <span><b>tier-best</b> best-or-tied in its tier on ≥1 weapon (T2)</span>
-        <span><b>bundle</b> worst-case secondary-bundle worth (T3 ≤16%)</span>
+        <span><b>bundle</b> worst-case secondary-bundle worth (informational; no cap)</span>
       </div>
     </section>
 
@@ -251,7 +251,7 @@ const DATA = /*__TUNER_DATA__*/ null;
 (function(){
 "use strict";
 const SIM = new Set(DATA.sim_stats);
-const EPS = DATA.eps_tie, T1MAX = DATA.t1_max, T3MAX = DATA.t3_max;
+const EPS = DATA.eps_tie, T1MAX = DATA.t1_max;
 const QN = {1:"Basic",2:"Enhanced",3:"Exceptional"};
 const STAT_LABEL = {damage:"damage",cooling:"cooling",reload:"fire rate",chargetime:"charge",
   speed:"velocity",lifetime:"lifetime",surfaceelement:"surface",rotationspeed:"rotation",
@@ -383,10 +383,11 @@ function compute(){
     }
   }
   const nEl={}, nElM={}, nElT={}, strictWithin={}, strictWinM={}, strictWinT={},
-        tieWinM={}, tieWinT={}, bestCross={}, tierBest={};
+        tieWinM={}, tieWinT={}, bestCross={}, tierBest={}, tierDom={};
   for(const m of SIMMODS){ nEl[m.ware]=0; nElM[m.ware]=0; nElT[m.ware]=0;
     strictWithin[m.ware]=0; strictWinM[m.ware]=0; strictWinT[m.ware]=0;
-    tieWinM[m.ware]=0; tieWinT[m.ware]=0; bestCross[m.ware]=0; tierBest[m.ware]=false; }
+    tieWinM[m.ware]=0; tieWinT[m.ware]=0; bestCross[m.ware]=0; tierBest[m.ware]=false;
+    tierDom[m.ware]=0; }
   for(const m of SIMMODS) for(let i=0;i<N;i++) if(metric[m.ware][i]!==null){
     nEl[m.ware]++; if(WEAPONS[i].turret) nElT[m.ware]++; else nElM[m.ware]++; }
 
@@ -414,7 +415,7 @@ function compute(){
           if(v>=top/(1+EPS)){ if(w.turret) tieWinT[m.ware]++; else tieWinM[m.ware]++; }
         }
       }
-      for(const [v,m] of tier) if(v>0 && v>=top/(1+EPS)) tierBest[m.ware]=true;
+      for(const [v,m] of tier) if(v>0 && v>=top/(1+EPS)){ tierBest[m.ware]=true; tierDom[m.ware]++; }
       // niche rows for this tier
       const win=tier[0][1], wv=tier[0][0];
       const [bs]=cdps(w,null), bare= (STATE.ch==="s"?cdps(w,null)[0]:cdps(w,null)[1])||0;
@@ -475,7 +476,7 @@ function compute(){
   }
 
   return {nEl,nElM,nElT,strictWithin,strictWinM,strictWinT,tieWinM,tieWinT,
-          bestCross,tierBest,niche,bundle,targets,inversions};
+          bestCross,tierBest,tierDom,niche,bundle,targets,inversions};
 }
 
 // -------------------- render --------------------------------------------
@@ -542,24 +543,26 @@ function renderControls(){
 
 function statusPills(r){
   // T1 within: max within-tier strict-win rate (the real dominance signal;
-  // cross-tier strict is ~always 0 due to pinned Exceptional ties)
-  let maxWithin=0, maxWithinM=null;
-  for(const m of SIMMODS){ const wi=r.strictWithin[m.ware]/Math.max(r.nEl[m.ware],1);
-    if(wi>maxWithin){maxWithin=wi;maxWithinM=m;} }
+  // T1: within-tier dominance = best-or-tied within its OWN tier on >85%
+  // of eligible weapons (intra-tier monopoly). Cross-tier dominance by
+  // higher tiers is the intended research ladder, so it is NOT flagged.
+  let maxDom=0, maxDomM=null;
+  for(const m of SIMMODS){ const wi=r.tierDom[m.ware]/Math.max(r.nEl[m.ware],1);
+    if(wi>maxDom){maxDom=wi;maxDomM=m;} }
   // T2: DPS-primary mods failing tier-best
   const t2fail=SIMMODS.filter(m=>SIM.has(m.stat)&&!r.tierBest[m.ware]);
-  // T3
+  // bundle worst-case (informational only - T3 cap removed)
   let maxB=0,maxBM=null; for(const m of SIMMODS){ if(r.bundle[m.ware].worst>maxB){
     maxB=r.bundle[m.ware].worst; maxBM=m; } }
   // T4
   const inv=r.inversions.slice().sort((a,b)=>b.worst-a.worst);
   const worstInv=inv[0];
   const p=[];
-  p.push(pill("T1 within", pct(maxWithin)+"%", maxWithin<=T1MAX?"warnp":"fail",
-    maxWithinM?maxWithinM.name+" · advisory ≤"+pct(T1MAX)+"%":"", ""));
+  p.push(pill("T1 tier-dom", pct(maxDom)+"%", maxDom<=T1MAX?"ok":"fail",
+    maxDomM?maxDomM.name+" best-or-tied in tier · ≤"+pct(T1MAX)+"%":"", ""));
   p.push(pill("T2 tier-best", t2fail.length?t2fail.length+" fail":"pass",
     t2fail.length?"fail":"ok", t2fail.map(m=>m.name).join(", "), ""));
-  p.push(pill("T3 bundle", pct(maxB)+"%", maxB<T3MAX?"ok":"fail", maxBM?maxBM.name:"", "≤"+pct(T3MAX)+"%"));
+  p.push(pill("bundle", pct(maxB)+"%", "warnp", maxBM?maxBM.name+" · informational":"", ""));
   p.push(pill("T4 order", inv.length?inv.length+" inv":"pass", inv.length?"fail":"ok",
     worstInv?`${worstInv.a.name}>${worstInv.b.name} +${pct(worstInv.worst)}% on ${worstInv.ww}`:"", ""));
   $("#statuspills").innerHTML=p.join("");
@@ -613,7 +616,7 @@ function renderMods(r){
     const cr=r.bestCross[m.ware]/Math.max(r.nEl[m.ware],1);
     const tb=r.tierBest[m.ware];
     const b=r.bundle[m.ware];
-    const over=b.worst>=T3MAX;
+    const over=false;  // T3 cap removed - bundle is informational
     const tr=document.createElement("tr");
     tr.innerHTML=`<td>${m.name}</td><td class="mono" style="color:var(--ink-faint)">${QN[m.quality][0]}</td>
       <td>${modChips(m)}</td>

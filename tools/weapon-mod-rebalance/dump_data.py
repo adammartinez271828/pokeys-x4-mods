@@ -81,8 +81,7 @@ def main() -> int:
         })
 
     out = {"sim_stats": list(E.SIM_STATS), "weapons": wout, "mods": mout,
-           "eps_tie": E.EPS_TIE, "t1_max": E.T1_MAX_WINRATE,
-           "t3_max": E.T3_MAX_BUNDLE}
+           "eps_tie": E.EPS_TIE, "t1_max": E.T1_MAX_TIER_DOMINANCE}
     payload = json.dumps(out, separators=(",", ":"))
 
     here = E.REPO / "tools" / "weapon-mod-rebalance"

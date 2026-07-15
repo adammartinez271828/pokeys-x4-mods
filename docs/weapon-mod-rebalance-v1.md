@@ -1,8 +1,9 @@
-# Weapon-mod rebalance v1 — Basic-tier testbed
+# Weapon-mod rebalance v1
 
 The table shipped in `weapon-mod-rebalance/libraries/equipmentmods.xml`
-(166 ops: attribute replaces + added bonus blocks, weapon section only).
-Design rationale: `docs/weapon-mod-rebalance-design.md`. Validation:
+(192 ops: attribute replaces, added bonus blocks, and pool-pruning removes,
+weapon section only). Design rationale: `docs/weapon-mod-rebalance-design.md`.
+Validation:
 `uv run --project ~/devel/x4-analyzer python tools/weapon-mod-rebalance/evaluate.py`
 (exit 0 = all acceptance targets pass; the harness applies the diff
 itself, so a sel typo is a hard error, not a silent no-op). Interactive
@@ -10,9 +11,9 @@ prototyping: the slider tool `tools/weapon-mod-rebalance/tuner.html`
 (rebuild with `dump_data.py`) recomputes the within-tier win/tie split
 live as you drag mod values.
 
-The **Basic tier is the finished testbed** for the design language below;
-Enhanced/Exceptional carry interim values until they get the same
-treatment one tier up.
+**All three tiers are now designed** (Basic, Enhanced, Exceptional) on one
+model: a per-tier power ladder that mirrors the in-game research ladder,
+with each mod inside a tier a distinct effect-set identity.
 
 ## The system
 
@@ -108,26 +109,59 @@ of it. Primaries pinned at (or retuned from) their vanilla best roll.
 | Intruder (surfaceelement_01_mk1) | surf 1.2–1.35 | surf ×1.35, dmg ×1.08 | **Destroying surface elements** — turrets, shield generators, engines on stations and capital ships. |
 | Digger (mining_01_mk1) | mining 5.25–6 | mining ×6 (no rider) | **Mining yield.** Deliberately no damage rider: a combat bonus on a mining mod re-opens the combat-cheat door. Mining weapons are excluded from all combat-mod evaluations. |
 
-## Enhanced / Exceptional (interim)
+## Enhanced (q2) & Exceptional (q3)
 
-Not yet given the testbed treatment. Current placeholder state, kept
-consistent with the Basic tier (no RNG, no crossings, tier order intact):
+The upper tiers echo the Basic combat identities one tier up on a **power
+ladder that mirrors the in-game research ladder** — Basic / Advanced /
+Exceptional Weapon Mods (`research_mod_weapon_mk1/2/3`) unlock each whole
+tier, which is *why* Exceptional earns the top band. Targets: damage-
+equivalent **~24–36% (Enhanced)**, **~36–48% (Exceptional)** on-niche, with
+outsize responders (ATF XL Main Battery under cooling; beam turrets under
+reload) exceeding the band by design. Same rules as Basic (no RNG, no 1.0
+crossings, distinct effect set per mod within a tier).
 
-- Damage mods pinned to tier: Assassin/Exterminator/Butcher/Slayer
-  ×1.3333, Executioner ×1.36 (+cooling ×0.92 malus), Slayer keeps its
-  time-flavored reload ×0.9; Obliterator/Annihilator ×1.5.
-- The five Enhanced cooling mods are floored at ×1.9 (well above Basic
-  Tramontane's ×1.4) to preserve tier order until properly staggered.
-- Optional loot pools pinned and bounded: reload ×1.12, chargetime ×0.9,
-  Annihilator's cooling ×1.15 / reload ×1.1, Expediter's damage ×1.1,
-  Excavator's combat loot ×1.06/×1.1/×1.05.
-- Invader keeps surface ×1.45 with a real but bounded cooling ×1.15 perk.
-- Known follow-ups for that pass: stagger the cooling family crossings
-  one tier up, +20%/+30% utility riders, and give Expediter a
-  speed-primary identity above Basic Dispatcher's ×1.25.
+Vanilla ships more wares than there are distinct niches, so surplus wares
+are **repurposed** — native primary pinned to ×1.0, the effect set rebuilt
+from bonus children (the sim and the game both read the forced children;
+the UI still lists the old primary stat, a harmless container label). Pool
+bonuses are **pruned to forced** (`<remove>` of unwanted children) where an
+identity needs a guaranteed secondary. Only 11 q2 wares surface in the
+install menu (5 damage, 5 cooling, Infiltrator/surface); the **three
+sticktime wares are left untouched** (they never appear — inventory / stat
+applicability, not a research gate). `mod_weapon_damage_fleet_battle_1`
+(Timelines, `noplayerblueprint`) and the engine/ship/shield sections are
+untouched.
 
-Untouched: `mod_weapon_damage_fleet_battle_1` (Timelines scenario ware,
-already fixed-value in vanilla) and the engine/ship/shield sections.
+### Enhanced combat (band ~24–36% on niche)
+
+| Mod (ware) | Identity (Basic echo) | New (fixed) | tier-dom% | Niche |
+|---|---|---|---|---|
+| Assassin (damage_01_mk2) | **baseline** {d} (Piercer) | dmg ×1.26 | 13% | Universal benchmark; DPS pool entries neutralised so it never rolls a random rate buff. |
+| Exterminator (damage_02_mk2) | {d,r} (Stabber) | dmg ×1.24, rel ×1.15 | 71% | Damage + fire rate: the broad Enhanced default, wins the clip/rate majority. |
+| Executioner (damage_04_mk2) | {d,c} (Gregale) | dmg ×1.26, cool ×1.2 | 20% | Damage + heat headroom for warm main guns (native forced cooling malus → buff). |
+| Slayer (damage_05_mk2) | {d,c,r} triple (Slasher) | dmg ×1.20, cool ×1.18, rel ×1.10 | 6% | The all-rounder: a bit of everything, broad tie coverage, lowest peak. |
+| Butcher (damage_03_mk2) | {d,ch} (Jumper) | dmg ×1.26, charge ×0.70 | 4% | Charge-weapon specialist (Ray Ion Projector, Erlking, …). |
+| Labrador (cooling_01_mk2) | {c} (Tramontane) | cool ×1.9 | 5% | Pure coolrate: the hottest heat-limited guns (+86% on ATF XL). |
+| Benguela (cooling_05_mk2) | {c,r} (Mistral) | cool ×1.7, rel ×1.22 | 4% | Cooling+reload synergy: hot rapid-fire guns (native forced damage pinned 1.0). |
+
+### Enhanced utility (+16% damage rider; repurposed cooling wares)
+
+| Mod (ware) | Identity (Basic echo) | New (fixed) | Niche |
+|---|---|---|---|
+| Okhotsk (cooling_04_mk2) | speed (Dispatcher) | speed ×1.5, dmg ×1.16 *(cool pinned 1.0)* | Projectile velocity. |
+| Humboldt (cooling_02_mk2) | lifetime (Endurance) | lifetime ×1.5, dmg ×1.16 *(cool pinned 1.0)* | Reach (+50% range). |
+| Kuril (cooling_03_mk2) | rotationspeed (Gimbal) | rot ×1.6, dmg ×1.16 *(cool pinned 1.0)* | Turret tracking (a pure-reload mod has no niche once Exterminator exists). |
+| Infiltrator (surfaceelement_01_mk2) | surface (Intruder) | surf ×1.4, dmg ×1.16, +rot/life | Anti-subsystem. |
+
+### Exceptional (band ~36–48%; rich, distinct capstones)
+
+| Mod (ware) | Identity | New (fixed) | tier-dom% | Niche |
+|---|---|---|---|---|
+| Obliterator (damage_01_mk3) | **damage / brawler** {d,c,stick,rot} | dmg ×1.44, cool ×1.25, stick ×1.4, rot ×1.6 | 34% | Top damage + heat headroom + sticky/tracking; wins heat guns (+79% on ATF XL). |
+| Annihilator (damage_02_mk3) | **damage + rate** {d,r,rot} | dmg ×1.44, rel ×1.05, rot ×1.6 | 69% | Aggressive DPS; the broad Exceptional default (rate weapons). No cooling → distinct from Obliterator. |
+| Invader (surfaceelement_01_mk3) | surface capstone | surf ×1.5, dmg ×1.16, cool ×1.2, life ×1.4, rot ×1.6 | — | Anti-subsystem heavy. |
+| Expediter (speed_01_mk3) | sniper capstone | speed ×1.5, dmg ×1.16, life ×1.5, rot ×1.6 | — | Long-range velocity + tracking. |
+| Excavator (mining_01_mk3) | mining capstone | mining ×6.74, rot ×2.0, rel ×1.3 *(no damage rider)* | — | Mining yield; non-damage riders only (faster cycles, aims the turret) — never a combat cheat. |
 
 ## Harness scorecard (all targets pass)
 
@@ -135,19 +169,23 @@ Metric: full-cycle DPS (steady-state where no heat/clip cycle exists),
 vs-shield and vs-hull channels, 217 DPS-capable of 223 weapons/turrets;
 mining weapons only count for mods that can roll a mining bonus.
 
-- **T1 dominance** — nothing is strictly best globally on >30% of its
-  eligible weapons: pass (the two Exceptional damage mods tie at ×1.5 on
-  top; every Basic winner sits under them). Vanilla baseline: Slasher
-  strictly best on 91.7% (the "210 of 223" from the design doc).
+- **T1 within-tier dominance** — no mod is best-or-tied *within its own
+  quality tier* on >85% of its eligible weapons: pass (worst is
+  Exterminator/Annihilator ~70%). This replaces the old global >30% cap,
+  which is mathematically incompatible with a research-gated power ladder:
+  the top-tier mods *should* be the best you can craft, so cross-tier
+  dominance is intended; the guard is only against an intra-tier monopoly
+  (the vanilla-Slasher disease — 97% within its tier). T2 separately
+  ensures no mod is pointless.
 - **T2 usefulness** — every DPS-primary mod is best-or-tied within its
-  own quality tier on ≥1 weapon: pass (see the wins column above;
-  orthogonal-primary mods are best picks for their stat by definition).
-- **T3 bundles** — no secondary bundle (forced, or worst-case optional
-  selection) worth ≥25% cycle DPS on any weapon: pass, max +14.4%
-  (Annihilator on ATF XL Main Battery). The cap was raised from 16% to
-  25% because a combo mod's secondaries are part of its identity, not a
-  free rider — the ceiling sits near the strongest single-stat headline.
-  Vanilla max: +169.6%.
+  own quality tier on ≥1 weapon: pass. Repurposed wares (primary pinned
+  1.0) and orthogonal-primary utility mods are exempt (their draw is the
+  utility, not DPS).
+- **T3 bundles** — **removed.** Under the combination design a mod's
+  secondaries *are* its identity (Mistral = cooling+reload; the Exceptional
+  capstones are deliberately rich forced sets), so there is no cap. The
+  scorecard still prints the worst-case bundle worth for information (max
+  +38.3%, Invader on ATF XL Main Battery).
 - **T4 tier order** — no lower-quality mod beats a higher-quality mod of
   the same *variant* (same primary + same DPS-carrying guaranteed
   secondaries) by >1% anywhere: pass. Cross-variant comparisons are

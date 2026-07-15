@@ -27,8 +27,13 @@ What it does:
 
 Acceptance targets (docs/weapon-mod-rebalance-design.md), made mechanical:
 
-  T1 dominance    no single mod is STRICTLY best in cycle DPS (by >0.5%)
-                  on more than 30% of eligible weapons.
+  T1 dominance    no single mod is best-or-tied WITHIN ITS OWN quality tier
+                  on more than 85% of its eligible weapons. Cross-tier
+                  dominance by higher tiers is the intended research ladder
+                  (Exceptional should be the best you can craft), so this
+                  only flags a near-monopoly inside a tier - one mod that
+                  leaves no real intra-tier choice (the vanilla-Slasher
+                  disease). T2 separately guarantees each mod wins somewhere.
   T2 usefulness   every mod whose PRIMARY stat trades in DPS (damage,
                   cooling, reload, chargetime) is best-or-tied (within
                   0.5%) among the DPS-affecting mods of ITS OWN quality
@@ -39,16 +44,11 @@ Acceptance targets (docs/weapon-mod-rebalance-design.md), made mechanical:
                   with an orthogonal primary (speed, lifetime, sticktime,
                   surfaceelement, mining, ...) are the best pick for
                   their own stat by definition and exempt.
-  T3 bundles      no secondary bundle is worth >= 25% cycle DPS on any
-                  weapon: forced bonuses all together, optional weighted
-                  pools at their worst case (the DPS-best subset of up to
-                  `max` picks, each at its optimal roll). Under the
-                  combination design a mod's secondaries are part of its
-                  stated identity (e.g. Mistral = cooling + reload), not
-                  mere flavor, so the cap sits at roughly the headline of
-                  the strongest single-stat mod rather than the old 16%;
-                  it still preserves single-vs-pair ordering (the pure
-                  reload single out-rates a pair's reload secondary).
+  T3 bundles      REMOVED. Under the combination design a mod's secondaries
+                  ARE its stated identity (Mistral = cooling + reload; the
+                  Exceptional capstones are deliberately rich forced sets),
+                  so there is no secondary-bundle cap. The scorecard still
+                  prints the worst-case bundle worth for information only.
   T4 tier order   no lower-quality mod beats a higher-quality mod of the
                   SAME VARIANT (same primary stat and same set of
                   DPS-carrying guaranteed secondaries, neutral x1.0 slots
@@ -102,8 +102,7 @@ _MK_WARE = re.compile(r"_mk\d$")
 
 EPS_TIE = 0.005     # within 0.5% = tied / best pick
 EPS_INV = 0.01      # >1% = tier inversion
-T1_MAX_WINRATE = 0.30
-T3_MAX_BUNDLE = 0.25
+T1_MAX_TIER_DOMINANCE = 0.85   # within-tier best-or-tied share above this = monopoly
 
 
 # --------------------------------------------------------------- patching
@@ -329,6 +328,7 @@ def evaluate(mods: list[dict], weapons: list[dict]) -> dict:
     strict_wins = {m["ware"]: 0 for m in sim_mods}
     best_picks = {m["ware"]: 0 for m in sim_mods}
     tier_best_somewhere = {m["ware"]: False for m in sim_mods}
+    tier_best_count = {m["ware"]: 0 for m in sim_mods}  # within-tier best-or-tied
     for i in range(n):
         contestants = [m for m in sim_mods if table[m["ware"]][i] is not None]
         for ch in (0, 1):
@@ -349,6 +349,7 @@ def evaluate(mods: list[dict], weapons: list[dict]) -> dict:
         # per-tier best picks (either channel)
         for q in (1, 2, 3):
             tier = [m for m in contestants if m["quality"] == q]
+            tb_here: set[str] = set()  # mods best-or-tied within tier q on this weapon
             for ch in (0, 1):
                 best = max((table[m["ware"]][i][ch] or 0.0 for m in tier),
                            default=0.0)
@@ -357,6 +358,9 @@ def evaluate(mods: list[dict], weapons: list[dict]) -> dict:
                 for m in tier:
                     if (table[m["ware"]][i][ch] or 0.0) >= best / (1 + EPS_TIE):
                         tier_best_somewhere[m["ware"]] = True
+                        tb_here.add(m["ware"])
+            for ware in tb_here:
+                tier_best_count[ware] += 1
 
     # T3: worst secondary bundle
     bundles = []
@@ -372,13 +376,18 @@ def evaluate(mods: list[dict], weapons: list[dict]) -> dict:
 
     # T4: tier inversions between same-VARIANT mods (same primary stat and
     # same DPS-carrying guaranteed-secondary set; neutral 1.0 slots and
-    # optional pools do not define a variant)
+    # optional pools do not define a variant). A primary stat pinned to x1.0
+    # is a REPURPOSED container (e.g. Kuril = cooling pinned 1.0 + a forced
+    # reload child = really a reload mod), so it is dropped from the variant
+    # key - otherwise it would false-match the real cooling+reload mods and
+    # invert on heat weapons where their cooling helps and its does not.
     def variant(m):
         dps_bonuses = frozenset(
             b["stat"] for b in m["bonuses"]
             if m["forced"] and b["stat"] in SIM_STATS
             and not (b["min"] == 1.0 and b["max"] == 1.0))
-        return (m["stat"], dps_bonuses)
+        primary = None if (m["min"] == 1.0 and m["max"] == 1.0) else m["stat"]
+        return (primary, dps_bonuses)
 
     inversions = []
     for a in scored:
@@ -410,7 +419,8 @@ def evaluate(mods: list[dict], weapons: list[dict]) -> dict:
     return {"n_weapons": len(weapons), "n_eligible": n, "n_el": n_el,
             "scored": scored, "scenario": scenario, "sim_mods": sim_mods,
             "strict_wins": strict_wins, "best_picks": best_picks,
-            "tier_best": tier_best_somewhere, "bundles": bundles,
+            "tier_best": tier_best_somewhere, "tier_best_count": tier_best_count,
+            "bundles": bundles,
             "inversions": inversions, "crossings": crossings}
 
 
@@ -422,28 +432,36 @@ def report(r: dict, judge: bool) -> list[str]:
           f"{len(r['scored'])} mods scored ({len(r['sim_mods'])} affect the "
           f"firing cycle), {len(r['scenario'])} scenario mods excluded")
     qn = {1: "Basic", 2: "Enhanced", 3: "Exceptional"}
-    print(f"  {'mod':<34}{'qual':<12}{'primary':<24}"
-          f"{'win%':>6}{'pick%':>7}  tier-best")
+    print(f"  {'mod':<34}{'qual':<12}{'primary':<20}"
+          f"{'win%':>6}{'pick%':>7}{'tierdom%':>9}  tier-best")
     for m in sorted(r["sim_mods"], key=lambda m: (m["quality"], m["ware"])):
         ne = max(r["n_el"][m["ware"]], 1)
         w = r["strict_wins"][m["ware"]] / ne * 100
         p = r["best_picks"][m["ware"]] / ne * 100
+        td = r["tier_best_count"][m["ware"]] / ne * 100
         tb = "yes" if r["tier_best"][m["ware"]] else "NO"
         print(f"  {m['name'][:22] + ' (' + m['stat'] + ')':<34}"
               f"{qn[m['quality']]:<12}"
-              f"{'x' + str(m['min']) + '-' + str(m['max']):<24}"
-              f"{w:>5.1f}{p:>7.1f}  {tb}")
+              f"{'x' + str(m['min']) + '-' + str(m['max']):<20}"
+              f"{w:>5.1f}{p:>7.1f}{td:>8.1f}  {tb}")
 
     failures = []
 
-    over = [(m, r["strict_wins"][m["ware"]] / max(r["n_el"][m["ware"]], 1))
+    # T1: within-tier dominance. Cross-tier dominance by higher tiers is the
+    # INTENDED research ladder (Exceptional should be the best you can craft),
+    # so T1 only flags a near-monopoly WITHIN a quality tier - one mod
+    # best-or-tied on almost every weapon, leaving no real intra-tier choice
+    # (the vanilla-Slasher disease). T2 separately guarantees every mod is the
+    # best pick somewhere.
+    over = [(m, r["tier_best_count"][m["ware"]] / max(r["n_el"][m["ware"]], 1))
             for m in r["sim_mods"]]
-    over = [(m, rate) for m, rate in over if rate > T1_MAX_WINRATE]
+    over = [(m, rate) for m, rate in over if rate > T1_MAX_TIER_DOMINANCE]
     for m, rate in over:
-        print(f"  T1 FAIL: {m['name']} ({m['ware']}) strictly best on "
-              f"{rate:.0%} of its eligible weapons (> {T1_MAX_WINRATE:.0%})")
+        print(f"  T1 FAIL: {m['name']} ({m['ware']}) best-or-tied within "
+              f"quality {m['quality']} on {rate:.0%} of its eligible weapons "
+              f"(> {T1_MAX_TIER_DOMINANCE:.0%} = intra-tier monopoly)")
     if over:
-        failures.append("T1 dominance")
+        failures.append("T1 within-tier dominance")
 
     useless = [m for m in r["sim_mods"] if not r["tier_best"][m["ware"]]
                and m["stat"] in SIM_STATS
@@ -454,17 +472,13 @@ def report(r: dict, judge: bool) -> list[str]:
     if useless:
         failures.append("T2 usefulness")
 
+    # T3 removed: under the combination design a mod's secondaries ARE its
+    # identity (Mistral = cooling+reload, the q3 capstones are rich forced
+    # sets by design), so there is no cap - the line below is informational.
     worst_b, worst_m, worst_w = max(r["bundles"], key=lambda x: x[0])
     print(f"  max secondary-bundle worth: {worst_b:+.1%} cycle DPS "
           f"({worst_m['name']} [{worst_m['ware']}] on "
-          f"{worst_w['name'] if worst_w else '-'})")
-    bad_bundles = [(v, m, w) for v, m, w in r["bundles"]
-                   if v >= T3_MAX_BUNDLE]
-    for v, m, w in sorted(bad_bundles, reverse=True, key=lambda x: x[0]):
-        print(f"  T3 FAIL: {m['name']} ({m['ware']}) bundle worth {v:+.1%} "
-              f"on {w['name']}")
-    if bad_bundles:
-        failures.append("T3 secondary bundles")
+          f"{worst_w['name'] if worst_w else '-'}) [informational, uncapped]")
 
     for a, b, v, w in r["inversions"]:
         print(f"  T4 FAIL: {a['name']} (q{a['quality']}) beats {b['name']} "
