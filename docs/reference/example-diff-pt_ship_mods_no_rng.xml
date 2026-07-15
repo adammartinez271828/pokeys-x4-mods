@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<diff>
+    <!-- Weapon Mods -->
+    <!-- Low: -->
+	<replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk1']/@min">1.2</replace>
+	
+    <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_01_mk1']/@min">1.216</replace>	
+	
+	<replace sel="/equipmentmods/weapon/reload[@ware='mod_weapon_reload_01_mk1']/@min">2</replace>
+	
+	<replace sel="/equipmentmods/weapon/speed[@ware='mod_weapon_speed_01_mk1']/@min">1.1</replace>
+	
+	<replace sel="/equipmentmods/weapon/beamlength[@ware='mod_weapon_beamlength_01_mk1']/@min">1.1</replace>
+	
+	<replace sel="/equipmentmods/weapon/lifetime[@ware='mod_weapon_lifetime_01_mk1']/@min">1.2</replace>
+	
+	<replace sel="/equipmentmods/weapon/chargetime[@ware='mod_weapon_chargetime_01_mk1']/@max">0.8</replace>
+	
+	<replace sel="/equipmentmods/weapon/mining[@ware='mod_weapon_mining_01_mk1']/@min">6</replace>
+	
+	<replace sel="/equipmentmods/weapon/rotationspeed[@ware='mod_weapon_rotationspeed_01_mk1']/@min">1.2</replace>
+	
+	<replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_01_mk1']/@min">1.2</replace>
+	
+	<replace sel="/equipmentmods/weapon/surfaceelement[@ware='mod_weapon_surfaceelement_01_mk1']/@min">1.35</replace>
+	
+	<replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk1']/@min">1.45</replace>
+	<replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk1']/bonus/cooling/@min">0.736</replace>
+	
+	<replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk1']/@min">1.49</replace>
+    <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk1']/bonus/damage/@min">0.75</replace>
+	
+    <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk1']/@min">1.503</replace>
+    <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk1']/bonus/cooling/@min">0.74</replace>
+    <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk1']/bonus/reload/@min">2</replace>	
+	
+	<replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk1']/@min">1.525</replace>
+    <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk1']/bonus/damage/@min">0.757</replace>
+    <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk1']/bonus/reload/@min">2</replace>
+	
+	<!-- Medium: -->
+	<replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk2']/@min">1.244</replace>
+    <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk2']/bonus/reload/@min">2</replace>
+    <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk2']/bonus/chargetime/@max">0.8</replace>
+    <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk2']/bonus/mining/@min">6.22</replace>
+    <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk2']/bonus/rotationspeed/@min">1.2</replace>
+	
+	<replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_01_mk2']/@min">1.252</replace>
+    <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_01_mk2']/bonus/reload/@min">2</replace>
+    <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_01_mk2']/bonus/chargetime/@max">0.8</replace>
+    <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_01_mk2']/bonus/mining/@min">6.22</replace>
+    <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_01_mk2']/bonus/rotationspeed/@min">1.2</replace>
+	
+	<replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_01_mk2']/@min">1.2</replace>
+    <replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_01_mk2']/bonus/reload/@min">2</replace>
+    <replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_01_mk2']/bonus/chargetime/@max">0.8</replace>
+    <replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_01_mk2']/bonus/mining/@min">6.22</replace>
+    <replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_01_mk2']/bonus/rotationspeed/@min">1.2</replace>
+	
+	<replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk2']/@min">1.192</replace>
+    <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk2']/bonus/reload/@min">2</replace>
+    <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk2']/bonus/chargetime/@max">0.8</replace>
+    <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk2']/bonus/mining/@min">5.96</replace>
+    <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk2']/bonus/rotationspeed/@min">1.2</replace>
+    <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk2']/bonus/lifetime/@min">1.2</replace>
+	
+	<replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk2']/@min">1.199</replace>
+    <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk2']/bonus/reload/@min">2</replace>
+    <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk2']/bonus/chargetime/@max">0.8</replace>
+    <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk2']/bonus/mining/@min">5.96</replace>
+    <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk2']/bonus/rotationspeed/@min">1.2</replace>
+    <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk2']/bonus/lifetime/@min">1.2</replace>
+	
+	<replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_02_mk2']/@min">1.15</replace>
+    <replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_02_mk2']/bonus/reload/@min">2</replace>
+    <replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_02_mk2']/bonus/chargetime/@max">0.8</replace>
+    <replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_02_mk2']/bonus/mining/@min">5.96</replace>
+    <replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_02_mk2']/bonus/rotationspeed/@min">1.2</replace>
+    <replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_02_mk2']/bonus/lifetime/@min">1.2</replace>
+	
+	<replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk2']/@min">1.15</replace>
+    <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk2']/bonus/chargetime/@max">0.8</replace>
+    <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk2']/bonus/mining/@min">5.75</replace>
+    <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk2']/bonus/rotationspeed/@min">1.2</replace>
+    <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk2']/bonus/lifetime/@min">1.2</replace>
+	
+	<replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk2']/@min">1.162</replace>
+    <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk2']/bonus/chargetime/@max">0.8</replace>
+    <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk2']/bonus/mining/@min">5.75</replace>
+    <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk2']/bonus/rotationspeed/@min">1.2</replace>
+    <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk2']/bonus/lifetime/@min">1.2</replace>
+	
+    <replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_03_mk2']/@min">1.15</replace>
+    <replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_03_mk2']/bonus/chargetime/@max">0.8</replace>
+    <replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_03_mk2']/bonus/mining/@min">5.75</replace>
+    <replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_03_mk2']/bonus/rotationspeed/@min">1.2</replace>
+    <replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_03_mk2']/bonus/lifetime/@min">1.2</replace>	
+   
+    <replace sel="/equipmentmods/weapon/surfaceelement[@ware='mod_weapon_surfaceelement_01_mk2']/@min">1.3</replace>
+    <replace sel="/equipmentmods/weapon/surfaceelement[@ware='mod_weapon_surfaceelement_01_mk2']/bonus/chargetime/@max">0.8</replace>
+    <replace sel="/equipmentmods/weapon/surfaceelement[@ware='mod_weapon_surfaceelement_01_mk2']/bonus/mining/@min">5.75</replace>
+    <replace sel="/equipmentmods/weapon/surfaceelement[@ware='mod_weapon_surfaceelement_01_mk2']/bonus/rotationspeed/@min">1.2</replace>
+    <replace sel="/equipmentmods/weapon/surfaceelement[@ware='mod_weapon_surfaceelement_01_mk2']/bonus/lifetime/@min">1.2</replace>
+   
+    <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_04_mk2']/@min">1.25</replace>
+    <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_04_mk2']/bonus/cooling/@min">0.943</replace>
+	
+	<replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_04_mk2']/@min">1.271</replace>
+    <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_04_mk2']/bonus/damage/@min">0.95</replace>
+	
+	<replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_05_mk2']/@min">1.294</replace>
+    <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_05_mk2']/bonus/cooling/@min">0.955</replace>
+    <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_05_mk2']/bonus/reload/@min">2</replace>
+	
+	<replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_05_mk2']/@min">1.305</replace>
+    <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_05_mk2']/bonus/damage/@min">0.959</replace>
+    <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_05_mk2']/bonus/reload/@min">2</replace>
+	
+	<!-- High: -->
+	<replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk3']/@min">1.3</replace>
+    <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk3']/bonus/cooling/@min">1.325</replace>
+    <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk3']/bonus/sticktime/@min">1.3</replace>
+    <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk3']/bonus/rotationspeed/@min">1.3</replace>
+	
+	<replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk3']/@min">1.348</replace>
+    <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk3']/bonus/cooling/@min">1.358</replace>
+    <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk3']/bonus/reload/@min">2</replace>
+    <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk3']/bonus/sticktime/@min">1.3</replace>
+    <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk3']/bonus/rotationspeed/@min">1.3</replace>
+	
+	<replace sel="/equipmentmods/weapon/surfaceelement[@ware='mod_weapon_surfaceelement_01_mk3']/@min">1.45</replace>
+    <replace sel="/equipmentmods/weapon/surfaceelement[@ware='mod_weapon_surfaceelement_01_mk3']/bonus/cooling/@min">1.325</replace>
+    <replace sel="/equipmentmods/weapon/surfaceelement[@ware='mod_weapon_surfaceelement_01_mk3']/bonus/rotationspeed/@min">1.3</replace>
+    <replace sel="/equipmentmods/weapon/surfaceelement[@ware='mod_weapon_surfaceelement_01_mk3']/bonus/lifetime/@min">1.2</replace>
+	
+	<replace sel="/equipmentmods/weapon/speed[@ware='mod_weapon_speed_01_mk3']/@min">1.15</replace>
+    <replace sel="/equipmentmods/weapon/speed[@ware='mod_weapon_speed_01_mk3']/bonus/damage/@min">1.3</replace>
+    <replace sel="/equipmentmods/weapon/speed[@ware='mod_weapon_speed_01_mk3']/bonus/reload/@min">0.99</replace>
+    <replace sel="/equipmentmods/weapon/speed[@ware='mod_weapon_speed_01_mk3']/bonus/lifetime/@min">1.3</replace>
+    <replace sel="/equipmentmods/weapon/speed[@ware='mod_weapon_speed_01_mk3']/bonus/rotationspeed/@min">1.3</replace>
+    
+	<replace sel="/equipmentmods/weapon/mining[@ware='mod_weapon_mining_01_mk3']/@min">6.74</replace>
+    <replace sel="/equipmentmods/weapon/mining[@ware='mod_weapon_mining_01_mk3']/bonus/damage/@min">1.348</replace>
+    <replace sel="/equipmentmods/weapon/mining[@ware='mod_weapon_mining_01_mk3']/bonus/cooling/@min">1.358</replace>
+    <replace sel="/equipmentmods/weapon/mining[@ware='mod_weapon_mining_01_mk3']/bonus/reload/@min">2</replace>
+    <replace sel="/equipmentmods/weapon/mining[@ware='mod_weapon_mining_01_mk3']/bonus/rotationspeed/@min">1.3</replace>
+    
+    <!-- Engine Mods -->
+    <!-- Low: -->	
+	<replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_01_mk1']/@min">1.1</replace>
+	
+	<replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk1']/@min">1.2</replace>
+	
+	<replace sel="/equipmentmods/engine/boostduration[@ware='mod_engine_boostduration_01_mk1']/@min">1.2</replace>
+	
+	<replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk1']/@min">1.2</replace>
+	
+	<replace sel="/equipmentmods/engine/boostacc[@ware='mod_engine_travelstartthrust_01_mk1']/@min">1.2</replace>
+	
+	<replace sel="/equipmentmods/engine/travelattacktime[@ware='mod_engine_travelattacktime_01_mk1']/@max">0.8</replace>
+    
+    <replace sel="/equipmentmods/engine/travelchargetime[@ware='mod_engine_travelchargetime_01_mk1']/@max">0.8</replace>
+    
+    <replace sel="/equipmentmods/engine/strafeacc[@ware='mod_engine_travelreleasetime_01_mk1']/@min">1.3</replace>
+	
+	<replace sel="/equipmentmods/engine/rotationthrust[@ware='mod_engine_rotationthrust_01_mk1']/@min">1.2</replace>
+	
+	<replace sel="/equipmentmods/engine/strafethrust[@ware='mod_engine_strafethrust_01_mk1']/@min">1.2</replace>
+	
+	<replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_02_mk1']/@min">1.45</replace>
+    <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_02_mk1']/bonus/boostthrust/@min">0.75</replace>
+    <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_02_mk1']/bonus/travelthrust/@min">0.75</replace>
+	
+	<replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_02_mk1']/@min">1.45</replace>
+    <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_02_mk1']/bonus/travelthrust/@min">0.75</replace>
+	
+	<replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_02_mk1']/@min">1.45</replace>
+    <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_02_mk1']/bonus/boostthrust/@min">0.75</replace>
+	
+	<replace sel="/equipmentmods/engine/rotationthrust[@ware='mod_engine_rotationthrust_02_mk1']/@min">1.45</replace>
+    <replace sel="/equipmentmods/engine/rotationthrust[@ware='mod_engine_rotationthrust_02_mk1']/bonus/strafethrust/@min">0.9</replace>
+	
+	<replace sel="/equipmentmods/engine/strafethrust[@ware='mod_engine_strafethrust_02_mk1']/@min">1.45</replace>
+    <replace sel="/equipmentmods/engine/strafethrust[@ware='mod_engine_strafethrust_02_mk1']/bonus/rotationthrust/@min">0.75</replace>
+	
+	<!-- Medium: -->	
+	<replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_01_mk2']/@min">1.1</replace>
+    <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_01_mk2']/bonus/rotationthrust/@min">1.2</replace>
+    <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_01_mk2']/bonus/strafethrust/@min">1.2</replace>
+	
+	<replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk2']/@min">1.2</replace>
+    <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk2']/bonus/boostduration/@min">1.2</replace>
+    <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk2']/bonus/boostacc/@min">1.2</replace>
+    <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk2']/bonus/strafethrust/@min">1.2</replace>
+	
+	<replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk2']/@min">1.2</replace>
+    <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk2']/bonus/travelstartthrust/@min">1.2</replace>
+    <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk2']/bonus/travelattacktime/@max">0.8</replace>
+    <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk2']/bonus/travelchargetime/@max">0.8</replace>
+    <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk2']/bonus/rotationthrust/@min">1.2</replace>
+    <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk2']/bonus/strafethrust/@min">1.2</replace>
+	
+	<replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_02_mk2']/@min">1.25</replace>
+    <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_02_mk2']/bonus/boostthrust/@min">0.95</replace>
+    <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_02_mk2']/bonus/travelthrust/@min">0.95</replace>
+	
+	<replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_02_mk2']/@min">1.25</replace>
+    <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_02_mk2']/bonus/travelthrust/@min">0.95</replace>
+	
+	<replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_02_mk2']/@min">1.25</replace>
+    <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_02_mk2']/bonus/boostthrust/@min">0.95</replace>
+	
+	<!-- High: -->
+	<replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_01_mk3']/@min">1.3</replace>
+    <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_01_mk3']/bonus/boostthrust/@min">1.5</replace>
+    <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_01_mk3']/bonus/travelthrust/@min">1.5</replace>
+    <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_01_mk3']/bonus/rotationthrust/@min">1.3</replace>
+    <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_01_mk3']/bonus/strafeacc/@min">1.5</replace>
+	
+	<replace sel="/equipmentmods/engine/rotationthrust[@ware='mod_engine_rotationthrust_01_mk3']/@min">1.5</replace>
+    <replace sel="/equipmentmods/engine/rotationthrust[@ware='mod_engine_rotationthrust_01_mk3']/bonus/forwardthrust/@min">1.15</replace>
+    <replace sel="/equipmentmods/engine/rotationthrust[@ware='mod_engine_rotationthrust_01_mk3']/bonus/strafethrust/@min">1.5</replace>
+	
+	<replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk3']/@min">1.3</replace>
+    <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk3']/bonus/forwardthrust/@min">1.15</replace>
+    <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk3']/bonus/boostduration/@min">1.3</replace>
+    <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk3']/bonus/boostacc/@min">1.3</replace>
+    <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk3']/bonus/strafethrust/@min">1.3</replace>
+	
+    <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk3']/@min">1.3</replace>
+    <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk3']/bonus/forwardthrust/@min">1.15</replace>
+    <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk3']/bonus/travelstartthrust/@min">1.3</replace>
+    <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk3']/bonus/travelattacktime/@max">0.7</replace>
+    <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk3']/bonus/travelchargetime/@max">0.7</replace>
+    <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk3']/bonus/rotationthrust/@min">1.3</replace>
+    <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk3']/bonus/strafethrust/@min">1.3</replace>
+    
+    <!-- Ship Mods -->
+	<!-- Low: -->	   
+	<replace sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk1']/@max">0.833</replace>
+	
+	<replace sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk1']/@max">0.833</replace>
+	
+	<replace sel="/equipmentmods/ship/maxhull[@ware='mod_ship_maxhull_01_mk1']/@min">1.2</replace>
+	
+	<replace sel="/equipmentmods/ship/radarrange[@ware='mod_ship_radarrange_01_mk1']/@min">1.2</replace>
+	
+	<replace sel="/equipmentmods/ship/countermeasurecapacity[@ware='mod_ship_countermeasurecapacity_01_mk1']/@min">4</replace>
+	
+	<replace sel="/equipmentmods/ship/deployablecapacity[@ware='mod_ship_deployablecapacity_01_mk1']/@min">4</replace>
+	
+	<replace sel="/equipmentmods/ship/missilecapacity[@ware='mod_ship_missilecapacity_01_mk1']/@min">4</replace>
+    
+    <replace sel="/equipmentmods/ship/unitcapacity[@ware='mod_ship_unitcapacity_01_mk1']/@min">4</replace>
+	
+	<replace sel="/equipmentmods/ship/radarcloak[@ware='mod_ship_radarcloak_01_mk1']/@max">-0.45</replace>
+    <replace sel="/equipmentmods/ship/radarcloak[@ware='mod_ship_radarcloak_01_mk1']/bonus/radarrange/@min">0.7</replace>
+	
+	<replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk1']/@min">0.9</replace>
+    <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk1']/bonus/maxhull/@min">0.9</replace>
+	
+	<!-- Medium: -->	
+	<replace sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk2']/@max">0.833</replace>
+    <replace sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk2']/bonus/maxhull/@min">1.2</replace>
+    <replace sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk2']/bonus/radarrange/@min">1.2</replace>
+    <replace sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk2']/bonus/countermeasurecapacity/@min">4</replace>
+    <replace sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk2']/bonus/deployablecapacity/@min">4</replace>
+    <replace sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk2']/bonus/missilecapacity/@min">4</replace>
+    <replace sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk2']/bonus/unitcapacity/@min">4</replace>
+	
+	<replace sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk2']/@max">0.833</replace>
+    <replace sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk2']/bonus/maxhull/@min">1.2</replace>
+    <replace sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk2']/bonus/radarrange/@min">1.2</replace>
+    <replace sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk2']/bonus/countermeasurecapacity/@min">4</replace>
+    <replace sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk2']/bonus/deployablecapacity/@min">4</replace>
+    <replace sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk2']/bonus/missilecapacity/@min">4</replace>
+    <replace sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk2']/bonus/unitcapacity/@min">4</replace>
+	
+	<replace sel="/equipmentmods/ship/radarcloak[@ware='mod_ship_radarcloak_01_mk2']/@max">-0.35</replace>
+	
+	<replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk2']/@min">0.65</replace>
+	
+	<!-- High: -->   
+	<replace sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk3']/@max">0.769</replace>
+    <replace sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk3']/bonus/drag/@max">0.769</replace>
+
+	<replace sel="/equipmentmods/ship/radarcloak[@ware='mod_ship_radarcloak_01_mk3']/@max">-0.8</replace>
+    <replace sel="/equipmentmods/ship/radarcloak[@ware='mod_ship_radarcloak_01_mk3']/bonus/radarrange/@min">1.2</replace>
+
+	<replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk3']/bonus/maxhull/@min">1.2</replace>
+
+
+    <!-- Shield Mods -->
+ 	<!-- Low: -->
+	<replace sel="/equipmentmods/shield/capacity[@ware='mod_shield_capacity_01_mk1']/@min">1.2</replace>
+	
+	<replace sel="/equipmentmods/shield/rechargedelay[@ware='mod_shield_rechargedelay_01_mk1']/@max">0.8</replace>
+	
+	<replace sel="/equipmentmods/shield/rechargerate[@ware='mod_shield_rechargerate_01_mk1']/@min">1.2</replace>
+
+	<!-- Medium: -->
+	<replace sel="/equipmentmods/shield/capacity[@ware='mod_shield_capacity_01_mk2']/@min">1.2</replace>
+    <replace sel="/equipmentmods/shield/capacity[@ware='mod_shield_capacity_01_mk2']/bonus/rechargedelay/@max">0.8</replace>
+    <replace sel="/equipmentmods/shield/capacity[@ware='mod_shield_capacity_01_mk2']/bonus/rechargerate/@min">1.2</replace>
+
+	<replace sel="/equipmentmods/shield/rechargerate[@ware='mod_shield_rechargerate_01_mk2']/@min">1.2</replace>
+    <replace sel="/equipmentmods/shield/rechargerate[@ware='mod_shield_rechargerate_01_mk2']/bonus/rechargedelay/@max">0.8</replace>
+    <replace sel="/equipmentmods/shield/rechargerate[@ware='mod_shield_rechargerate_01_mk2']/bonus/capacity/@min">1.2</replace>
+    
+	<!-- High: --> 
+	<replace sel="/equipmentmods/shield/capacity[@ware='mod_shield_capacity_01_mk3']/@min">1.7</replace>
+	
+	<replace sel="/equipmentmods/shield/rechargerate[@ware='mod_shield_rechargerate_01_mk3']/@min">1.7</replace>
+    <replace sel="/equipmentmods/shield/rechargerate[@ware='mod_shield_rechargerate_01_mk3']/bonus/rechargedelay/@max">0.3</replace>
+	
+    <replace sel="/equipmentmods/shield/capacity[@ware='mod_shield_capacity_02_mk3']/@min">1.3</replace>
+    <replace sel="/equipmentmods/shield/capacity[@ware='mod_shield_capacity_02_mk3']/bonus/rechargerate/@min">1.3</replace>
+    <replace sel="/equipmentmods/shield/capacity[@ware='mod_shield_capacity_02_mk3']/bonus/rechargedelay/@max">0.7</replace>
+</diff>

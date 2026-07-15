@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pokey's Weapon Mod Rebalance - weapon section of equipmentmods.xml only.
+
+     Design (docs/weapon-mod-rebalance-design.md, scorecard in
+     docs/weapon-mod-rebalance-v1.md):
+     - NO RNG: every roll range is pinned (min = max) - what you craft is
+       what you get, rerolling is pointless.
+     - BASIC TIER TESTBED - equal power at the touchpoint, different
+       currencies: the six Basic DPS mods are all calibrated to +16.67%
+       full-cycle DPS on the S Bolt Repeater Mk1 (the median heat weapon,
+       38.4% cooldown cycle). Pure damage delivers it on every weapon;
+       cooling-heavy mixes under-deliver on cool-running guns and
+       over-deliver on hot ones; reload-carrying mixes tilt toward
+       reload-RATE weapons (multipliers are literal, so their reload buff
+       is a malus on reload-TIME weapons). Cooling-primary mods prefer
+       cooling over direct damage; damage-primary mods the reverse.
+       Enhanced/Exceptional keep interim pinned values (tier-pinned
+       damage, capped cooling) until this pattern is proven and extended
+       to them.
+     - Secondary bundles stay worth <16% cycle DPS on any weapon.
+     - Structural malus slots that no longer fit a mod's role are pinned
+       at exactly 1.0 (no effect); the ware structure is fixed in data, so
+       they cannot be removed with attribute replaces.
+     - Optional pool entries are pinned too; which pool bonuses appear is
+       engine-side selection RNG that game data cannot remove.
+     Scenario mods (mod_weapon_damage_fleet_battle_1 - already fixed-value
+     in vanilla), the engine/ship/shield sections and weights are
+     untouched. -->
+<diff>
+  <!-- ============================ BASIC (quality 1) ==================== -->
+
+  <!-- Piercer: pure damage - delivers the Basic +16.67% on EVERY weapon;
+       the benchmark the mixes are measured against. -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk1']/@min">1.1667</replace><!-- vanilla 1.05 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk1']/@max">1.1667</replace><!-- vanilla 1.2 -->
+
+  <!-- Tramontane: pure coolrate = +16.67% on the touchpoint; less on
+       cool-running guns, +50% on the Ion Pulse Railgun; nothing on the
+       137 heatless weapons. -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_01_mk1']/@min">1.83</replace><!-- vanilla 1.048 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_01_mk1']/@max">1.83</replace><!-- vanilla 1.216 -->
+
+  <!-- Cowboy: +20% fire rate on reload-RATE weapons (on reload-TIME
+       weapons the same multiplier is -16.7% - the soft gate) plus a
+       tempered +5% damage rider (added block): clip weapons only get
+       partial value from fire rate (the clip reload is fixed), so the
+       rider tips Cowboy over Piercer exactly on the clip weapons where
+       reload contributes most - the burst-weapon specialist. Vanilla
+       0.682-2 crossed 1.0 and was a reroll lottery. -->
+  <replace sel="/equipmentmods/weapon/reload[@ware='mod_weapon_reload_01_mk1']/@min">1.2</replace><!-- vanilla 0.682 -->
+  <replace sel="/equipmentmods/weapon/reload[@ware='mod_weapon_reload_01_mk1']/@max">1.2</replace><!-- vanilla 2 -->
+  <add sel="/equipmentmods/weapon/reload[@ware='mod_weapon_reload_01_mk1']">
+    <bonus chance="1.0" max="1">
+      <damage min="1.05" max="1.05"/>
+    </bonus>
+  </add>
+
+  <!-- Jumper: the charge-cannon mod: x0.58 charge time plus a +10%
+       damage rider (added block) - best Basic pick on the whole charge
+       family (KHA Ravager/Obliterator, Ray Ion Projector, Erlking, ...),
+       utility-grade +10% elsewhere. -->
+  <replace sel="/equipmentmods/weapon/chargetime[@ware='mod_weapon_chargetime_01_mk1']/@min">0.58</replace><!-- vanilla 0.8 -->
+  <replace sel="/equipmentmods/weapon/chargetime[@ware='mod_weapon_chargetime_01_mk1']/@max">0.58</replace><!-- vanilla 0.95 -->
+  <add sel="/equipmentmods/weapon/chargetime[@ware='mod_weapon_chargetime_01_mk1']">
+    <bonus chance="1.0" max="1">
+      <damage min="1.1" max="1.1"/>
+    </bonus>
+  </add>
+
+  <!-- Basic utility mods: primaries pinned at their vanilla best roll
+       (max already equals the pin, so only min changes), plus a flat
+       +10% damage rider (added forced bonus block - no vanilla
+       counterpart) so picking a utility niche costs ~6% DPS vs the
+       dedicated damage/cooling bucket (+16.67%) instead of all of it.
+       Digger (mining) is the one exception - yield is its draw and a
+       damage rider on a mining mod re-opens the combat-cheat door.
+       Niches:
+       Dispatcher = velocity (projectiles arrive faster, range nearly
+       unchanged: 1.25 x 0.84 = +5%), Endurance = reach (+21% range
+       = 1.1 speed x 1.1 lifetime, flight character unchanged),
+       Lens = beam reach (+21%, matching Endurance's range gain),
+       Gimbal = turret tracking, Gum = sticky weapons,
+       Intruder = anti-surface-element work. -->
+  <replace sel="/equipmentmods/weapon/speed[@ware='mod_weapon_speed_01_mk1']/@min">1.25</replace><!-- vanilla 1.05 -->
+  <replace sel="/equipmentmods/weapon/speed[@ware='mod_weapon_speed_01_mk1']/@max">1.25</replace><!-- vanilla 1.1 -->
+  <add sel="/equipmentmods/weapon/speed[@ware='mod_weapon_speed_01_mk1']">
+    <bonus chance="1.0" max="2">
+      <damage min="1.1" max="1.1"/>
+      <lifetime min="0.84" max="0.84"/>
+    </bonus>
+  </add>
+  <replace sel="/equipmentmods/weapon/beamlength[@ware='mod_weapon_beamlength_01_mk1']/@min">1.21</replace><!-- vanilla 1.05 -->
+  <replace sel="/equipmentmods/weapon/beamlength[@ware='mod_weapon_beamlength_01_mk1']/@max">1.21</replace><!-- vanilla 1.1 -->
+  <add sel="/equipmentmods/weapon/beamlength[@ware='mod_weapon_beamlength_01_mk1']">
+    <bonus chance="1.0" max="1">
+      <damage min="1.1" max="1.1"/>
+    </bonus>
+  </add>
+  <replace sel="/equipmentmods/weapon/lifetime[@ware='mod_weapon_lifetime_01_mk1']/@min">1.1</replace><!-- vanilla 1.05 -->
+  <replace sel="/equipmentmods/weapon/lifetime[@ware='mod_weapon_lifetime_01_mk1']/@max">1.1</replace><!-- vanilla 1.2 -->
+  <add sel="/equipmentmods/weapon/lifetime[@ware='mod_weapon_lifetime_01_mk1']">
+    <bonus chance="1.0" max="2">
+      <damage min="1.1" max="1.1"/>
+      <speed min="1.1" max="1.1"/>
+    </bonus>
+  </add>
+  <replace sel="/equipmentmods/weapon/mining[@ware='mod_weapon_mining_01_mk1']/@min">6</replace><!-- vanilla 5.25, max 6 -->
+  <replace sel="/equipmentmods/weapon/rotationspeed[@ware='mod_weapon_rotationspeed_01_mk1']/@min">1.2</replace><!-- vanilla 1.05, max 1.2 -->
+  <add sel="/equipmentmods/weapon/rotationspeed[@ware='mod_weapon_rotationspeed_01_mk1']">
+    <bonus chance="1.0" max="1">
+      <damage min="1.1" max="1.1"/>
+    </bonus>
+  </add>
+  <replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_01_mk1']/@min">1.2</replace><!-- vanilla 1.05, max 1.2 -->
+  <add sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_01_mk1']">
+    <bonus chance="1.0" max="1">
+      <damage min="1.1" max="1.1"/>
+    </bonus>
+  </add>
+  <replace sel="/equipmentmods/weapon/surfaceelement[@ware='mod_weapon_surfaceelement_01_mk1']/@min">1.35</replace><!-- vanilla 1.2, max 1.35 -->
+  <add sel="/equipmentmods/weapon/surfaceelement[@ware='mod_weapon_surfaceelement_01_mk1']">
+    <bonus chance="1.0" max="1">
+      <damage min="1.1" max="1.1"/>
+    </bonus>
+  </add>
+
+  <!-- Stabber: damage-primary with a cooling kicker - the RATE-family
+       pick for lukewarm heat weapons: overtakes Piercer above ~26%
+       cooldown, hands over to Mistral around ~47%. -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk1']/@min">1.128</replace><!-- vanilla 1.35 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk1']/@max">1.128</replace><!-- vanilla 1.45 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk1']/bonus/cooling/@min">1.15</replace><!-- vanilla 0.684 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk1']/bonus/cooling/@max">1.15</replace><!-- vanilla 0.736 -->
+
+  <!-- Gregale: cooling + damage + a TIME-flavored reload child (added -
+       vanilla Gregale has no reload slot): the warm-heat pick of the
+       reload-TIME family, taking over from Slasher around ~46% cooldown.
+       The reload 0.95 keeps its damage kicker from leaking onto the
+       rate-weapon axis (Stabber/Mistral territory). bonus max goes 1->2
+       so both children stay forced. -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk1']/@min">1.55</replace><!-- vanilla 1.38 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk1']/@max">1.55</replace><!-- vanilla 1.49 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk1']/bonus/@max">2</replace><!-- vanilla 1 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk1']/bonus/damage/@min">1.055</replace><!-- vanilla 0.7 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk1']/bonus/damage/@max">1.055</replace><!-- vanilla 0.75 -->
+  <add sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk1']/bonus">
+    <reload min="0.95" max="0.95"/><!-- new child; no vanilla counterpart -->
+  </add>
+
+  <!-- Slasher: PARKED (2026-07). Its identity is undecided pending the
+       fire-rate-taxation review: the corrected heat physics make a
+       fire-rate BUFF a heat liability (it overheats hot guns, like Cowboy)
+       and a fire-rate MALUS a heat-efficiency dominant strategy (big slow
+       shots run cool), so neither the old "time-weapon" niche nor a
+       "sustained assault" buff survives. For now it is a thin damage +
+       small cooling pick (reload neutralized to 1.0 - the malus slot is
+       fixed in data and cannot be removed, only pinned): near Stabber but
+       more damage / less cooling. Do NOT ship as final. Vanilla was the
+       x0.682-2 reroll lottery that dominated 210/223. -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk1']/@min">1.155</replace><!-- vanilla 1.338 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk1']/@max">1.155</replace><!-- vanilla 1.503 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk1']/bonus/cooling/@min">1.1</replace><!-- vanilla 0.681 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk1']/bonus/cooling/@max">1.1</replace><!-- vanilla 0.74 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk1']/bonus/reload/@min">1.0</replace><!-- vanilla 0.682 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk1']/bonus/reload/@max">1.0</replace><!-- vanilla 2 -->
+
+  <!-- Mistral: cooling + damage + fire rate (reload 1.05): the warm-heat
+       pick of the reload-RATE family, taking over from Stabber around
+       ~47% cooldown; the reload buff is a malus on time weapons, which
+       keeps it off Gregale's turf. -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk1']/@min">1.45</replace><!-- vanilla 1.356 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk1']/@max">1.45</replace><!-- vanilla 1.525 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk1']/bonus/damage/@min">1.05</replace><!-- vanilla 0.677 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk1']/bonus/damage/@max">1.05</replace><!-- vanilla 0.757 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk1']/bonus/reload/@min">1.05</replace><!-- vanilla 0.682 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk1']/bonus/reload/@max">1.05</replace><!-- vanilla 2 -->
+
+  <!-- ========================== ENHANCED (quality 2) ================== -->
+
+  <!-- Assassin: plain damage pinned to tier; pool loot pinned (reload
+       +12% on rate weapons, chargetime -10%, mining/turn at their old
+       best). -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk2']/@min">1.3333</replace><!-- vanilla 1.062 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk2']/@max">1.3333</replace><!-- vanilla 1.244 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk2']/bonus/reload/@min">1.12</replace><!-- vanilla 0.682 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk2']/bonus/reload/@max">1.12</replace><!-- vanilla 2 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk2']/bonus/chargetime/@min">0.9</replace><!-- vanilla 0.8, max 0.9 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk2']/bonus/mining/@min">6.22</replace><!-- vanilla 1.01, max 6.22 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk2']/bonus/rotationspeed/@min">1.2</replace><!-- vanilla 1.1, max 1.2 -->
+
+  <!-- Labrador: pure coolrate, INTERIM value: floored above Basic
+       Tramontane (x1.83) to preserve tier order until the Enhanced tier
+       gets the touchpoint treatment; pool pinned like Assassin's. -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_01_mk2']/@min">1.9</replace><!-- vanilla 1.056 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_01_mk2']/@max">1.9</replace><!-- vanilla 1.252 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_01_mk2']/bonus/reload/@min">1.12</replace><!-- vanilla 0.682 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_01_mk2']/bonus/reload/@max">1.12</replace><!-- vanilla 2 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_01_mk2']/bonus/chargetime/@min">0.9</replace><!-- vanilla 0.8, max 0.9 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_01_mk2']/bonus/mining/@min">6.22</replace><!-- vanilla 1.01, max 6.22 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_01_mk2']/bonus/rotationspeed/@min">1.2</replace><!-- vanilla 1.1, max 1.2 -->
+
+  <!-- Cement: sticktime primary pinned at its best; pool pinned. -->
+  <replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_01_mk2']/@min">1.2</replace><!-- vanilla 1.1, max 1.2 -->
+  <replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_01_mk2']/bonus/reload/@min">1.12</replace><!-- vanilla 0.682 -->
+  <replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_01_mk2']/bonus/reload/@max">1.12</replace><!-- vanilla 2 -->
+  <replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_01_mk2']/bonus/chargetime/@min">0.9</replace><!-- vanilla 0.8, max 0.9 -->
+  <replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_01_mk2']/bonus/mining/@min">6.22</replace><!-- vanilla 1.01, max 6.22 -->
+  <replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_01_mk2']/bonus/rotationspeed/@min">1.2</replace><!-- vanilla 1.1, max 1.2 -->
+
+  <!-- Exterminator: damage pinned; pool pinned (keeps its lifetime/range
+       loot as the flavor difference from Assassin). -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk2']/@min">1.3333</replace><!-- vanilla 1.062 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk2']/@max">1.3333</replace><!-- vanilla 1.192 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk2']/bonus/reload/@min">1.12</replace><!-- vanilla 0.682 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk2']/bonus/reload/@max">1.12</replace><!-- vanilla 2 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk2']/bonus/chargetime/@min">0.9</replace><!-- vanilla 0.8, max 0.9 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk2']/bonus/mining/@min">5.96</replace><!-- vanilla 1.01, max 5.96 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk2']/bonus/rotationspeed/@min">1.2</replace><!-- vanilla 1.1, max 1.2 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk2']/bonus/lifetime/@min">1.2</replace><!-- vanilla 1.1, max 1.2 -->
+
+  <!-- Humboldt: coolrate pinned like Labrador; pool pinned. -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk2']/@min">1.9</replace><!-- vanilla 1.056 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk2']/@max">1.9</replace><!-- vanilla 1.199 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk2']/bonus/reload/@min">1.12</replace><!-- vanilla 0.682 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk2']/bonus/reload/@max">1.12</replace><!-- vanilla 2 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk2']/bonus/chargetime/@min">0.9</replace><!-- vanilla 0.8, max 0.9 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk2']/bonus/mining/@min">5.96</replace><!-- vanilla 1.01, max 5.96 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk2']/bonus/rotationspeed/@min">1.2</replace><!-- vanilla 1.1, max 1.2 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk2']/bonus/lifetime/@min">1.2</replace><!-- vanilla 1.1, max 1.2 -->
+
+  <!-- Glue: sticktime primary pinned; pool pinned. -->
+  <replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_02_mk2']/@min">1.15</replace><!-- vanilla 1.1, max 1.15 -->
+  <replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_02_mk2']/bonus/reload/@min">1.12</replace><!-- vanilla 0.682 -->
+  <replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_02_mk2']/bonus/reload/@max">1.12</replace><!-- vanilla 2 -->
+  <replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_02_mk2']/bonus/chargetime/@min">0.9</replace><!-- vanilla 0.8, max 0.9 -->
+  <replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_02_mk2']/bonus/mining/@min">5.96</replace><!-- vanilla 1.01, max 5.96 -->
+  <replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_02_mk2']/bonus/rotationspeed/@min">1.2</replace><!-- vanilla 1.1, max 1.2 -->
+  <replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_02_mk2']/bonus/lifetime/@min">1.2</replace><!-- vanilla 1.1, max 1.2 -->
+
+  <!-- Butcher: damage pinned; orthogonal-only pool pinned. -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk2']/@min">1.3333</replace><!-- vanilla 1.1 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk2']/@max">1.3333</replace><!-- vanilla 1.15 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk2']/bonus/chargetime/@min">0.9</replace><!-- vanilla 0.8, max 0.9 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk2']/bonus/mining/@min">5.75</replace><!-- vanilla 1.01, max 5.75 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk2']/bonus/rotationspeed/@min">1.2</replace><!-- vanilla 1.1, max 1.2 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk2']/bonus/lifetime/@min">1.2</replace><!-- vanilla 1.1, max 1.2 -->
+
+  <!-- Kuril: coolrate pinned like Labrador; pool pinned. -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk2']/@min">1.9</replace><!-- vanilla 1.095 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk2']/@max">1.9</replace><!-- vanilla 1.162 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk2']/bonus/chargetime/@min">0.9</replace><!-- vanilla 0.8, max 0.9 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk2']/bonus/mining/@min">5.75</replace><!-- vanilla 1.01, max 5.75 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk2']/bonus/rotationspeed/@min">1.2</replace><!-- vanilla 1.1, max 1.2 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk2']/bonus/lifetime/@min">1.2</replace><!-- vanilla 1.1, max 1.2 -->
+
+  <!-- sticktime_03_mk2: primary pinned; pool pinned. -->
+  <replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_03_mk2']/@min">1.15</replace><!-- vanilla 1.1, max 1.15 -->
+  <replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_03_mk2']/bonus/chargetime/@min">0.9</replace><!-- vanilla 0.8, max 0.9 -->
+  <replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_03_mk2']/bonus/mining/@min">5.75</replace><!-- vanilla 1.01, max 5.75 -->
+  <replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_03_mk2']/bonus/rotationspeed/@min">1.2</replace><!-- vanilla 1.1, max 1.2 -->
+  <replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_03_mk2']/bonus/lifetime/@min">1.2</replace><!-- vanilla 1.1, max 1.2 -->
+
+  <!-- surfaceelement_01_mk2: primary pinned; pool pinned. -->
+  <replace sel="/equipmentmods/weapon/surfaceelement[@ware='mod_weapon_surfaceelement_01_mk2']/@min">1.3</replace><!-- vanilla 1.25, max 1.3 -->
+  <replace sel="/equipmentmods/weapon/surfaceelement[@ware='mod_weapon_surfaceelement_01_mk2']/bonus/chargetime/@min">0.9</replace><!-- vanilla 0.8, max 0.9 -->
+  <replace sel="/equipmentmods/weapon/surfaceelement[@ware='mod_weapon_surfaceelement_01_mk2']/bonus/mining/@min">5.75</replace><!-- vanilla 1.01, max 5.75 -->
+  <replace sel="/equipmentmods/weapon/surfaceelement[@ware='mod_weapon_surfaceelement_01_mk2']/bonus/rotationspeed/@min">1.2</replace><!-- vanilla 1.1, max 1.2 -->
+  <replace sel="/equipmentmods/weapon/surfaceelement[@ware='mod_weapon_surfaceelement_01_mk2']/bonus/lifetime/@min">1.2</replace><!-- vanilla 1.1, max 1.2 -->
+
+  <!-- Executioner: the Enhanced heatless-premium variant (pin +2%, real
+       cooling malus - the Enhanced counterpart of Stabber). -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_04_mk2']/@min">1.36</replace><!-- vanilla 1.2 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_04_mk2']/@max">1.36</replace><!-- vanilla 1.25 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_04_mk2']/bonus/cooling/@min">1.0</replace><!-- vanilla 0.893; interim: neutralized under corrected heat physics until the Enhanced pass -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_04_mk2']/bonus/cooling/@max">1.0</replace><!-- vanilla 0.943 -->
+
+  <!-- Okhotsk: coolrate pinned like Labrador; damage malus pinned away. -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_04_mk2']/@min">1.9</replace><!-- vanilla 1.216 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_04_mk2']/@max">1.9</replace><!-- vanilla 1.271 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_04_mk2']/bonus/damage/@min">1.0</replace><!-- vanilla 0.9 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_04_mk2']/bonus/damage/@max">1.0</replace><!-- vanilla 0.95 -->
+
+  <!-- Slayer: the Enhanced time-weapon specialist (Slasher's counterpart):
+       pinned damage, cooling malus on heat weapons, reload fixed at 0.9 =
+       +11% fire rate on reload-TIME weapons, -10% on rate weapons. -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_05_mk2']/@min">1.3333</replace><!-- vanilla 1.19 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_05_mk2']/@max">1.3333</replace><!-- vanilla 1.294 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_05_mk2']/bonus/cooling/@min">1.0</replace><!-- vanilla 0.879; interim: neutralized under corrected heat physics until the Enhanced pass -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_05_mk2']/bonus/cooling/@max">1.0</replace><!-- vanilla 0.955 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_05_mk2']/bonus/reload/@min">1.05</replace><!-- vanilla 0.682; interim: small fire-rate kicker (reload is rate-semantic) = the q2 fast-weapon damage variant -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_05_mk2']/bonus/reload/@max">1.05</replace><!-- vanilla 2 -->
+
+  <!-- Benguela: coolrate pinned like Labrador; both structural maluses
+       pinned away at x1.0. -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_05_mk2']/@min">1.9</replace><!-- vanilla 1.199 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_05_mk2']/@max">1.9</replace><!-- vanilla 1.305 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_05_mk2']/bonus/damage/@min">1.0</replace><!-- vanilla 0.87 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_05_mk2']/bonus/damage/@max">1.0</replace><!-- vanilla 0.959 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_05_mk2']/bonus/reload/@min">1.0</replace><!-- vanilla 0.682 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_05_mk2']/bonus/reload/@max">1.0</replace><!-- vanilla 2 -->
+
+  <!-- ======================== EXCEPTIONAL (quality 3) ================= -->
+
+  <!-- Obliterator: damage pinned to the Exceptional tier; the forced
+       cooling buff is pinned away (a guaranteed cooling buff on the top
+       damage pin would dominate every heat weapon); keeps its forced
+       sticktime/rotation at their best - the guaranteed brawler package. -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk3']/@min">1.5</replace><!-- vanilla 1.1 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk3']/@max">1.5</replace><!-- vanilla 1.3 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk3']/bonus/cooling/@min">1.0</replace><!-- vanilla 1.095 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk3']/bonus/cooling/@max">1.0</replace><!-- vanilla 1.325 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk3']/bonus/sticktime/@min">1.3</replace><!-- vanilla 1.1, max 1.3 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk3']/bonus/rotationspeed/@min">1.3</replace><!-- vanilla 1.1, max 1.3 -->
+
+  <!-- Annihilator: same pin, but gambles on WHICH pool bonuses appear
+       (selection is engine-side); each pinned and worth <16% cycle DPS. -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk3']/@min">1.5</replace><!-- vanilla 1.062 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk3']/@max">1.5</replace><!-- vanilla 1.348 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk3']/bonus/cooling/@min">1.15</replace><!-- vanilla 1.056 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk3']/bonus/cooling/@max">1.15</replace><!-- vanilla 1.358 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk3']/bonus/reload/@min">1.1</replace><!-- vanilla 0.682 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk3']/bonus/reload/@max">1.1</replace><!-- vanilla 2 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk3']/bonus/sticktime/@min">1.3</replace><!-- vanilla 1.1, max 1.3 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk3']/bonus/rotationspeed/@min">1.3</replace><!-- vanilla 1.1, max 1.3 -->
+
+  <!-- Invader: surfaceelement primary pinned at its best; forced cooling
+       becomes a real but bounded sustain perk; forced turn/range pinned. -->
+  <replace sel="/equipmentmods/weapon/surfaceelement[@ware='mod_weapon_surfaceelement_01_mk3']/@min">1.45</replace><!-- vanilla 1.25, max 1.45 -->
+  <replace sel="/equipmentmods/weapon/surfaceelement[@ware='mod_weapon_surfaceelement_01_mk3']/bonus/cooling/@min">1.15</replace><!-- vanilla 1.095 -->
+  <replace sel="/equipmentmods/weapon/surfaceelement[@ware='mod_weapon_surfaceelement_01_mk3']/bonus/cooling/@max">1.15</replace><!-- vanilla 1.325 -->
+  <replace sel="/equipmentmods/weapon/surfaceelement[@ware='mod_weapon_surfaceelement_01_mk3']/bonus/rotationspeed/@min">1.3</replace><!-- vanilla 1.1, max 1.3 -->
+  <replace sel="/equipmentmods/weapon/surfaceelement[@ware='mod_weapon_surfaceelement_01_mk3']/bonus/lifetime/@min">1.2</replace><!-- vanilla 1.1, max 1.2 -->
+
+  <!-- Expediter: the sniper; speed primary pinned; pool pinned (damage
+       loot bounded; reload 0.97 = +3% on time weapons, -3% on rate). -->
+  <replace sel="/equipmentmods/weapon/speed[@ware='mod_weapon_speed_01_mk3']/@min">1.15</replace><!-- vanilla 1.1, max 1.15 -->
+  <replace sel="/equipmentmods/weapon/speed[@ware='mod_weapon_speed_01_mk3']/bonus/damage/@min">1.1</replace><!-- vanilla 1.062 -->
+  <replace sel="/equipmentmods/weapon/speed[@ware='mod_weapon_speed_01_mk3']/bonus/damage/@max">1.1</replace><!-- vanilla 1.3 -->
+  <replace sel="/equipmentmods/weapon/speed[@ware='mod_weapon_speed_01_mk3']/bonus/reload/@min">0.97</replace><!-- vanilla 0.682 -->
+  <replace sel="/equipmentmods/weapon/speed[@ware='mod_weapon_speed_01_mk3']/bonus/reload/@max">0.97</replace><!-- vanilla 0.99 -->
+  <replace sel="/equipmentmods/weapon/speed[@ware='mod_weapon_speed_01_mk3']/bonus/lifetime/@min">1.3</replace><!-- vanilla 1.1, max 1.3 -->
+  <replace sel="/equipmentmods/weapon/speed[@ware='mod_weapon_speed_01_mk3']/bonus/rotationspeed/@min">1.3</replace><!-- vanilla 1.1, max 1.3 -->
+
+  <!-- Excavator: mining primary pinned at its best; combat loot in the
+       pool pinned and bounded so the miner mod is never a combat cheat. -->
+  <replace sel="/equipmentmods/weapon/mining[@ware='mod_weapon_mining_01_mk3']/@min">6.74</replace><!-- vanilla 5.31, max 6.74 -->
+  <replace sel="/equipmentmods/weapon/mining[@ware='mod_weapon_mining_01_mk3']/bonus/damage/@min">1.06</replace><!-- vanilla 1.062 -->
+  <replace sel="/equipmentmods/weapon/mining[@ware='mod_weapon_mining_01_mk3']/bonus/damage/@max">1.06</replace><!-- vanilla 1.348 -->
+  <replace sel="/equipmentmods/weapon/mining[@ware='mod_weapon_mining_01_mk3']/bonus/cooling/@min">1.05</replace><!-- vanilla 1.056 -->
+  <replace sel="/equipmentmods/weapon/mining[@ware='mod_weapon_mining_01_mk3']/bonus/cooling/@max">1.05</replace><!-- vanilla 1.358 -->
+  <replace sel="/equipmentmods/weapon/mining[@ware='mod_weapon_mining_01_mk3']/bonus/reload/@min">1.05</replace><!-- vanilla 1.01 -->
+  <replace sel="/equipmentmods/weapon/mining[@ware='mod_weapon_mining_01_mk3']/bonus/reload/@max">1.05</replace><!-- vanilla 2 -->
+  <replace sel="/equipmentmods/weapon/mining[@ware='mod_weapon_mining_01_mk3']/bonus/rotationspeed/@min">1.3</replace><!-- vanilla 1.1, max 1.3 -->
+</diff>
