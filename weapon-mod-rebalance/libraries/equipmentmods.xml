@@ -425,7 +425,7 @@
   <replace sel="/equipmentmods/weapon/surfaceelement[@ware='mod_weapon_surfaceelement_01_mk3']/bonus/lifetime/@min">1.4</replace><!-- vanilla 1.1 -->
   <replace sel="/equipmentmods/weapon/surfaceelement[@ware='mod_weapon_surfaceelement_01_mk3']/bonus/lifetime/@max">1.4</replace><!-- vanilla 1.2 -->
   <add sel="/equipmentmods/weapon/surfaceelement[@ware='mod_weapon_surfaceelement_01_mk3']/bonus">
-    <damage min="1.16" max="1.16"/><!-- +16% rider; new forced child -->
+    <damage min="1.24" max="1.24"/><!-- +24% rider (Exceptional utility); new forced child -->
   </add>
 
   <!-- Expediter = SPEED capstone - the q3 sniper. Big projectile velocity
@@ -435,8 +435,8 @@
   <replace sel="/equipmentmods/weapon/speed[@ware='mod_weapon_speed_01_mk3']/@min">1.5</replace><!-- vanilla 1.1 -->
   <replace sel="/equipmentmods/weapon/speed[@ware='mod_weapon_speed_01_mk3']/@max">1.5</replace><!-- vanilla 1.15 -->
   <replace sel="/equipmentmods/weapon/speed[@ware='mod_weapon_speed_01_mk3']/bonus/@max">3</replace><!-- vanilla 3 (pool -> forced trio) -->
-  <replace sel="/equipmentmods/weapon/speed[@ware='mod_weapon_speed_01_mk3']/bonus/damage/@min">1.16</replace><!-- +16% rider; vanilla 1.062 -->
-  <replace sel="/equipmentmods/weapon/speed[@ware='mod_weapon_speed_01_mk3']/bonus/damage/@max">1.16</replace><!-- vanilla 1.3 -->
+  <replace sel="/equipmentmods/weapon/speed[@ware='mod_weapon_speed_01_mk3']/bonus/damage/@min">1.24</replace><!-- +24% rider (Exceptional utility); vanilla 1.062 -->
+  <replace sel="/equipmentmods/weapon/speed[@ware='mod_weapon_speed_01_mk3']/bonus/damage/@max">1.24</replace><!-- vanilla 1.3 -->
   <replace sel="/equipmentmods/weapon/speed[@ware='mod_weapon_speed_01_mk3']/bonus/lifetime/@min">1.5</replace><!-- vanilla 1.1 -->
   <replace sel="/equipmentmods/weapon/speed[@ware='mod_weapon_speed_01_mk3']/bonus/lifetime/@max">1.5</replace><!-- vanilla 1.3 -->
   <replace sel="/equipmentmods/weapon/speed[@ware='mod_weapon_speed_01_mk3']/bonus/rotationspeed/@min">1.6</replace><!-- vanilla 1.1 -->
