@@ -6,20 +6,36 @@
      - NO RNG: every roll range is pinned (min = max) - what you craft is
        what you get, rerolling is pointless.
      - BASIC TIER = the seven non-empty COMBINATIONS of the three DPS
-       stats (damage, cooling, reload), one per mod, so every mod has a
-       legible identity and no two share an effect set:
-         Piercer     damage
-         Cowboy      reload
-         Tramontane  cooling
-         Gregale     damage + cooling
-         Stabber     damage + reload
-         Mistral     cooling + reload
-         Slasher     damage + cooling + reload
-       Values below are SANITY STARTERS meant for tuning in the slider
-       tool (tools/weapon-mod-rebalance/tuner.html), NOT final balance.
+       stats (damage, cooling, reload), one mod each, no two sharing an
+       effect set. In practice those seven resolve into TWO CLASSES - this
+       is STRUCTURAL, not a tuning choice: with only three levers the space
+       holds ~four genuinely distinct positions, and the rest are blends
+       that overlap what they are built from.
+         BASELINE     Piercer (damage). Damage is full value on EVERY
+                      weapon, so Piercer is the universal default and the
+                      benchmark - not a niche pick.
+         SPECIALISTS  Cowboy (reload), Tramontane (cooling), Mistral
+                      (cooling+reload). Each PEAKS in one domain and does
+                      little outside it: high ceiling, narrow. Mistral is
+                      the only pair that earns a real niche, because its
+                      two effects SYNERGISE (cooling pays the heat bill so
+                      the extra fire rate actually converts to DPS).
+         GENERALISTS  Stabber (damage+reload), Gregale (damage+cooling),
+                      Slasher (triple). Each blends damage with a stat that
+                      is a SUBSTITUTE, not a synergy - so it can never
+                      out-damage Piercer nor out-focus a specialist. They
+                      live in the tie band as damage-backed SAFE PICKS:
+                      never useless, rarely uniquely best. That IS the role
+                      (harness signature: high best-or-tied, low strict
+                      wins). The current values are a deliberate
+                      equilibrium - push a generalist down and Piercer eats
+                      its weapons, push it up and it mints a rogue
+                      specialist that kills a real one.
+       Differentiation budget belongs to Enhanced/Exceptional, spent on
+       widening the SPECIALIST peaks so identity sharpens with rarity.
        Effects a mod's combo excludes are pinned to 1.0 in its (data-fixed)
-       bonus slots. Enhanced/Exceptional keep interim pinned values until
-       the Basic identities settle.
+       bonus slots. Tune in the slider tool
+       (tools/weapon-mod-rebalance/tuner.html).
      - Secondary bundles stay worth <25% cycle DPS on any weapon (a mod's
        secondaries are part of its combo identity, so this cap sits near
        the strongest single-stat mod's headline, not the old 16%).
@@ -34,42 +50,47 @@
 <diff>
   <!-- ============================ BASIC (quality 1) ==================== -->
 
-  <!-- Piercer = DAMAGE. Pure damage, no secondaries: delivers its buff on
-       EVERY weapon; the benchmark the combos are measured against. -->
-  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk1']/@min">1.1667</replace><!-- vanilla 1.05 -->
-  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk1']/@max">1.1667</replace><!-- vanilla 1.2 -->
+  <!-- Piercer = DAMAGE - the universal BASELINE. Pure damage, full value on
+       every weapon, so it is the default pick and the benchmark the others
+       are measured against, not a niche mod. Its universality is the
+       gravity well the generalists orbit: lower them and Piercer wins their
+       weapons outright. -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk1']/@min">1.15</replace><!-- vanilla 1.05 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk1']/@max">1.15</replace><!-- vanilla 1.2 -->
 
-  <!-- Tramontane = COOLING. Pure coolrate: big on heat-limited guns,
-       nothing on the heatless majority. -->
-  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_01_mk1']/@min">1.75</replace><!-- vanilla 1.048 -->
-  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_01_mk1']/@max">1.75</replace><!-- vanilla 1.216 -->
+  <!-- Tramontane = COOLING - SPECIALIST. Pure coolrate: big on the hottest
+       heat-limited main guns, nothing on the heatless majority or on
+       turrets (which have no heat mechanic - cooling is wasted there). High
+       ceiling, narrow. -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_01_mk1']/@min">1.4</replace><!-- vanilla 1.048 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_01_mk1']/@max">1.4</replace><!-- vanilla 1.216 -->
 
-  <!-- Cowboy = RELOAD. Pure fire rate: full value on heatless and clip
-       weapons, taxed on heat weapons (faster firing = more heat). As the
-       single-stat mod it must out-rate the damage+reload pair (Stabber)
-       on its home turf, so its headline is higher than a damage single's -
-       reload is situational where damage is universal. Vanilla 0.682-2
-       crossed 1.0 and was a reroll lottery. -->
-  <replace sel="/equipmentmods/weapon/reload[@ware='mod_weapon_reload_01_mk1']/@min">1.25</replace><!-- vanilla 0.682 -->
-  <replace sel="/equipmentmods/weapon/reload[@ware='mod_weapon_reload_01_mk1']/@max">1.25</replace><!-- vanilla 2 -->
+  <!-- Cowboy = RELOAD - SPECIALIST. Pure fire rate: full value on heatless
+       and clip weapons - owns continuous heatless turrets cleanly (no ties)
+       - but taxed on heat weapons where faster firing just adds heat. Its
+       headline sits above a damage single's because reload is situational
+       where damage is universal. Vanilla 0.682-2 crossed 1.0, a lottery. -->
+  <replace sel="/equipmentmods/weapon/reload[@ware='mod_weapon_reload_01_mk1']/@min">1.225</replace><!-- vanilla 0.682 -->
+  <replace sel="/equipmentmods/weapon/reload[@ware='mod_weapon_reload_01_mk1']/@max">1.225</replace><!-- vanilla 2 -->
 
-  <!-- Jumper: the charge-cannon mod: x0.58 charge time plus a +10%
-       damage rider (added block) - best Basic pick on the whole charge
-       family (KHA Ravager/Obliterator, Ray Ion Projector, Erlking, ...),
-       utility-grade +10% elsewhere. -->
-  <replace sel="/equipmentmods/weapon/chargetime[@ware='mod_weapon_chargetime_01_mk1']/@min">0.58</replace><!-- vanilla 0.8 -->
-  <replace sel="/equipmentmods/weapon/chargetime[@ware='mod_weapon_chargetime_01_mk1']/@max">0.58</replace><!-- vanilla 0.95 -->
+  <!-- Jumper = CHARGETIME - the charge-weapon SPECIALIST (a small family:
+       Ray Ion Projector, Erlking, ...). x0.75 charge time cuts the wind-up
+       between shots, plus an +8% damage floor; utility-grade elsewhere.
+       Chargetime is outside the three-stat combo matrix - its own axis. -->
+  <replace sel="/equipmentmods/weapon/chargetime[@ware='mod_weapon_chargetime_01_mk1']/@min">0.75</replace><!-- vanilla 0.8 -->
+  <replace sel="/equipmentmods/weapon/chargetime[@ware='mod_weapon_chargetime_01_mk1']/@max">0.75</replace><!-- vanilla 0.95 -->
   <add sel="/equipmentmods/weapon/chargetime[@ware='mod_weapon_chargetime_01_mk1']">
     <bonus chance="1.0" max="1">
-      <damage min="1.1" max="1.1"/>
+      <damage min="1.08" max="1.08"/>
     </bonus>
   </add>
 
   <!-- Basic utility mods: primaries pinned at their vanilla best roll
        (max already equals the pin, so only min changes), plus a flat
-       +10% damage rider (added forced bonus block - no vanilla
-       counterpart) so picking a utility niche costs ~6% DPS vs the
-       dedicated damage/cooling bucket (+16.67%) instead of all of it.
+       +8% damage rider (added forced bonus block - no vanilla
+       counterpart) so picking a utility niche costs only ~6% DPS vs the
+       Piercer baseline (+15%) instead of all of it - the utility effect
+       is meant to be the reason you take it, not a DPS sacrifice.
        Digger (mining) is the one exception - yield is its draw and a
        damage rider on a mining mod re-opens the combat-cheat door.
        Niches:
@@ -83,7 +104,7 @@
   <replace sel="/equipmentmods/weapon/speed[@ware='mod_weapon_speed_01_mk1']/@max">1.25</replace><!-- vanilla 1.1 -->
   <add sel="/equipmentmods/weapon/speed[@ware='mod_weapon_speed_01_mk1']">
     <bonus chance="1.0" max="2">
-      <damage min="1.1" max="1.1"/>
+      <damage min="1.08" max="1.08"/>
       <lifetime min="0.84" max="0.84"/>
     </bonus>
   </add>
@@ -91,14 +112,14 @@
   <replace sel="/equipmentmods/weapon/beamlength[@ware='mod_weapon_beamlength_01_mk1']/@max">1.21</replace><!-- vanilla 1.1 -->
   <add sel="/equipmentmods/weapon/beamlength[@ware='mod_weapon_beamlength_01_mk1']">
     <bonus chance="1.0" max="1">
-      <damage min="1.1" max="1.1"/>
+      <damage min="1.08" max="1.08"/>
     </bonus>
   </add>
   <replace sel="/equipmentmods/weapon/lifetime[@ware='mod_weapon_lifetime_01_mk1']/@min">1.1</replace><!-- vanilla 1.05 -->
   <replace sel="/equipmentmods/weapon/lifetime[@ware='mod_weapon_lifetime_01_mk1']/@max">1.1</replace><!-- vanilla 1.2 -->
   <add sel="/equipmentmods/weapon/lifetime[@ware='mod_weapon_lifetime_01_mk1']">
     <bonus chance="1.0" max="2">
-      <damage min="1.1" max="1.1"/>
+      <damage min="1.08" max="1.08"/>
       <speed min="1.1" max="1.1"/>
     </bonus>
   </add>
@@ -106,28 +127,33 @@
   <replace sel="/equipmentmods/weapon/rotationspeed[@ware='mod_weapon_rotationspeed_01_mk1']/@min">1.2</replace><!-- vanilla 1.05, max 1.2 -->
   <add sel="/equipmentmods/weapon/rotationspeed[@ware='mod_weapon_rotationspeed_01_mk1']">
     <bonus chance="1.0" max="1">
-      <damage min="1.1" max="1.1"/>
+      <damage min="1.08" max="1.08"/>
     </bonus>
   </add>
   <replace sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_01_mk1']/@min">1.2</replace><!-- vanilla 1.05, max 1.2 -->
   <add sel="/equipmentmods/weapon/sticktime[@ware='mod_weapon_sticktime_01_mk1']">
     <bonus chance="1.0" max="1">
-      <damage min="1.1" max="1.1"/>
+      <damage min="1.08" max="1.08"/>
     </bonus>
   </add>
   <replace sel="/equipmentmods/weapon/surfaceelement[@ware='mod_weapon_surfaceelement_01_mk1']/@min">1.35</replace><!-- vanilla 1.2, max 1.35 -->
   <add sel="/equipmentmods/weapon/surfaceelement[@ware='mod_weapon_surfaceelement_01_mk1']">
     <bonus chance="1.0" max="1">
-      <damage min="1.1" max="1.1"/>
+      <damage min="1.08" max="1.08"/>
     </bonus>
   </add>
 
-  <!-- Stabber = DAMAGE + RELOAD. Aggressive DPS for cool-running / clip
-       guns where the fire-rate rider pays off without a heat penalty. The
+  <!-- Stabber = DAMAGE + RELOAD - GENERALIST. Damage backbone with a
+       fire-rate lean, aimed at cool-running / clip guns where the reload
+       rider converts without a heat penalty. But it can't out-damage
+       Piercer (lower damage pin) nor out-rate Cowboy (lower reload than
+       1.225), so it lives in the tie band as a damage-backed SAFE PICK -
+       high best-or-tied, few strict wins. Push it up and it starts eating
+       Cowboy's continuous weapons; push it down and Piercer eats it. The
        native cooling child is pinned to 1.0 (excluded from the combo) and
        a reload child is added; bonus max 1->2 keeps both forced. -->
-  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk1']/@min">1.12</replace><!-- vanilla 1.35 -->
-  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk1']/@max">1.12</replace><!-- vanilla 1.45 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk1']/@min">1.1</replace><!-- vanilla 1.35 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk1']/@max">1.1</replace><!-- vanilla 1.45 -->
   <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk1']/bonus/@max">2</replace><!-- vanilla 1 -->
   <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk1']/bonus/cooling/@min">1.0</replace><!-- vanilla 0.684; excluded from combo -->
   <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk1']/bonus/cooling/@max">1.0</replace><!-- vanilla 0.736 -->
@@ -135,38 +161,49 @@
     <reload min="1.1" max="1.1"/><!-- new child; no vanilla counterpart -->
   </add>
 
-  <!-- Gregale = COOLING + DAMAGE. Cool-running with a damage edge for
-       warm weapons; native structure already is cooling-primary + a
-       forced damage child (bonus max 1). -->
-  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk1']/@min">1.45</replace><!-- vanilla 1.38 -->
-  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk1']/@max">1.45</replace><!-- vanilla 1.49 -->
-  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk1']/bonus/damage/@min">1.1</replace><!-- vanilla 0.7 -->
-  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk1']/bonus/damage/@max">1.1</replace><!-- vanilla 0.75 -->
+  <!-- Gregale = DAMAGE + COOLING - GENERALIST. Damage backbone with a
+       cooling lean for warm main guns. Same story as Stabber on the other
+       axis: can't out-cool Tramontane (1.2 vs 1.4) nor out-damage Piercer,
+       so it sits in the tie band as a damage-backed SAFE PICK for heat guns
+       - never the sharpest tool, never a wasted slot. Native structure is
+       already cooling-primary + a forced damage child (bonus max 1). -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk1']/@min">1.2</replace><!-- vanilla 1.38 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk1']/@max">1.2</replace><!-- vanilla 1.49 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk1']/bonus/damage/@min">1.08</replace><!-- vanilla 0.7 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk1']/bonus/damage/@max">1.08</replace><!-- vanilla 0.75 -->
 
-  <!-- Slasher = DAMAGE + COOLING + RELOAD. The all-rounder: a bit of
-       everything for weapons that want damage, heat headroom, and rate at
-       once. Native structure is damage-primary + forced cooling + reload
-       children (bonus max 2). Cooling stays modest so the secondary bundle
-       (cooling + reload) keeps under the 25% cap. -->
-  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk1']/@min">1.14</replace><!-- vanilla 1.338 -->
-  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk1']/@max">1.14</replace><!-- vanilla 1.503 -->
-  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk1']/bonus/cooling/@min">1.12</replace><!-- vanilla 0.681 -->
-  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk1']/bonus/cooling/@max">1.12</replace><!-- vanilla 0.74 -->
-  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk1']/bonus/reload/@min">1.06</replace><!-- vanilla 0.682 -->
-  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk1']/bonus/reload/@max">1.06</replace><!-- vanilla 2 -->
+  <!-- Slasher = DAMAGE + COOLING + RELOAD - GENERALIST (the pure
+       all-rounder): a bit of everything for weapons that want damage, heat
+       headroom, and rate at once. It has the LOWEST peak of any Basic mod -
+       spreading the budget across three substitute stats can't beat any
+       single-stat or synergy specialist on their home turf - but the
+       near-Piercer damage floor keeps it alive in the tie band everywhere.
+       The archetypal SAFE PICK: broadest best-or-tied coverage, essentially
+       zero strict wins. Native structure is damage-primary + forced cooling
+       + reload children (bonus max 2). Cooling/reload stay modest so the
+       secondary bundle keeps well under the 25% cap. -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk1']/@min">1.115</replace><!-- vanilla 1.338 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk1']/@max">1.115</replace><!-- vanilla 1.503 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk1']/bonus/cooling/@min">1.07</replace><!-- vanilla 0.681 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk1']/bonus/cooling/@max">1.07</replace><!-- vanilla 0.74 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk1']/bonus/reload/@min">1.045</replace><!-- vanilla 0.682 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk1']/bonus/reload/@max">1.045</replace><!-- vanilla 2 -->
 
-  <!-- Mistral = COOLING + RELOAD. Pure sustain, no raw damage: fire faster
-       AND pay the extra heat - the pick for hot rapid-fire guns where
-       Cowboy (rate only) would overheat and Tramontane (cooling only)
-       leaves rate on the table. Native structure is cooling-primary +
-       forced damage + reload children (bonus max 2); the damage child is
-       pinned to 1.0 (excluded from the combo). -->
-  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk1']/@min">1.45</replace><!-- vanilla 1.356 -->
-  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk1']/@max">1.45</replace><!-- vanilla 1.525 -->
+  <!-- Mistral = COOLING + RELOAD - SPECIALIST (the one pair that earns a
+       niche). Cooling and reload SYNERGISE rather than substitute: the extra
+       coolrate pays the heat bill that the extra fire rate runs up, so the
+       rate actually converts to DPS. That makes it the pick for hot
+       rapid-fire guns where Cowboy (rate only) would overheat and Tramontane
+       (cooling only) leaves rate on the table - a real peak no single stat
+       reaches, unlike the damage-blend generalists. No raw damage at all.
+       Native structure is cooling-primary + forced damage + reload children
+       (bonus max 2); the damage child is pinned to 1.0 (excluded). -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk1']/@min">1.32</replace><!-- vanilla 1.356 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk1']/@max">1.32</replace><!-- vanilla 1.525 -->
   <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk1']/bonus/damage/@min">1.0</replace><!-- vanilla 0.677; excluded from combo -->
   <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk1']/bonus/damage/@max">1.0</replace><!-- vanilla 0.757 -->
-  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk1']/bonus/reload/@min">1.2</replace><!-- vanilla 0.682 -->
-  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk1']/bonus/reload/@max">1.2</replace><!-- vanilla 2 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk1']/bonus/reload/@min">1.125</replace><!-- vanilla 0.682 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk1']/bonus/reload/@max">1.125</replace><!-- vanilla 2 -->
 
   <!-- ========================== ENHANCED (quality 2) ================== -->
 

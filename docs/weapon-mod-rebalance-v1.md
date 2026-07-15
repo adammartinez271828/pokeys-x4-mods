@@ -1,13 +1,14 @@
 # Weapon-mod rebalance v1 — Basic-tier testbed
 
 The table shipped in `weapon-mod-rebalance/libraries/equipmentmods.xml`
-(158 attribute replaces + 9 added bonus blocks, weapon section only).
+(166 ops: attribute replaces + added bonus blocks, weapon section only).
 Design rationale: `docs/weapon-mod-rebalance-design.md`. Validation:
 `uv run --project ~/devel/x4-analyzer python tools/weapon-mod-rebalance/evaluate.py`
 (exit 0 = all acceptance targets pass; the harness applies the diff
-itself, so a sel typo is a hard error, not a silent no-op). Browsable
-review dashboard: `tools/weapon-mod-rebalance/report.py` →
-`output/weapon-mod-review.html`.
+itself, so a sel typo is a hard error, not a silent no-op). Interactive
+prototyping: the slider tool `tools/weapon-mod-rebalance/tuner.html`
+(rebuild with `dump_data.py`) recomputes the within-tier win/tie split
+live as you drag mod values.
 
 The **Basic tier is the finished testbed** for the design language below;
 Enhanced/Exceptional carry interim values until they get the same
@@ -15,66 +16,96 @@ treatment one tier up.
 
 ## The system
 
+The Basic tier is the seven non-empty **combinations** of the three DPS
+stats — damage, cooling, reload — one mod each, no two sharing an effect
+set, plus a chargetime specialist (Jumper) and the utility mods. With only
+three levers, those seven combinations don't produce seven distinct
+positions; they collapse into **two structural classes**. This is a
+property of the physics, not a tuning choice.
+
 - **No roll RNG.** Every range is pinned (min = max): what you craft is
   what you get, rerolling is pointless. The only randomness left is
   engine-side *selection* of optional pool bonuses on some
   Enhanced/Exceptional mods — game data cannot remove that.
-- **Two buckets per tier.** The *DPS bucket* trades purely in cycle DPS:
-  each mod is worth ~+16.67% (one Basic tier step) at the center of its
-  niche and falls off outside it. The *utility bucket* tweaks a
-  less-tangible weapon attribute and carries a flat **+10% damage rider**
-  so picking utility costs ~6% DPS instead of all of it (ladder reserved
-  for later tiers: +20% Enhanced, +30% Exceptional).
+
+- **Baseline — Piercer (damage).** Damage is full value on *every* weapon
+  (a heavy shot on a heat gun even runs cooler per point of DPS), so
+  Piercer is the universal default and the benchmark the rest are measured
+  against, not a niche pick. Its universality is a gravity well: it
+  contests the clip weapons and the warm guns everywhere at once.
+
+- **Specialists — Cowboy (reload), Tramontane (cooling), Mistral
+  (cooling+reload).** Each PEAKS in one physical domain and does little
+  outside it — a high ceiling on a narrow set:
+  - *Reload* (Cowboy) is full value on heatless and clip weapons but taxed
+    on heat guns (faster firing just adds heat); it owns continuous
+    heatless turrets cleanly.
+  - *Cooling* (Tramontane) is huge on the hottest heat-limited main guns
+    and literally nothing on the heatless majority or on turrets (turrets
+    have no heat mechanic).
+  - *cooling+reload* (Mistral) is the **one pair that earns a niche**,
+    because its two effects SYNERGISE: the coolrate pays the heat bill the
+    extra fire rate runs up, so the rate converts to real DPS on hot
+    rapid-fire guns — a peak neither single stat reaches.
+
+- **Generalists — Stabber (damage+reload), Gregale (damage+cooling),
+  Slasher (damage+cooling+reload).** Each blends damage with a stat that
+  is a SUBSTITUTE for damage, not a synergy, so it can never out-damage
+  Piercer nor out-focus the matching specialist. They live in the tie band
+  as damage-backed **safe picks**: broad best-or-tied coverage, few strict
+  wins (Slasher, the triple, has the lowest peak and the widest tie
+  coverage — the archetypal all-rounder). The values are a deliberate
+  equilibrium — push a generalist down and Piercer eats its weapons, push
+  it up and it mints a rogue specialist that kills a real one.
+
 - **Niches come from weapon physics**, exploiting how mods multiply the
-  stored field literally:
-  - *Heat level*: cooling is worth nothing on the 137 heatless weapons
-    and up to +50% on cooldown-dominated guns. The cooling-heavy mods are
-    calibrated so their crossover points are staggered along the heat
-    axis (touchpoint: S Bolt Repeater Mk1, the median heat weapon at
-    38.4% cooldown).
-  - *Reload storage form*: `reload rate` weapons want reload multipliers
-    >1, `reload time` weapons want <1. Every reload-carrying mod picks a
-    side, which fences the rate family and the time family apart.
-  - *Clip weapons* only get partial value from fire rate (the clip
-    reload is fixed), and *charge weapons* have a chargetime lever nobody
-    else touches — those make two more niches.
+  stored field literally: *heat level* (cooling is worthless on the
+  heatless majority, decisive on cooldown-dominated guns), *clip vs.
+  continuous* fire (clips only pay partial value on fire rate — the clip
+  reload is fixed), and the *chargetime* lever nobody but Jumper touches.
+
 - **Bounded everything**: no roll range crosses 1.0, no secondary bundle
-  is worth ≥16% cycle DPS on any weapon (measured max +14.3%, Excavator's
-  pool on the BOR M Ion Pulse Railgun), and tier order can never invert
-  within a variant.
+  is worth ≥25% cycle DPS on any weapon (measured max +14.4%, Annihilator
+  on the ATF XL Main Battery — a combo mod's secondaries are part of its
+  identity, so the cap sits near the strongest single-stat headline, not
+  the old 16%), and tier order can never invert within a variant.
 
 ## Basic DPS bucket
 
-All eight are ~+16.67% full-cycle DPS at their niche center. "Strict
-wins" = weapons where the mod beats every other Basic DPS mod by >0.5%
-(192 non-mining weapons with sustained DPS; ties excluded).
+Values below are the shipped equilibrium. **Strict wins** = weapons where
+the mod beats every other Basic DPS mod by >0.5% (the tuner's within-tier
+split, over the 211 obtainable non-KHA weapons; ties counted separately).
+`g`/`t` = wins on main guns / turrets. **best%** = share of a mod's
+eligible weapons where it is best-or-tied — the generalist signature is
+*high best%, low strict wins*.
 
-| Mod | Vanilla | New (fixed) | Wins | Niche |
-|---|---|---|---|---|
-| Piercer (damage_01_mk1) | dmg 1.05–1.2 | dmg ×1.1667 | 61 | **The generalist.** Full value on every weapon; the default on non-clip rate weapons, flak and cool-running guns. |
-| Stabber (damage_02_mk1) | dmg 1.35–1.45, cooling 0.684–0.736 | dmg ×1.128, cool ×1.2 | 9 | **Lukewarm rate weapons** (~26–47% cooldown): overtakes Piercer once heat starts to matter. |
-| Slasher (damage_03_mk1) | dmg 1.338–1.503, cooling 0.681–0.74, **reload 0.682–2** | dmg ×1.155, cool ×1.1, rel ×0.95 | 48 | **Reload-time weapons** (beams, mass drivers, launchers). These store reload as *seconds between shots*, and mods multiply the stored number: time ×0.95 = shorter interval = **+5.3% fire rate**. On rate-storing weapons the same ×0.95 cuts the rate by 5% — the gate. Vanilla Slasher was the ×2-reroll lottery that dominated 210/223 weapons. |
-| Gregale (cooling_02_mk1) | cool 1.38–1.49, dmg 0.7–0.75 | cool ×1.55, dmg ×1.055, rel ×0.95 *(added child)* | 18 | **Warm time weapons**: takes the baton from Slasher around ~46% cooldown. The added time-flavored reload keeps its damage kicker off the rate family's turf. |
-| Mistral (cooling_03_mk1) | cool 1.356–1.525, dmg 0.677–0.757, **reload 0.682–2** | cool ×1.45, dmg ×1.05, rel ×1.05 | 7 | **Warm rate weapons**: Stabber's successor from ~47% cooldown; its reload buff is a malus on time weapons, fencing it off Gregale. |
-| Tramontane (cooling_01_mk1) | cool 1.048–1.216 | cool ×1.83 | 5 | **The hottest guns** (Ion Pulse Railgun +50%, Distortion Pulsor, Neutron Gatling, Muons): pure coolrate, worthless on heatless weapons. |
-| Cowboy (reload_01_mk1) | **reload 0.682–2** | rel ×1.2, dmg ×1.05 *(added rider)* | 14 | **Clip/burst weapons** (Ion Blasters, gatlings): fire rate compresses the burst; the tempered rider tips it past Piercer exactly where reload pays most. −16.7% on reload-time weapons — wrong tool there by design. |
-| Jumper (chargetime_01_mk1) | charge 0.8–0.95 | charge ×0.58, dmg ×1.1 *(added rider)* | 5 | **The charge cannons** (KHA Ravager/Obliterator, Ray Ion Projector, Erlking, XEN Omega): charge time is up to half the volley interval there and nothing else can buy it. Utility-grade +10% anywhere else. |
+| Mod | Class | Vanilla | New (fixed) | Strict | best% | Role |
+|---|---|---|---|---|---|---|
+| Piercer (damage_01_mk1) | **baseline** | dmg 1.05–1.2 | dmg ×1.15 | 37 (13g/24t) | 45% | **Universal default & benchmark.** Full value everywhere; contests the clip weapons and warm guns at once — the gravity well the generalists orbit. |
+| Cowboy (reload_01_mk1) | specialist | **reload 0.682–2** | rel ×1.225 | 21 (2g/19t) | 13% | **Reload.** Owns continuous heatless turrets cleanly; full value on clips, taxed on heat guns. Headline sits above a damage single's because reload is situational where damage is universal. |
+| Tramontane (cooling_01_mk1) | specialist | cool 1.048–1.216 | cool ×1.4 | 10 (10g) | 8% | **Cooling.** The hottest heat-limited main guns; pure coolrate, worthless on the heatless majority and on turrets. Narrow, high ceiling. |
+| Mistral (cooling_03_mk1) | specialist | cool 1.356–1.525, dmg 0.677–0.757, **reload 0.682–2** | cool ×1.32, rel ×1.125 *(dmg child pinned 1.0)* | 9 (9g) | 12% | **Cooling+reload — the one synergistic pair.** Coolrate pays the heat bill the fire rate runs up, so rate converts to DPS: the pick for hot rapid-fire guns where Cowboy overheats and Tramontane leaves rate on the table. No raw damage. |
+| Stabber (damage_02_mk1) | generalist | dmg 1.35–1.45, cooling 0.684–0.736 | dmg ×1.10, rel ×1.10 *(cool child pinned 1.0)* | 29 (11g/18t) | 38% | **Damage+reload.** Damage backbone with a fire-rate lean; contests the clip weapons against Piercer (they see-saw — winner-take-most on clips). Can't out-damage Piercer nor out-rate Cowboy — a damage-backed safe pick. |
+| Gregale (cooling_02_mk1) | generalist | cool 1.38–1.49, dmg 0.7–0.75 | cool ×1.2, dmg ×1.08 | 2 (2g) | 4% | **Damage+cooling.** Damage backbone with a cooling lean for warm main guns; can't out-cool Tramontane nor out-damage Piercer, so it sits in the tie band as a safe pick for heat guns. |
+| Slasher (damage_03_mk1) | generalist | dmg 1.338–1.503, cooling 0.681–0.74, **reload 0.682–2** | dmg ×1.115, cool ×1.07, rel ×1.045 | 7 (5g heat/2g heatless) | 18% | **Damage+cooling+reload — the pure all-rounder.** Lowest peak of any Basic mod, but the widest tie coverage (26 ties): a bit of everything, near-Piercer damage keeping it alive everywhere. Vanilla Slasher was the ×2-reroll lottery that dominated 210/223 weapons. |
+| Jumper (chargetime_01_mk1) | specialist | charge 0.8–0.95 | charge ×0.75, dmg ×1.08 *(added rider)* | 2 (2g) | 1% | **Chargetime** (its own axis, outside the three-stat matrix). The charge family (Ray Ion Projector, Erlking, ...): charge time is a big slice of the volley interval there and nothing else can buy it. Utility-grade +8% anywhere else. |
 
 ## Basic utility bucket
 
 Orthogonal primaries — no weapon has them as its *strongest* DPS pick,
-by design. Each carries the flat **+10% damage rider** (added forced
-block) so the utility costs ~6% DPS vs the bucket above, not all of it.
-Primaries pinned at (or retuned from) their vanilla best roll.
+by design (best% ~0 for all of them). Each carries a flat **+8% damage
+rider** (added forced block) so the utility effect is the reason you take
+the mod — it costs only ~6% DPS vs the Piercer baseline (+15%), not all
+of it. Primaries pinned at (or retuned from) their vanilla best roll.
 
 | Mod | Vanilla | New (fixed) | Niche |
 |---|---|---|---|
-| Dispatcher (speed_01_mk1) | speed 1.05–1.1 | speed ×1.25, lifetime ×0.84, dmg ×1.1 | **Velocity.** Projectiles arrive 25% faster (easier leads, better vs fast/evasive targets) at nearly unchanged range (1.25 × 0.84 = +5%). |
-| Endurance (lifetime_01_mk1) | lifetime 1.05–1.2 | lifetime ×1.1, speed ×1.1, dmg ×1.1 | **Reach.** +21% projectile range (1.1 × 1.1) with the flight character unchanged — standoff work. |
-| Lens (beamlength_01_mk1) | beam 1.05–1.1 | beam ×1.21, dmg ×1.1 | **Beam reach.** The beam-weapon counterpart of Endurance: +21% beam length. |
-| Gimbal (rotationspeed_01_mk1) | rot 1.05–1.2 | rot ×1.2, dmg ×1.1 | **Turret tracking.** Faster slew for turrets chasing small, fast targets. |
-| Gum (sticktime_01_mk1) | stick 1.05–1.2 | stick ×1.2, dmg ×1.1 | **Sticky weapons.** Longer stick time for the leech/disruptor projectile family. |
-| Intruder (surfaceelement_01_mk1) | surf 1.2–1.35 | surf ×1.35, dmg ×1.1 | **Destroying surface elements** — turrets, shield generators, engines on stations and capital ships. |
+| Dispatcher (speed_01_mk1) | speed 1.05–1.1 | speed ×1.25, lifetime ×0.84, dmg ×1.08 | **Velocity.** Projectiles arrive 25% faster (easier leads, better vs fast/evasive targets) at nearly unchanged range (1.25 × 0.84 = +5%). |
+| Endurance (lifetime_01_mk1) | lifetime 1.05–1.2 | lifetime ×1.1, speed ×1.1, dmg ×1.08 | **Reach.** +21% projectile range (1.1 × 1.1) with the flight character unchanged — standoff work. |
+| Lens (beamlength_01_mk1) | beam 1.05–1.1 | beam ×1.21, dmg ×1.08 | **Beam reach.** The beam-weapon counterpart of Endurance: +21% beam length. |
+| Gimbal (rotationspeed_01_mk1) | rot 1.05–1.2 | rot ×1.2, dmg ×1.08 | **Turret tracking.** Faster slew for turrets chasing small, fast targets. |
+| Gum (sticktime_01_mk1) | stick 1.05–1.2 | stick ×1.2, dmg ×1.08 | **Sticky weapons.** Longer stick time for the leech/disruptor projectile family. |
+| Intruder (surfaceelement_01_mk1) | surf 1.2–1.35 | surf ×1.35, dmg ×1.08 | **Destroying surface elements** — turrets, shield generators, engines on stations and capital ships. |
 | Digger (mining_01_mk1) | mining 5.25–6 | mining ×6 (no rider) | **Mining yield.** Deliberately no damage rider: a combat bonus on a mining mod re-opens the combat-cheat door. Mining weapons are excluded from all combat-mod evaluations. |
 
 ## Enhanced / Exceptional (interim)
@@ -85,8 +116,8 @@ consistent with the Basic tier (no RNG, no crossings, tier order intact):
 - Damage mods pinned to tier: Assassin/Exterminator/Butcher/Slayer
   ×1.3333, Executioner ×1.36 (+cooling ×0.92 malus), Slayer keeps its
   time-flavored reload ×0.9; Obliterator/Annihilator ×1.5.
-- The five Enhanced cooling mods are floored at ×1.9 (just above Basic
-  Tramontane's ×1.83) to preserve tier order until properly staggered.
+- The five Enhanced cooling mods are floored at ×1.9 (well above Basic
+  Tramontane's ×1.4) to preserve tier order until properly staggered.
 - Optional loot pools pinned and bounded: reload ×1.12, chargetime ×0.9,
   Annihilator's cooling ×1.15 / reload ×1.1, Expediter's damage ×1.1,
   Excavator's combat loot ×1.06/×1.1/×1.05.
@@ -112,8 +143,11 @@ mining weapons only count for mods that can roll a mining bonus.
   own quality tier on ≥1 weapon: pass (see the wins column above;
   orthogonal-primary mods are best picks for their stat by definition).
 - **T3 bundles** — no secondary bundle (forced, or worst-case optional
-  selection) worth ≥16% cycle DPS on any weapon: pass, max +14.3%
-  (Excavator pool on BOR M Ion Pulse Railgun). Vanilla max: +169.6%.
+  selection) worth ≥25% cycle DPS on any weapon: pass, max +14.4%
+  (Annihilator on ATF XL Main Battery). The cap was raised from 16% to
+  25% because a combo mod's secondaries are part of its identity, not a
+  free rider — the ceiling sits near the strongest single-stat headline.
+  Vanilla max: +169.6%.
 - **T4 tier order** — no lower-quality mod beats a higher-quality mod of
   the same *variant* (same primary + same DPS-carrying guaranteed
   secondaries) by >1% anywhere: pass. Cross-variant comparisons are
@@ -127,7 +161,8 @@ mining weapons only count for mods that can roll a mining bonus.
 - A rebalance retroactively re-maps installed mod instances: a vanilla
   max-roll Cowboy at +100% fire rate read +20% (the new fixed value) on
   load. Releases that change values retune every ship.
-- Added bonus children show up in the weapon-mod UI (Gregale's reload).
-  Still to confirm: an installed Gregale applies BOTH bonuses (forced
-  semantics with the bumped `bonus/@max`) — one check covers all nine
-  added blocks.
+- Added bonus children show up in the weapon-mod UI (verified 2026-07 on
+  an added reload child + `bonus/@max` bump — the reworked table now ships
+  that exact shape on Stabber). Still to confirm: an install applies BOTH
+  bonuses (forced semantics with the bumped `bonus/@max`) — one check
+  covers all the added blocks.

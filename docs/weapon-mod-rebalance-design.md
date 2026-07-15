@@ -37,43 +37,63 @@ Example (BOR M Ion Pulse Railgun: 2000 heat/shot at 2.7/s ⇒ 1.9 s firing,
 12.6 s cooling): Slasher's ×2 fire rate compresses the tiny firing window
 while its cooling malus stretches the 87% of the cycle that is cooldown.
 
-## Agreed design direction
+## Design direction (as shipped in v1)
 
-- **Pin the damage primary to quality tier** — e.g. Basic ×1.1667,
-  Enhanced ×1.3333, Exceptional ×1.5. Tier = power, strictly monotone;
-  restores meaning to the crafting economy. Optional tight jitter (±2–3%)
-  keeps rerolling alive without crossing tiers.
-- **Differentiate mods WITHIN a tier by secondaries** that are:
-  - DPS-orthogonal: projectile speed, range/lifetime, rotation speed,
-    heat-window shape (reenable threshold, overheat delay), shield/hull
-    bias conversion, travel-drive multiplier; or
-  - DPS-bounded: any secondary touching fire rate or cooling must be worth
-    **less than one tier step (<~16% cycle DPS)** on every weapon — else it
-    recreates dominance (Slasher pinned at ×1.1667 but keeping reload ×2
-    would still hit ×2.33 effective on heatless weapons, beating a bare
-    Exceptional's ×1.5).
-- **No roll ranges crossing 1.0.** Correlate rolls (better primary ⇒ worse
-  malus, one roll slides along the tradeoff curve) or fix the malus.
-- **Archetype flavor sets** per tier, e.g.: sniper (+projectile speed/
-  +range, −rotation), brawler (+rotation, −range), sustain (+heat window,
-  −damage bias), converter (shield↔hull swap).
-- **Soft restriction instead of hard gating** (hard per-weapon gating is
-  impossible in data — see below): charge each variant's malus in the
-  currency its unintended archetype depends on.
+The early plan below (tier-pinned damage primaries + archetype flavor
+sets) was the starting sketch. Building it out revealed that with only
+three DPS levers — damage, cooling, reload — the archetype space is far
+smaller than it looks: most "flavors" are blends that overlap what they're
+built from. The shipped Basic tier (`docs/weapon-mod-rebalance-v1.md`)
+therefore reorganized around a **two-class structural model** instead:
+
+- **Basic tier = the seven non-empty COMBINATIONS** of {damage, cooling,
+  reload}, one mod each, no two sharing an effect set (+ a chargetime
+  specialist and the utility mods). Those seven resolve into two classes —
+  a property of the physics, not a tuning choice:
+  - **Baseline** — Piercer (damage). Damage is full value on every weapon,
+    so it is the universal default and the benchmark, not a niche.
+  - **Specialists** — Cowboy (reload), Tramontane (cooling), Mistral
+    (cooling+reload). Each PEAKS in one physical domain. Only the
+    cooling+reload pair earns a niche as a *pair*, because those two
+    effects SYNERGISE (cooling pays the heat bill the fire rate runs up);
+    the other combos blend SUBSTITUTES and can't beat a single stat.
+  - **Generalists** — Stabber (damage+reload), Gregale (damage+cooling),
+    Slasher (triple). Damage-backed safe picks that live in the tie band:
+    high best-or-tied coverage, few strict wins. That IS their role.
+- **The Basic values are a deliberate equilibrium.** Lowering a generalist
+  feeds Piercer (it eats the vacated weapons); raising one mints a rogue
+  specialist that kills a real one. Differentiation budget is therefore
+  spent at Enhanced/Exceptional, widening the SPECIALIST peaks so identity
+  sharpens with rarity — not on splitting the Basic tie band further.
+- **No roll ranges crossing 1.0** (every range pinned min = max — no RNG),
+  and **no per-weapon gating** (impossible in data — see below); niches
+  are carved by weapon physics (heat level, clip vs. continuous fire,
+  chargetime), not by compatibility rules.
+
+Original sketch, retained for context: pin the damage primary to tier
+(Basic/Enhanced/Exceptional ≈ ×1.17 / ×1.33 / ×1.5) with tight jitter;
+differentiate within a tier by DPS-orthogonal or DPS-bounded secondaries;
+archetype flavor sets (sniper / brawler / sustain / converter); soft
+restriction via maluses charged in the currency an unintended archetype
+depends on. The tier-pinned damage ladder and the "no crossings / bounded
+secondaries" rules survived into v1; the archetype-flavor and jitter ideas
+were dropped for the combination model.
 
 ### Balance acceptance targets
 
-Checked mechanically against all 223 weapons via
-`x4analyzer.gamedata.weaponsim`:
+Enforced by the harness `tools/weapon-mod-rebalance/evaluate.py` (applies
+the diff itself, then scores all 223 weapons via
+`x4analyzer.gamedata.weaponsim`; exit 0 = all pass):
 
-- No single mod is best-in-cycle-DPS on more than ~30% of weapons.
-- Every mod is the best pick on SOME weapon/use case.
-- No secondary bundle worth more than one tier step of cycle DPS.
-- Tier inversion impossible (no Basic beats an Exceptional of the same
-  variant on any weapon).
-
-An evaluation harness enforcing these against a candidate mod table does
-not exist yet; it belongs in x4-analyzer (or a script here that imports it).
+- **T1** — no single mod best-in-cycle-DPS on more than ~30% of its
+  eligible weapons (within-tier advisory + cross-tier hard).
+- **T2** — every DPS-primary mod is best-or-tied within its own quality
+  tier on ≥1 weapon.
+- **T3** — no secondary bundle worth ≥25% cycle DPS on any weapon (raised
+  from 16%: a combo mod's secondaries are part of its identity).
+- **T4** — no lower-quality mod beats a higher-quality mod of the same
+  variant anywhere (tier order can't invert).
+- **T5** — no roll range crosses 1.0.
 
 ## Hard constraints discovered
 

@@ -149,6 +149,7 @@ tr:last-child td{border-bottom:0}
 .wbar span{position:absolute; left:6px; top:0; line-height:15px; font-size:10.5px;
   font-family:var(--mono); color:var(--ink)}
 .wbar.over i{background:var(--bad)}
+.wbar .tie{color:var(--ink-faint); font-style:normal; margin-left:3px; font-size:10px}
 .tag{display:inline-block; padding:1px 7px; border-radius:100px; font-size:10.5px;
   font-family:var(--mono); border:1px solid var(--line)}
 .tag.heat{color:var(--heat); border-color:color-mix(in srgb,var(--heat) 40%,var(--line))}
@@ -210,7 +211,7 @@ tr:last-child td{border-bottom:0}
       </div>
       <div class="tablewrap"><table class="modtable"><thead id="modhead"></thead><tbody id="modbody"></tbody></table></div>
       <div class="legend">
-        <span><b>win guns / win turrets</b> strict-win% among same-tier mods on main guns vs turrets (bar red past <span id="t1lbl"></span>)</span>
+        <span><b>win guns / win turrets</b> strict-win% (best by &gt;0.5%) among same-tier mods on main guns vs turrets; <b>+N</b> = weapons where it's tied for best, not an outright win (bar red past <span id="t1lbl"></span>)</span>
         <span><b>best all</b> best-or-tied% across all tiers (what you'd actually buy)</span>
         <span><b>tier-best</b> best-or-tied in its tier on ≥1 weapon (T2)</span>
         <span><b>bundle</b> worst-case secondary-bundle worth (T3 ≤16%)</span>
@@ -366,6 +367,7 @@ function bundleWorth(mod,w){
 // -------------------- compute -------------------------------------------
 const WEAPONS=DATA.weapons, MODS=DATA.mods;
 const SIMMODS=MODS; // all are DPS-affecting (dumper filtered)
+const FALLBACK_W=WEAPONS.find(w=>w.name==="S Pulse Laser Mk1")||null;
 function chIdx(){ return STATE.ch==="s"?0:1; }
 
 function compute(){
@@ -381,14 +383,15 @@ function compute(){
     }
   }
   const nEl={}, nElM={}, nElT={}, strictWithin={}, strictWinM={}, strictWinT={},
-        bestCross={}, tierBest={};
+        tieWinM={}, tieWinT={}, bestCross={}, tierBest={};
   for(const m of SIMMODS){ nEl[m.ware]=0; nElM[m.ware]=0; nElT[m.ware]=0;
     strictWithin[m.ware]=0; strictWinM[m.ware]=0; strictWinT[m.ware]=0;
-    bestCross[m.ware]=0; tierBest[m.ware]=false; }
+    tieWinM[m.ware]=0; tieWinT[m.ware]=0; bestCross[m.ware]=0; tierBest[m.ware]=false; }
   for(const m of SIMMODS) for(let i=0;i<N;i++) if(metric[m.ware][i]!==null){
     nEl[m.ware]++; if(WEAPONS[i].turret) nElT[m.ware]++; else nElM[m.ware]++; }
 
   const niche={1:[],2:[],3:[],0:[]}; // tier -> rows
+  const winList={}; for(const m of SIMMODS) winList[m.ware]=[];
   for(let i=0;i<N;i++){
     const w=WEAPONS[i];
     // cross-tier ranking (best-or-tied across ALL tiers; strict is ~always 0
@@ -404,17 +407,22 @@ function compute(){
       const tier=all.filter(([,m])=>m.quality===q);
       if(!tier.length) continue;
       const top=tier[0][0], second=tier.length>1?tier[1][0]:0;
-      if(top>0 && top>second*(1+EPS)){ const wr=tier[0][1].ware;
-        strictWithin[wr]++; if(w.turret) strictWinT[wr]++; else strictWinM[wr]++; }
-      // tier-best (both channels): recompute other channel for tie test
+      if(top>0){
+        if(top>second*(1+EPS)){ const wr=tier[0][1].ware;   // clear winner
+          strictWithin[wr]++; if(w.turret) strictWinT[wr]++; else strictWinM[wr]++; }
+        else for(const [v,m] of tier){                       // tie for best
+          if(v>=top/(1+EPS)){ if(w.turret) tieWinT[m.ware]++; else tieWinM[m.ware]++; }
+        }
+      }
       for(const [v,m] of tier) if(v>0 && v>=top/(1+EPS)) tierBest[m.ware]=true;
       // niche rows for this tier
       const win=tier[0][1], wv=tier[0][0];
       const [bs]=cdps(w,null), bare= (STATE.ch==="s"?cdps(w,null)[0]:cdps(w,null)[1])||0;
       const runner=second;
-      niche[q].push({w, win, wv, bare, gain: bare?wv/bare-1:0,
-        margin: runner?wv/runner-1:0, runnerMod: tier.length>1?tier[1][1]:null,
-        strict: wv>runner*(1+EPS)});
+      const gain = bare?wv/bare-1:0, strict = wv>runner*(1+EPS);
+      niche[q].push({w, win, wv, bare, gain,
+        margin: runner?wv/runner-1:0, runnerMod: tier.length>1?tier[1][1]:null, strict});
+      if(strict) winList[win.ware].push({name:w.name, gain, turret:w.turret});
     }
     // all-tiers niche
     if(all.length){
@@ -453,19 +461,21 @@ function compute(){
     bundle[m.ware]={worst,wname};
   }
 
-  // top target weapons per mod (biggest gain vs bare, strict first)
+  // top targets: the weapons this mod actually WINS (strict, within its
+  // tier), biggest gain first; if it wins nothing, fall back to the plain
+  // S Pulse Laser Mk1 so the column still shows the mod's baseline effect
   const targets={};
   for(const m of SIMMODS){
-    const rows=[];
-    for(let i=0;i<N;i++){ if(metric[m.ware][i]===null) continue;
-      const w=WEAPONS[i]; const bare=(cdps(w,null)[ch])||0; if(bare<=0) continue;
-      rows.push({name:w.name, gain:metric[m.ware][i]/bare-1}); }
-    rows.sort((a,b)=>b.gain-a.gain);
-    targets[m.ware]=rows.slice(0,3);
+    const wins=winList[m.ware].slice().sort((a,b)=>b.gain-a.gain).slice(0,3);
+    if(wins.length){ targets[m.ware]=wins; continue; }
+    if(FALLBACK_W && eligiblePair(m,FALLBACK_W)){
+      const bare=(cdps(FALLBACK_W,null)[ch])||0, v=(cdps(FALLBACK_W,modMults(m))[ch])||0;
+      targets[m.ware]=[{name:FALLBACK_W.name, gain: bare?v/bare-1:0, fallback:true}];
+    } else targets[m.ware]=[{name:"S Pulse Laser Mk1", gain:0, fallback:true}];
   }
 
-  return {nEl,nElM,nElT,strictWithin,strictWinM,strictWinT,bestCross,tierBest,
-          niche,bundle,targets,inversions};
+  return {nEl,nElM,nElT,strictWithin,strictWinM,strictWinT,tieWinM,tieWinT,
+          bestCross,tierBest,niche,bundle,targets,inversions};
 }
 
 // -------------------- render --------------------------------------------
@@ -588,17 +598,17 @@ function renderMods(r){
   $("#modhead").innerHTML=`<tr><th>mod</th><th>tier</th><th>effective</th>
     <th class="num">win guns</th><th class="num">win turrets</th>
     <th class="num">best all</th><th>tier-best</th>
-    <th class="num">bundle</th><th>top targets</th></tr>`;
+    <th class="num">bundle</th><th>top wins</th></tr>`;
   const body=$("#modbody"); body.innerHTML="";
   let maxM=0,maxT=0; for(const m of SIMMODS){
     maxM=Math.max(maxM, r.strictWinM[m.ware]/Math.max(r.nElM[m.ware],1));
     maxT=Math.max(maxT, r.strictWinT[m.ware]/Math.max(r.nElT[m.ware],1)); }
   const rows=SIMMODS.filter(m=>STATE.showTier[m.quality])
     .sort((a,b)=> a.quality-b.quality || a.name.localeCompare(b.name));
-  const bar=(win,ne,mx)=>{ const r0=win/Math.max(ne,1);
+  const bar=(win,tie,ne,mx)=>{ const r0=win/Math.max(ne,1);
     const bw=Math.min(100, r0/Math.max(mx,0.0001)*100);
     return `<div class="wbar${r0>T1MAX?" over":""}"><i style="width:${bw}%"></i>`
-      +`<span>${pct(r0)}% · ${win}</span></div>`; };
+      +`<span>${pct(r0)}% · ${win}${tie?`<em class="tie" title="best-or-tied but not a strict win (contested)">+${tie}</em>`:''}</span></div>`; };
   for(const m of rows){
     const cr=r.bestCross[m.ware]/Math.max(r.nEl[m.ware],1);
     const tb=r.tierBest[m.ware];
@@ -607,12 +617,12 @@ function renderMods(r){
     const tr=document.createElement("tr");
     tr.innerHTML=`<td>${m.name}</td><td class="mono" style="color:var(--ink-faint)">${QN[m.quality][0]}</td>
       <td>${modChips(m)}</td>
-      <td class="num">${bar(r.strictWinM[m.ware], r.nElM[m.ware], maxM)}</td>
-      <td class="num">${bar(r.strictWinT[m.ware], r.nElT[m.ware], maxT)}</td>
+      <td class="num">${bar(r.strictWinM[m.ware], r.tieWinM[m.ware], r.nElM[m.ware], maxM)}</td>
+      <td class="num">${bar(r.strictWinT[m.ware], r.tieWinT[m.ware], r.nElT[m.ware], maxT)}</td>
       <td class="num">${pct(cr)}%</td>
       <td>${SIM.has(m.stat)?(tb?'<span class="yes">✓</span>':'<span class="no">✗ never</span>'):'<span class="win-of">—</span>'}</td>
       <td class="num" style="${over?'color:var(--bad);font-weight:650':''}">${pct(b.worst)}%</td>
-      <td>${r.targets[m.ware].map(t=>`<span class="win-of">${t.name}</span> ${signGain(t.gain)}`).join("<br>")}</td>`;
+      <td>${r.targets[m.ware].map(t=>`<span class="win-of">${t.name}${t.fallback?' <em class="tie">(no wins)</em>':''}</span> ${signGain(t.gain)}`).join("<br>")}</td>`;
     body.appendChild(tr);
   }
   $("#modcount").textContent=`${rows.length} shown · ${r.niche[1].length} eligible weapons`;
