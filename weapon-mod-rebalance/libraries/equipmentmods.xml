@@ -5,19 +5,24 @@
      docs/weapon-mod-rebalance-v1.md):
      - NO RNG: every roll range is pinned (min = max) - what you craft is
        what you get, rerolling is pointless.
-     - BASIC TIER TESTBED - equal power at the touchpoint, different
-       currencies: the six Basic DPS mods are all calibrated to +16.67%
-       full-cycle DPS on the S Bolt Repeater Mk1 (the median heat weapon,
-       38.4% cooldown cycle). Pure damage delivers it on every weapon;
-       cooling-heavy mixes under-deliver on cool-running guns and
-       over-deliver on hot ones; reload-carrying mixes tilt toward
-       reload-RATE weapons (multipliers are literal, so their reload buff
-       is a malus on reload-TIME weapons). Cooling-primary mods prefer
-       cooling over direct damage; damage-primary mods the reverse.
-       Enhanced/Exceptional keep interim pinned values (tier-pinned
-       damage, capped cooling) until this pattern is proven and extended
-       to them.
-     - Secondary bundles stay worth <16% cycle DPS on any weapon.
+     - BASIC TIER = the seven non-empty COMBINATIONS of the three DPS
+       stats (damage, cooling, reload), one per mod, so every mod has a
+       legible identity and no two share an effect set:
+         Piercer     damage
+         Cowboy      reload
+         Tramontane  cooling
+         Gregale     damage + cooling
+         Stabber     damage + reload
+         Mistral     cooling + reload
+         Slasher     damage + cooling + reload
+       Values below are SANITY STARTERS meant for tuning in the slider
+       tool (tools/weapon-mod-rebalance/tuner.html), NOT final balance.
+       Effects a mod's combo excludes are pinned to 1.0 in its (data-fixed)
+       bonus slots. Enhanced/Exceptional keep interim pinned values until
+       the Basic identities settle.
+     - Secondary bundles stay worth <25% cycle DPS on any weapon (a mod's
+       secondaries are part of its combo identity, so this cap sits near
+       the strongest single-stat mod's headline, not the old 16%).
      - Structural malus slots that no longer fit a mod's role are pinned
        at exactly 1.0 (no effect); the ware structure is fixed in data, so
        they cannot be removed with attribute replaces.
@@ -29,31 +34,24 @@
 <diff>
   <!-- ============================ BASIC (quality 1) ==================== -->
 
-  <!-- Piercer: pure damage - delivers the Basic +16.67% on EVERY weapon;
-       the benchmark the mixes are measured against. -->
+  <!-- Piercer = DAMAGE. Pure damage, no secondaries: delivers its buff on
+       EVERY weapon; the benchmark the combos are measured against. -->
   <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk1']/@min">1.1667</replace><!-- vanilla 1.05 -->
   <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk1']/@max">1.1667</replace><!-- vanilla 1.2 -->
 
-  <!-- Tramontane: pure coolrate = +16.67% on the touchpoint; less on
-       cool-running guns, +50% on the Ion Pulse Railgun; nothing on the
-       137 heatless weapons. -->
-  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_01_mk1']/@min">1.83</replace><!-- vanilla 1.048 -->
-  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_01_mk1']/@max">1.83</replace><!-- vanilla 1.216 -->
+  <!-- Tramontane = COOLING. Pure coolrate: big on heat-limited guns,
+       nothing on the heatless majority. -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_01_mk1']/@min">1.75</replace><!-- vanilla 1.048 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_01_mk1']/@max">1.75</replace><!-- vanilla 1.216 -->
 
-  <!-- Cowboy: +20% fire rate on reload-RATE weapons (on reload-TIME
-       weapons the same multiplier is -16.7% - the soft gate) plus a
-       tempered +5% damage rider (added block): clip weapons only get
-       partial value from fire rate (the clip reload is fixed), so the
-       rider tips Cowboy over Piercer exactly on the clip weapons where
-       reload contributes most - the burst-weapon specialist. Vanilla
-       0.682-2 crossed 1.0 and was a reroll lottery. -->
-  <replace sel="/equipmentmods/weapon/reload[@ware='mod_weapon_reload_01_mk1']/@min">1.2</replace><!-- vanilla 0.682 -->
-  <replace sel="/equipmentmods/weapon/reload[@ware='mod_weapon_reload_01_mk1']/@max">1.2</replace><!-- vanilla 2 -->
-  <add sel="/equipmentmods/weapon/reload[@ware='mod_weapon_reload_01_mk1']">
-    <bonus chance="1.0" max="1">
-      <damage min="1.05" max="1.05"/>
-    </bonus>
-  </add>
+  <!-- Cowboy = RELOAD. Pure fire rate: full value on heatless and clip
+       weapons, taxed on heat weapons (faster firing = more heat). As the
+       single-stat mod it must out-rate the damage+reload pair (Stabber)
+       on its home turf, so its headline is higher than a damage single's -
+       reload is situational where damage is universal. Vanilla 0.682-2
+       crossed 1.0 and was a reroll lottery. -->
+  <replace sel="/equipmentmods/weapon/reload[@ware='mod_weapon_reload_01_mk1']/@min">1.25</replace><!-- vanilla 0.682 -->
+  <replace sel="/equipmentmods/weapon/reload[@ware='mod_weapon_reload_01_mk1']/@max">1.25</replace><!-- vanilla 2 -->
 
   <!-- Jumper: the charge-cannon mod: x0.58 charge time plus a +10%
        damage rider (added block) - best Basic pick on the whole charge
@@ -124,56 +122,51 @@
     </bonus>
   </add>
 
-  <!-- Stabber: damage-primary with a cooling kicker - the RATE-family
-       pick for lukewarm heat weapons: overtakes Piercer above ~26%
-       cooldown, hands over to Mistral around ~47%. -->
-  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk1']/@min">1.128</replace><!-- vanilla 1.35 -->
-  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk1']/@max">1.128</replace><!-- vanilla 1.45 -->
-  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk1']/bonus/cooling/@min">1.15</replace><!-- vanilla 0.684 -->
-  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk1']/bonus/cooling/@max">1.15</replace><!-- vanilla 0.736 -->
-
-  <!-- Gregale: cooling + damage + a TIME-flavored reload child (added -
-       vanilla Gregale has no reload slot): the warm-heat pick of the
-       reload-TIME family, taking over from Slasher around ~46% cooldown.
-       The reload 0.95 keeps its damage kicker from leaking onto the
-       rate-weapon axis (Stabber/Mistral territory). bonus max goes 1->2
-       so both children stay forced. -->
-  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk1']/@min">1.55</replace><!-- vanilla 1.38 -->
-  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk1']/@max">1.55</replace><!-- vanilla 1.49 -->
-  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk1']/bonus/@max">2</replace><!-- vanilla 1 -->
-  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk1']/bonus/damage/@min">1.055</replace><!-- vanilla 0.7 -->
-  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk1']/bonus/damage/@max">1.055</replace><!-- vanilla 0.75 -->
-  <add sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk1']/bonus">
-    <reload min="0.95" max="0.95"/><!-- new child; no vanilla counterpart -->
+  <!-- Stabber = DAMAGE + RELOAD. Aggressive DPS for cool-running / clip
+       guns where the fire-rate rider pays off without a heat penalty. The
+       native cooling child is pinned to 1.0 (excluded from the combo) and
+       a reload child is added; bonus max 1->2 keeps both forced. -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk1']/@min">1.12</replace><!-- vanilla 1.35 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk1']/@max">1.12</replace><!-- vanilla 1.45 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk1']/bonus/@max">2</replace><!-- vanilla 1 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk1']/bonus/cooling/@min">1.0</replace><!-- vanilla 0.684; excluded from combo -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk1']/bonus/cooling/@max">1.0</replace><!-- vanilla 0.736 -->
+  <add sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_02_mk1']/bonus">
+    <reload min="1.1" max="1.1"/><!-- new child; no vanilla counterpart -->
   </add>
 
-  <!-- Slasher: PARKED (2026-07). Its identity is undecided pending the
-       fire-rate-taxation review: the corrected heat physics make a
-       fire-rate BUFF a heat liability (it overheats hot guns, like Cowboy)
-       and a fire-rate MALUS a heat-efficiency dominant strategy (big slow
-       shots run cool), so neither the old "time-weapon" niche nor a
-       "sustained assault" buff survives. For now it is a thin damage +
-       small cooling pick (reload neutralized to 1.0 - the malus slot is
-       fixed in data and cannot be removed, only pinned): near Stabber but
-       more damage / less cooling. Do NOT ship as final. Vanilla was the
-       x0.682-2 reroll lottery that dominated 210/223. -->
-  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk1']/@min">1.155</replace><!-- vanilla 1.338 -->
-  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk1']/@max">1.155</replace><!-- vanilla 1.503 -->
-  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk1']/bonus/cooling/@min">1.1</replace><!-- vanilla 0.681 -->
-  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk1']/bonus/cooling/@max">1.1</replace><!-- vanilla 0.74 -->
-  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk1']/bonus/reload/@min">1.0</replace><!-- vanilla 0.682 -->
-  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk1']/bonus/reload/@max">1.0</replace><!-- vanilla 2 -->
+  <!-- Gregale = COOLING + DAMAGE. Cool-running with a damage edge for
+       warm weapons; native structure already is cooling-primary + a
+       forced damage child (bonus max 1). -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk1']/@min">1.45</replace><!-- vanilla 1.38 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk1']/@max">1.45</replace><!-- vanilla 1.49 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk1']/bonus/damage/@min">1.1</replace><!-- vanilla 0.7 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_02_mk1']/bonus/damage/@max">1.1</replace><!-- vanilla 0.75 -->
 
-  <!-- Mistral: cooling + damage + fire rate (reload 1.05): the warm-heat
-       pick of the reload-RATE family, taking over from Stabber around
-       ~47% cooldown; the reload buff is a malus on time weapons, which
-       keeps it off Gregale's turf. -->
+  <!-- Slasher = DAMAGE + COOLING + RELOAD. The all-rounder: a bit of
+       everything for weapons that want damage, heat headroom, and rate at
+       once. Native structure is damage-primary + forced cooling + reload
+       children (bonus max 2). Cooling stays modest so the secondary bundle
+       (cooling + reload) keeps under the 25% cap. -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk1']/@min">1.14</replace><!-- vanilla 1.338 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk1']/@max">1.14</replace><!-- vanilla 1.503 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk1']/bonus/cooling/@min">1.12</replace><!-- vanilla 0.681 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk1']/bonus/cooling/@max">1.12</replace><!-- vanilla 0.74 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk1']/bonus/reload/@min">1.06</replace><!-- vanilla 0.682 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_03_mk1']/bonus/reload/@max">1.06</replace><!-- vanilla 2 -->
+
+  <!-- Mistral = COOLING + RELOAD. Pure sustain, no raw damage: fire faster
+       AND pay the extra heat - the pick for hot rapid-fire guns where
+       Cowboy (rate only) would overheat and Tramontane (cooling only)
+       leaves rate on the table. Native structure is cooling-primary +
+       forced damage + reload children (bonus max 2); the damage child is
+       pinned to 1.0 (excluded from the combo). -->
   <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk1']/@min">1.45</replace><!-- vanilla 1.356 -->
   <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk1']/@max">1.45</replace><!-- vanilla 1.525 -->
-  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk1']/bonus/damage/@min">1.05</replace><!-- vanilla 0.677 -->
-  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk1']/bonus/damage/@max">1.05</replace><!-- vanilla 0.757 -->
-  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk1']/bonus/reload/@min">1.05</replace><!-- vanilla 0.682 -->
-  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk1']/bonus/reload/@max">1.05</replace><!-- vanilla 2 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk1']/bonus/damage/@min">1.0</replace><!-- vanilla 0.677; excluded from combo -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk1']/bonus/damage/@max">1.0</replace><!-- vanilla 0.757 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk1']/bonus/reload/@min">1.2</replace><!-- vanilla 0.682 -->
+  <replace sel="/equipmentmods/weapon/cooling[@ware='mod_weapon_cooling_03_mk1']/bonus/reload/@max">1.2</replace><!-- vanilla 2 -->
 
   <!-- ========================== ENHANCED (quality 2) ================== -->
 

@@ -39,10 +39,16 @@ Acceptance targets (docs/weapon-mod-rebalance-design.md), made mechanical:
                   with an orthogonal primary (speed, lifetime, sticktime,
                   surfaceelement, mining, ...) are the best pick for
                   their own stat by definition and exempt.
-  T3 bundles      no secondary bundle is worth >= 16% cycle DPS on any
+  T3 bundles      no secondary bundle is worth >= 25% cycle DPS on any
                   weapon: forced bonuses all together, optional weighted
                   pools at their worst case (the DPS-best subset of up to
-                  `max` picks, each at its optimal roll).
+                  `max` picks, each at its optimal roll). Under the
+                  combination design a mod's secondaries are part of its
+                  stated identity (e.g. Mistral = cooling + reload), not
+                  mere flavor, so the cap sits at roughly the headline of
+                  the strongest single-stat mod rather than the old 16%;
+                  it still preserves single-vs-pair ordering (the pure
+                  reload single out-rates a pair's reload secondary).
   T4 tier order   no lower-quality mod beats a higher-quality mod of the
                   SAME VARIANT (same primary stat and same set of
                   DPS-carrying guaranteed secondaries, neutral x1.0 slots
@@ -97,7 +103,7 @@ _MK_WARE = re.compile(r"_mk\d$")
 EPS_TIE = 0.005     # within 0.5% = tied / best pick
 EPS_INV = 0.01      # >1% = tier inversion
 T1_MAX_WINRATE = 0.30
-T3_MAX_BUNDLE = 0.16
+T3_MAX_BUNDLE = 0.25
 
 
 # --------------------------------------------------------------- patching
