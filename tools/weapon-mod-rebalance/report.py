@@ -23,8 +23,8 @@ from pathlib import Path
 from lxml import etree
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from evaluate import (DEFAULT_DIFF, DEFAULT_GAME_DIR, REPO, _PARSER,  # noqa: E402
-                      apply_diff, parse_weapon_mods)
+from evaluate import (DEFAULT_DIFF, DEFAULT_GAME_DIR, REPO, _MK_WARE,  # noqa: E402
+                      _PARSER, apply_diff, parse_weapon_mods)
 from evaluate import eligible_pair, is_mining_weapon  # noqa: E402
 
 from x4analyzer.gamedata.catalog import GameFiles  # noqa: E402
@@ -89,9 +89,13 @@ def build() -> str:
 
     # columns: mods whose guaranteed effects touch the firing cycle in
     # either version (same criterion as the stock dashboard)
+    # uncraftable Timelines scenario wares (not _mk<n>, e.g. the second
+    # "Obliterator" = mod_weapon_damage_fleet_battle_1) are dropped like the
+    # acceptance harness does - players can never roll them.
     cols = [w for w in vmods
-            if set(guaranteed_stats(vmods[w])) & set(SIM_STATS)
-            or set(guaranteed_stats(mmods[w])) & set(SIM_STATS)]
+            if _MK_WARE.search(w)
+            and (set(guaranteed_stats(vmods[w])) & set(SIM_STATS)
+                 or set(guaranteed_stats(mmods[w])) & set(SIM_STATS))]
     cols.sort(key=lambda w: (mmods[w]["quality"], mmods[w]["stat"], w))
 
     weapons.sort(key=lambda w: (_SIZE_ORDER.get(w["size"], 9),
@@ -305,8 +309,9 @@ cycle.</p>
 <div id='notes'></div>
 <p class='note'>Each cell: rebalanced value (delta vs bare); the muted
 "van" line is what the vanilla mod gave. Mods apply at their OPTIMAL roll
-for the selected weapon (reload rate wants max, reload time wants min -
-multipliers are literal). Optional pools are NOT in the numbers.</p>
+for the selected weapon (reload is rate-semantic on every weapon, so it
+always wants max; chargetime wants min). Optional pools are NOT in the
+numbers.</p>
 <div class='tblwrap'><table id='stats'></table></div>
 </section>
 <script>
