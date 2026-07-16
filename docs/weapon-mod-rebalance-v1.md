@@ -157,7 +157,7 @@ untouched.
 
 | Mod (ware) | Identity | New (fixed) | tier-dom% | Niche |
 |---|---|---|---|---|
-| Obliterator (damage_01_mk3) | **damage / brawler** {d,c,stick,rot} | dmg ×1.44, cool ×1.25, stick ×1.4, rot ×1.6 | 34% | Top damage + heat headroom + sticky/tracking; wins heat guns (+79% on ATF XL). |
+| Obliterator (damage_01_mk3) | **damage / brawler** {d,c,stick,rot} | dmg ×1.44, cool ×1.2, stick ×1.4, rot ×1.6 | 34% | Top damage + heat headroom + sticky/tracking; wins heat guns. Cooling trimmed 1.25→1.2 to keep heat-gun gains nearer the band ceiling. |
 | Annihilator (damage_02_mk3) | **damage + rate** {d,r,rot} | dmg ×1.44, rel ×1.05, rot ×1.6 | 69% | Aggressive DPS; the broad Exceptional default (rate weapons). No cooling → distinct from Obliterator. |
 | Invader (surfaceelement_01_mk3) | surface capstone | surf ×1.5, dmg ×1.24, cool ×1.2, life ×1.4, rot ×1.6 | — | Anti-subsystem heavy. |
 | Expediter (speed_01_mk3) | sniper capstone | speed ×1.5, dmg ×1.24, life ×1.5, rot ×1.6 | — | Long-range velocity + tracking. |

@@ -391,8 +391,8 @@
        set. -->
   <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk3']/@min">1.44</replace><!-- vanilla 1.1 -->
   <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk3']/@max">1.44</replace><!-- vanilla 1.3 -->
-  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk3']/bonus/cooling/@min">1.25</replace><!-- buff; vanilla 1.095 -->
-  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk3']/bonus/cooling/@max">1.25</replace><!-- vanilla 1.325 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk3']/bonus/cooling/@min">1.2</replace><!-- buff; vanilla 1.095 -->
+  <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk3']/bonus/cooling/@max">1.2</replace><!-- vanilla 1.325 -->
   <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk3']/bonus/sticktime/@min">1.4</replace><!-- vanilla 1.1 -->
   <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk3']/bonus/sticktime/@max">1.4</replace><!-- vanilla 1.3 -->
   <replace sel="/equipmentmods/weapon/damage[@ware='mod_weapon_damage_01_mk3']/bonus/rotationspeed/@min">1.6</replace><!-- vanilla 1.1 -->
