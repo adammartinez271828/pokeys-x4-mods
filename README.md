@@ -23,3 +23,8 @@ vanilla-vs-rebalance review dashboard into `output/`.
 Analysis/validation tooling lives in the sibling repo
 [`x4-analyzer`](../x4-analyzer) (weapon×mod firing-cycle simulator and
 comparison dashboard built from the game files).
+
+## License
+
+[MIT](LICENSE) © 2026 Pokey. X4: Foundations is a trademark of Egosoft GmbH;
+this project is an unofficial fan mod and is not affiliated with Egosoft.
