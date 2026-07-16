@@ -66,6 +66,23 @@ pokeys-x4-mods/
   fixed — reload mods only scale the intra-burst interval; cooling mods do
   nothing when the bullet has no per-shot heat. Explosive weapons (Blast
   Mortar, flak) keep their damage in `<areadamage>`, not `<damage>`.
+- **Beam weapons** (hitscan, projectile `speed = c`): rendered as many
+  sub-shots packed into a live window; the `<damage>` becomes a per-second
+  intensity, and the beam is live for `lifetime` of every `reload_time`
+  cycle. **Peak/burst DPS = `dmg_s × reload`; sustained = peak × structural
+  duty (`lifetime / reload_time`) × heat duty.** Reload packs the sub-shots
+  tighter, so it RAISES intensity — it scales BOTH burst and sustained ×the
+  reload mult (verified 2026-07: S Beam Emitter burst 110→134 and sustained
+  50→61 under Cowboy reload ×1.225; Piercer damage ×1.15 → 126/57) — but it
+  does NOT change the on/off cycle, so structural duty is reload-independent.
+  Encyclopedia cross-check: ARG M Beam Turret shows damage-vs-shield 168 and
+  Weapon Output 72 = 168 × 3/7. x4-analyzer's `weaponsim.simulate` was fixed
+  2026-07 to model this (`is_beam`; the old code treated a beam as one
+  `dmg_s`-shot per `reload_time`, understating beam turrets ~3× and dividing
+  the peak by `reload_time`). The **in-game ship "Avg. Turret Output" stat =
+  Σ(per-turret Weapon Output) / 6** (fixed divisor of 6, not the hardpoint
+  count) — use the per-weapon *encyclopedia* numbers, not that stat, for
+  precise checks.
 - **Heat model:** weapons DO cool between shots once `cooldelay` has
   elapsed since the last shot: net heat per shot =
   `heat − coolrate × max(0, interval − cooldelay)` (verified in-game
