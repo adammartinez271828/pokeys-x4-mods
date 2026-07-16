@@ -35,11 +35,6 @@ Four separate defects combine to produce the lottery:
    than every *Exceptional* damage primary (max ×1.348). A common Basic mod
    beats the rarest tier, so research and rarity buy nothing.
 
-A fifth, quieter bug amplifies it: **mods multiply stored fields, not
-effects**, so the same `reload ×0.682` is a malus on `<reload rate>` weapons
-and a buff on `<reload time>` ones — the design can't even reason about what a
-roll *means* across the roster.
-
 The net effect is an **illusion of choice**: a menu of mods that all resolve
 to "use Slasher," no meaningful tiers, and an RNG reroll grind standing in for
 a decision.
@@ -55,10 +50,13 @@ before/after: [`weapon-mod-rebalance-power-analysis.md`](weapon-mod-rebalance-po
   see is the value you get. Fixes defects 1 and 2 outright.
 - **No range crosses 1.0.** A buff stays a buff and a malus stays a malus;
   nothing can be rerolled from one into the other.
-- **Express reload by its true semantics.** Reload is rate-semantic on every
-  weapon (validated in-game: the game divides a stored time / multiplies a
-  stored rate), so a reload multiplier means the same thing everywhere and its
-  optimal roll is always the range max. Fixes the stored-field bug.
+- **Pin reloads knowing they're rate-semantic.** Weapons store fire cadence
+  as either `<reload rate>` (shots/sec — 86 weapons) or `<reload time>`
+  (seconds/shot — 94 weapons), but a reload mod scales the effective fire
+  *rate* either way: the engine multiplies a stored `rate` and *divides* a
+  stored `time` (validated in-game). So a reload value means the same thing
+  across the whole roster — its best roll is always the max — letting us pin
+  it as one clean, uniform buff or malus with no ambiguity.
 - **Give each mod a distinct effect set (the two-class model).** The Basic
   tier is the seven non-empty combinations of {damage, cooling, reload}, no
   two mods sharing an effect set: a **baseline** (damage, useful everywhere),

@@ -10,7 +10,7 @@ Rerun anytime: `uv run x4-analyzer gamedata-dashboard` in that repo.
 with forced bonuses cooling ×0.681–0.74 and reload ×0.682–2) has the best
 full-cycle DPS on **210 of 223** weapons/turrets at optimal rolls.
 
-Four separate defects combine to cause this:
+Three separate defects combine to cause this:
 
 1. **Malus ranges cross 1.0.** Slasher's forced "reload malus" ×0.682–2 is,
    at optimal roll, a ×2 fire-rate BUFF. Rerolling is cheap, so realized
@@ -21,8 +21,6 @@ Four separate defects combine to cause this:
 3. **All mods trade in one scalar (DPS)**, and Slasher's ×1.503 is the
    game's largest damage multiplier — larger than every Exceptional damage
    primary (max ×1.348). Tier means nothing.
-4. **Mods multiply stored fields, not effects.** The same reload ×0.682 is
-   a malus on `<reload rate>` weapons and a buff on `<reload time>` ones.
 
 ### Where Slasher loses (the 13 exceptions)
 
@@ -113,8 +111,14 @@ the diff itself, then scores all 223 weapons via
   gated by AVAILABILITY (uncraftable wares), not compatibility. A hard gate
   would need a Lua UI patch (fragile); soft-gating via maluses is the
   data-native mechanism.
-- **Mods multiply fields literally** — express intent per storage form
-  (`reload rate` vs `reload time` weapons want opposite roll ends).
+- **Reload is rate-semantic on every weapon** (validated in-game 2026-07,
+  correcting an earlier assumption). Weapons store cadence as either
+  `<reload rate>` (shots/sec, 86 weapons) or `<reload time>` (seconds/shot,
+  94 weapons), but a reload mod scales the effective fire *rate* either way —
+  the engine multiplies a stored `rate` and *divides* a stored `time`. So a
+  reload multiplier never flips meaning between weapons: its optimal roll is
+  always the range MAX. (Damage/coolrate behave as expected; chargetime
+  wants the min.)
 - Vanilla weapon-mod table: `docs/reference/equipmentmods-vanilla-v9.xml`
   (+ Timelines additions in `equipmentmods-timelines-diff.xml`). Mod ware
   display names (Slasher, Piercer, ...) come from wares.xml `shortname`
