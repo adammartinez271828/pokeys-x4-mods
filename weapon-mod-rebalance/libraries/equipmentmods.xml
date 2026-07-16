@@ -445,16 +445,21 @@
   <remove sel="/equipmentmods/weapon/speed[@ware='mod_weapon_speed_01_mk3']/bonus/reload"/>
 
   <!-- Excavator = MINING capstone. Top mining yield plus NON-damage riders
-       only - a big rotation buff (aims the mining turret) and a reload buff
-       (faster mining cycles = more yield). The combat loot (damage/cooling)
-       is REMOVED so a mining mod is never a combat cheat; mining-only in the
-       install menu anyway. Generous non-damage riders (rare mod). -->
+       only - a big rotation buff (aims the mining turret), a reload buff
+       (faster mining cycles = more yield), and a little beam range (mining
+       lasers are beams - reach ore from further out). The combat loot
+       (damage/cooling) is REMOVED so a mining mod is never a combat cheat;
+       mining-only in the install menu anyway. Generous non-damage riders
+       (rare mod). -->
   <replace sel="/equipmentmods/weapon/mining[@ware='mod_weapon_mining_01_mk3']/@min">6.74</replace><!-- vanilla 5.31, max 6.74 -->
-  <replace sel="/equipmentmods/weapon/mining[@ware='mod_weapon_mining_01_mk3']/bonus/@max">2</replace><!-- vanilla 3 (pool -> forced pair) -->
+  <replace sel="/equipmentmods/weapon/mining[@ware='mod_weapon_mining_01_mk3']/bonus/@max">3</replace><!-- vanilla 3 (pool -> forced trio) -->
   <replace sel="/equipmentmods/weapon/mining[@ware='mod_weapon_mining_01_mk3']/bonus/reload/@min">1.3</replace><!-- mining-cycle speed; vanilla 1.01 -->
   <replace sel="/equipmentmods/weapon/mining[@ware='mod_weapon_mining_01_mk3']/bonus/reload/@max">1.3</replace><!-- vanilla 2 -->
   <replace sel="/equipmentmods/weapon/mining[@ware='mod_weapon_mining_01_mk3']/bonus/rotationspeed/@min">2.0</replace><!-- vanilla 1.1 -->
   <replace sel="/equipmentmods/weapon/mining[@ware='mod_weapon_mining_01_mk3']/bonus/rotationspeed/@max">2.0</replace><!-- vanilla 1.3 -->
   <remove sel="/equipmentmods/weapon/mining[@ware='mod_weapon_mining_01_mk3']/bonus/damage"/>
   <remove sel="/equipmentmods/weapon/mining[@ware='mod_weapon_mining_01_mk3']/bonus/cooling"/>
+  <add sel="/equipmentmods/weapon/mining[@ware='mod_weapon_mining_01_mk3']/bonus">
+    <beamlength min="1.2" max="1.2"/><!-- +20% beam reach; new forced child, no vanilla counterpart -->
+  </add>
 </diff>

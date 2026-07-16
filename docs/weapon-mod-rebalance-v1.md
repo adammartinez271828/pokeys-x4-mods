@@ -161,7 +161,7 @@ untouched.
 | Annihilator (damage_02_mk3) | **damage + rate** {d,r,rot} | dmg ×1.44, rel ×1.05, rot ×1.6 | 69% | Aggressive DPS; the broad Exceptional default (rate weapons). No cooling → distinct from Obliterator. |
 | Invader (surfaceelement_01_mk3) | surface capstone | surf ×1.5, dmg ×1.24, cool ×1.2, life ×1.4, rot ×1.6 | — | Anti-subsystem heavy. |
 | Expediter (speed_01_mk3) | sniper capstone | speed ×1.5, dmg ×1.24, life ×1.5, rot ×1.6 | — | Long-range velocity + tracking. |
-| Excavator (mining_01_mk3) | mining capstone | mining ×6.74, rot ×2.0, rel ×1.3 *(no damage rider)* | — | Mining yield; non-damage riders only (faster cycles, aims the turret) — never a combat cheat. |
+| Excavator (mining_01_mk3) | mining capstone | mining ×6.74, rot ×2.0, rel ×1.3, beam ×1.2 *(no damage rider)* | — | Mining yield; non-damage riders only (faster cycles, aims the turret, +20% beam reach) — never a combat cheat. |
 
 ## Harness scorecard (all targets pass)
 
