@@ -9,21 +9,23 @@ Scope: 186 obtainable weapons/turrets (6 KHA excluded); mining weapons count onl
 
 ## Sustained (cycle) DPS
 
-| | Best vanilla mod | Best rebalanced mod | Change (now vs before) |
+The last column compares the two *modded end-states*: the best-modded DPS now ÷ the best-modded DPS before. It is **not** the difference of the two gain-over-bare percentages. `×0.50` means the best mod you can now fit produces half the DPS the best vanilla mod did; `×1.10` means 10% more.
+
+| | Best vanilla mod | Best rebalanced mod | Best-modded DPS, now ÷ before |
 |---|---|---|---|
-| median gain over bare | +85% | +49% | -20% |
-| mean gain over bare | +97% | +50% | -20% |
+| median gain over bare | +85% | +49% | ×0.80 |
+| mean gain over bare | +97% | +50% | ×0.80 |
 | max gain over bare | +201% | +86% | |
 
 Of 186 weapons, the best mod is **weaker now on 159 (85%)** and stronger on 23 (12%). The rebalance mostly *lowers* peak mod power — it removes the Slasher reroll lottery — while making the choice meaningful.
 
 ### By weapon class (median best-mod gain over bare)
 
-| class | n | best vanilla | best now | now vs before |
+| class | n | best vanilla | best now | now ÷ before |
 |---|---|---|---|---|
-| heat | 78 | +68% | +53% | -8% |
-| clip | 84 | +96% | +47% | -25% |
-| heatless | 24 | +201% | +51% | -50% |
+| heat | 78 | +68% | +53% | ×0.92 |
+| clip | 84 | +96% | +47% | ×0.75 |
+| heatless | 24 | +201% | +51% | ×0.50 |
 
 ### Best rebalanced mod by tier (median gain over bare)
 
@@ -35,42 +37,42 @@ Of 186 weapons, the best mod is **weaker now on 159 (85%)** and stronger on 23 (
 
 ### Biggest sustained-DPS reductions (where vanilla Slasher was most broken)
 
-| weapon | best vanilla | best now (mod) | now vs before |
+| weapon | best vanilla | best now (mod) | now ÷ before |
 |---|---|---|---|
-| Astrid M Turret | +201% (Slasher) | +51% (Annihilator) | -50% |
-| XEN M Positron Turret Mk1 | +201% (Slasher) | +51% (Annihilator) | -50% |
-| TEL M Distortion Turret Mk1 | +201% (Slasher) | +51% (Annihilator) | -50% |
-| ARG L Beam Turret Mk1 | +201% (Slasher) | +51% (Annihilator) | -50% |
-| ARG M Beam Turret Mk1 | +201% (Slasher) | +51% (Annihilator) | -50% |
-| ARG M Beam Turret Mk1 | +201% (Slasher) | +51% (Annihilator) | -50% |
-| PAR L Mass Driver Turret Mk1 | +201% (Slasher) | +51% (Annihilator) | -50% |
-| PAR M Mass Driver Turret Mk1 | +201% (Slasher) | +51% (Annihilator) | -50% |
-| PAR M Mass Driver Turret Mk1 | +201% (Slasher) | +51% (Annihilator) | -50% |
-| TEL L Beam Turret Mk1 | +201% (Slasher) | +51% (Annihilator) | -50% |
+| Astrid M Turret | +201% (Slasher) | +51% (Annihilator) | ×0.50 |
+| XEN M Positron Turret Mk1 | +201% (Slasher) | +51% (Annihilator) | ×0.50 |
+| TEL M Distortion Turret Mk1 | +201% (Slasher) | +51% (Annihilator) | ×0.50 |
+| ARG L Beam Turret Mk1 | +201% (Slasher) | +51% (Annihilator) | ×0.50 |
+| ARG M Beam Turret Mk1 | +201% (Slasher) | +51% (Annihilator) | ×0.50 |
+| ARG M Beam Turret Mk1 | +201% (Slasher) | +51% (Annihilator) | ×0.50 |
+| PAR L Mass Driver Turret Mk1 | +201% (Slasher) | +51% (Annihilator) | ×0.50 |
+| PAR M Mass Driver Turret Mk1 | +201% (Slasher) | +51% (Annihilator) | ×0.50 |
+| PAR M Mass Driver Turret Mk1 | +201% (Slasher) | +51% (Annihilator) | ×0.50 |
+| TEL L Beam Turret Mk1 | +201% (Slasher) | +51% (Annihilator) | ×0.50 |
 
 ### Weapons where the best mod is now STRONGER than vanilla
 
-| weapon | best vanilla | best now (mod) | now vs before |
+| weapon | best vanilla | best now (mod) | now ÷ before |
 |---|---|---|---|
-| TER M Meson Stream Mk2 | +47% (Obliterator) | +63% (Obliterator) | +11% |
-| TER M Meson Stream Mk1 | +47% (Obliterator) | +63% (Obliterator) | +11% |
-| ATF XL Main Battery | +71% (Obliterator) | +86% (Labrador) | +9% |
-| TER S Meson Stream Mk1 | +35% (Annihilator) | +44% (Obliterator) | +7% |
-| TER S Meson Stream Mk2 | +35% (Annihilator) | +44% (Obliterator) | +7% |
-| PAR Odysseus Main Battery | +50% (Obliterator) | +58% (Obliterator) | +6% |
-| S Plasma Cannon Mk2 | +51% (Obliterator) | +59% (Obliterator) | +5% |
-| M Plasma Cannon Mk1 | +51% (Obliterator) | +59% (Obliterator) | +5% |
-| M Plasma Cannon Mk2 | +51% (Obliterator) | +59% (Obliterator) | +5% |
-| S Plasma Cannon Mk1 | +52% (Obliterator) | +60% (Obliterator) | +5% |
+| TER M Meson Stream Mk2 | +47% (Obliterator) | +63% (Obliterator) | ×1.11 |
+| TER M Meson Stream Mk1 | +47% (Obliterator) | +63% (Obliterator) | ×1.11 |
+| ATF XL Main Battery | +71% (Obliterator) | +86% (Labrador) | ×1.09 |
+| TER S Meson Stream Mk1 | +35% (Annihilator) | +44% (Obliterator) | ×1.07 |
+| TER S Meson Stream Mk2 | +35% (Annihilator) | +44% (Obliterator) | ×1.07 |
+| PAR Odysseus Main Battery | +50% (Obliterator) | +58% (Obliterator) | ×1.06 |
+| S Plasma Cannon Mk2 | +51% (Obliterator) | +59% (Obliterator) | ×1.05 |
+| M Plasma Cannon Mk1 | +51% (Obliterator) | +59% (Obliterator) | ×1.05 |
+| M Plasma Cannon Mk2 | +51% (Obliterator) | +59% (Obliterator) | ×1.05 |
+| S Plasma Cannon Mk1 | +52% (Obliterator) | +60% (Obliterator) | ×1.05 |
 
 ## Burst DPS
 
 Peak `damage × fire-rate`, no throttle. Cooling does nothing here, so the winners are damage + reload mods.
 
-| | best vanilla | best rebalanced | change |
+| | best vanilla | best rebalanced | best-modded burst, now ÷ before |
 |---|---|---|---|
-| median gain over bare | +201% | +51% | -50% |
-| mean gain over bare | +198% | +51% | -49% |
+| median gain over bare | +201% | +51% | ×0.50 |
+| mean gain over bare | +198% | +51% | ×0.51 |
 | max gain over bare | +201% | +51% | |
 
 ### Which mod wins burst now (count of weapons where it's the top burst pick)
@@ -82,11 +84,11 @@ Peak `damage × fire-rate`, no throttle. Cooling does nothing here, so the winne
 
 ### Burst by weapon class (median best-mod gain over bare)
 
-| class | best vanilla | best now | now vs before |
+| class | best vanilla | best now | now ÷ before |
 |---|---|---|---|
-| heat | +201% | +51% | -50% |
-| clip | +201% | +51% | -50% |
-| heatless | +201% | +51% | -50% |
+| heat | +201% | +51% | ×0.50 |
+| clip | +201% | +51% | ×0.50 |
+| heatless | +201% | +51% | ×0.50 |
 
 ## Worked examples
 
