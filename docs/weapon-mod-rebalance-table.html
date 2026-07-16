@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pokey's Weapon Mod Rebalance — mod table</title>
+<style>
+  :root{
+    --bg:#0a0e13;
+    --panel:#111823;
+    --panel2:#0d141d;
+    --edge:#1e2a38;
+    --ink:#e6edf5;
+    --mut:#8ba0b6;
+    --dim:#61748a;
+    --basic:#7fa8d6;
+    --enh:#4fd0b8;
+    --exc:#f2c14e;
+    --pos:#cfe3f7;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;}
+  body{
+    background:
+      radial-gradient(1200px 700px at 78% -8%, rgba(79,208,184,.06), transparent 60%),
+      radial-gradient(900px 600px at 12% 108%, rgba(127,168,214,.06), transparent 60%),
+      var(--bg);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    padding:34px 30px 40px;
+  }
+  .wrap{max-width:1180px;margin:0 auto;}
+  header{margin:0 0 22px;}
+  h1{
+    font-size:27px;line-height:1.15;margin:0;letter-spacing:.2px;font-weight:700;
+  }
+  h1 .accent{color:var(--enh);}
+  .sub{color:var(--mut);font-size:14px;margin-top:7px;max-width:820px;line-height:1.5;}
+  .sub b{color:var(--pos);font-weight:600;}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start;}
+  @media (max-width:900px){.cols{grid-template-columns:1fr;}}
+  .tier{
+    background:linear-gradient(180deg,var(--panel),var(--panel2));
+    border:1px solid var(--edge);border-radius:12px;overflow:hidden;
+    margin-bottom:22px;
+  }
+  .tier-head{
+    display:flex;align-items:baseline;gap:10px;
+    padding:12px 16px;border-bottom:1px solid var(--edge);
+  }
+  .tier-head .dot{width:9px;height:9px;border-radius:50%;align-self:center;}
+  .tier-head h2{font-size:15px;margin:0;letter-spacing:1.4px;text-transform:uppercase;font-weight:700;}
+  .tier-head .count{color:var(--dim);font-size:12px;margin-left:auto;letter-spacing:.5px;}
+  .tb-basic .dot{background:var(--basic);box-shadow:0 0 10px rgba(127,168,214,.6);}
+  .tb-basic h2{color:var(--basic);}
+  .tb-enh .dot{background:var(--enh);box-shadow:0 0 10px rgba(79,208,184,.6);}
+  .tb-enh h2{color:var(--enh);}
+  .tb-exc .dot{background:var(--exc);box-shadow:0 0 10px rgba(242,193,78,.6);}
+  .tb-exc h2{color:var(--exc);}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  td{padding:9px 16px;border-top:1px solid rgba(30,42,56,.7);vertical-align:top;}
+  tr:first-child td{border-top:none;}
+  .mod{font-weight:700;white-space:nowrap;color:var(--ink);width:1%;padding-right:14px;}
+  .eff{color:var(--mut);line-height:1.5;}
+  .eff .p{font-weight:700;}
+  .tb-basic .eff .p{color:var(--basic);}
+  .tb-enh .eff .p{color:var(--enh);}
+  .tb-exc .eff .p{color:var(--exc);}
+  .eff .s{color:var(--mut);}
+  .eff .sep{color:var(--dim);padding:0 5px;}
+  .role{color:var(--dim);line-height:1.45;font-size:12.5px;}
+  tr:hover td{background:rgba(255,255,255,.018);}
+  footer{margin-top:8px;color:var(--dim);font-size:12px;line-height:1.6;}
+  footer .key{color:var(--mut);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Pokey's <span class="accent">Weapon Mod Rebalance</span> — the mods</h1>
+    <p class="sub">Every value is <b>fixed</b> — no roll RNG, what you craft is what you get. Within a tier, each mod is a distinct role; across tiers, quality is a real power ladder. Numbers show the in-game bonus; the <b>primary effect</b> is emphasized.</p>
+  </header>
+
+  <div class="cols">
+    <!-- LEFT: Basic -->
+    <div>
+      <section class="tier tb-basic">
+        <div class="tier-head"><span class="dot"></span><h2>Basic</h2><span class="count">15 mods</span></div>
+        <table>
+          <tr><td class="mod">Cowboy</td><td class="eff"><span class="p">reload +22.5%</span></td><td class="role">Reload specialist — continuous heatless turrets</td></tr>
+          <tr><td class="mod">Digger</td><td class="eff"><span class="p">mining +250%</span></td><td class="role">Mining yield (entry tier; no damage rider)</td></tr>
+          <tr><td class="mod">Dispatcher</td><td class="eff"><span class="p">speed +25%</span><span class="sep">·</span><span class="s">lifetime −16%, damage +8%</span></td><td class="role">Projectile velocity — leads on fast targets</td></tr>
+          <tr><td class="mod">Endurance</td><td class="eff"><span class="p">lifetime +10%</span><span class="sep">·</span><span class="s">speed +10%, damage +8%</span></td><td class="role">Reach / standoff range</td></tr>
+          <tr><td class="mod">Gimbal</td><td class="eff"><span class="p">rotation +20%</span><span class="sep">·</span><span class="s">damage +8%</span></td><td class="role">Turret tracking</td></tr>
+          <tr><td class="mod">Gregale</td><td class="eff"><span class="p">cooling +20%</span><span class="sep">·</span><span class="s">damage +8%</span></td><td class="role">Damage+cooling safe pick — warm main guns</td></tr>
+          <tr><td class="mod">Gum</td><td class="eff"><span class="p">sticktime +20%</span><span class="sep">·</span><span class="s">damage +8%</span></td><td class="role">Sticky (leech / disruptor) weapons</td></tr>
+          <tr><td class="mod">Intruder</td><td class="eff"><span class="p">surface +35%</span><span class="sep">·</span><span class="s">damage +8%</span></td><td class="role">Anti-subsystem (turrets, engines, shield gens)</td></tr>
+          <tr><td class="mod">Jumper</td><td class="eff"><span class="p">charge −25%</span><span class="sep">·</span><span class="s">damage +8%</span></td><td class="role">Charge-weapon specialist (Ray Ion, Erlking)</td></tr>
+          <tr><td class="mod">Lens</td><td class="eff"><span class="p">beam length +21%</span><span class="sep">·</span><span class="s">damage +8%</span></td><td class="role">Beam-weapon reach</td></tr>
+          <tr><td class="mod">Mistral</td><td class="eff"><span class="p">cooling +32%</span><span class="sep">·</span><span class="s">reload +12.5%</span></td><td class="role">Cooling+reload synergy — hot rapid-fire guns</td></tr>
+          <tr><td class="mod">Piercer</td><td class="eff"><span class="p">damage +15%</span></td><td class="role">Universal baseline &amp; benchmark — full value everywhere</td></tr>
+          <tr><td class="mod">Slasher</td><td class="eff"><span class="p">damage +11.5%</span><span class="sep">·</span><span class="s">cooling +7%, reload +4.5%</span></td><td class="role">All-rounder — widest coverage, lowest peak</td></tr>
+          <tr><td class="mod">Stabber</td><td class="eff"><span class="p">damage +10%</span><span class="sep">·</span><span class="s">reload +10%</span></td><td class="role">Damage+reload safe pick — clip weapons</td></tr>
+          <tr><td class="mod">Tramontane</td><td class="eff"><span class="p">cooling +40%</span></td><td class="role">Cooling specialist — hottest heat-limited guns</td></tr>
+        </table>
+      </section>
+    </div>
+
+    <!-- RIGHT: Enhanced + Exceptional -->
+    <div>
+      <section class="tier tb-enh">
+        <div class="tier-head"><span class="dot"></span><h2>Enhanced</h2><span class="count">11 mods</span></div>
+        <table>
+          <tr><td class="mod">Assassin</td><td class="eff"><span class="p">damage +26%</span></td><td class="role">Universal baseline (Piercer, one tier up)</td></tr>
+          <tr><td class="mod">Benguela</td><td class="eff"><span class="p">cooling +70%</span><span class="sep">·</span><span class="s">reload +22%</span></td><td class="role">Cooling+reload synergy — hot rapid-fire guns</td></tr>
+          <tr><td class="mod">Butcher</td><td class="eff"><span class="p">damage +26%</span><span class="sep">·</span><span class="s">charge −30%</span></td><td class="role">Charge-weapon specialist</td></tr>
+          <tr><td class="mod">Executioner</td><td class="eff"><span class="p">damage +26%</span><span class="sep">·</span><span class="s">cooling +20%</span></td><td class="role">Damage + heat headroom — warm main guns</td></tr>
+          <tr><td class="mod">Exterminator</td><td class="eff"><span class="p">damage +24%</span><span class="sep">·</span><span class="s">reload +15%</span></td><td class="role">Damage + fire rate — the broad Enhanced default</td></tr>
+          <tr><td class="mod">Humboldt</td><td class="eff"><span class="p">lifetime +50%</span><span class="sep">·</span><span class="s">damage +16%</span></td><td class="role">Reach (+50% range)</td></tr>
+          <tr><td class="mod">Infiltrator</td><td class="eff"><span class="p">surface +40%</span><span class="sep">·</span><span class="s">rotation +20%, lifetime +20%, damage +16%</span></td><td class="role">Anti-subsystem</td></tr>
+          <tr><td class="mod">Kuril</td><td class="eff"><span class="p">rotation +60%</span><span class="sep">·</span><span class="s">damage +16%</span></td><td class="role">Turret tracking</td></tr>
+          <tr><td class="mod">Labrador</td><td class="eff"><span class="p">cooling +90%</span></td><td class="role">Cooling specialist — the hottest guns</td></tr>
+          <tr><td class="mod">Okhotsk</td><td class="eff"><span class="p">speed +50%</span><span class="sep">·</span><span class="s">damage +16%</span></td><td class="role">Projectile velocity</td></tr>
+          <tr><td class="mod">Slayer</td><td class="eff"><span class="p">damage +20%</span><span class="sep">·</span><span class="s">cooling +18%, reload +10%</span></td><td class="role">All-rounder</td></tr>
+        </table>
+      </section>
+
+      <section class="tier tb-exc">
+        <div class="tier-head"><span class="dot"></span><h2>Exceptional</h2><span class="count">5 mods</span></div>
+        <table>
+          <tr><td class="mod">Annihilator</td><td class="eff"><span class="p">damage +44%</span><span class="sep">·</span><span class="s">reload +5%, rotation +60%</span></td><td class="role">Damage + fire rate — the broad Exceptional default</td></tr>
+          <tr><td class="mod">Excavator</td><td class="eff"><span class="p">mining +574%</span><span class="sep">·</span><span class="s">rotation +100%, reload +30%, beam +20%</span></td><td class="role">Mining capstone (non-combat riders only)</td></tr>
+          <tr><td class="mod">Expediter</td><td class="eff"><span class="p">speed +50%</span><span class="sep">·</span><span class="s">damage +24%, lifetime +50%, rotation +60%</span></td><td class="role">Sniper capstone — long-range velocity</td></tr>
+          <tr><td class="mod">Invader</td><td class="eff"><span class="p">surface +50%</span><span class="sep">·</span><span class="s">damage +24%, cooling +20%, lifetime +40%, rotation +60%</span></td><td class="role">Anti-subsystem capstone</td></tr>
+          <tr><td class="mod">Obliterator</td><td class="eff"><span class="p">damage +44%</span><span class="sep">·</span><span class="s">cooling +20%, sticktime +40%, rotation +60%</span></td><td class="role">Brawler — top damage + heat + tracking</td></tr>
+        </table>
+      </section>
+    </div>
+  </div>
+
+  <footer>
+    <span class="key">Reductions (−) are the beneficial direction</span> — faster charge, or Dispatcher trading a little range for speed. &nbsp;·&nbsp;
+    <span class="key">Mining %s are large</span> because they're raw yield multipliers (Digger ×3.5, Excavator ×6.74) — the vanilla mining scale. &nbsp;·&nbsp; X4: Foundations v9.0
+  </footer>
+</div>
+</body>
+</html>
