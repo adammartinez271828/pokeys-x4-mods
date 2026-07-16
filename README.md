@@ -1,28 +1,20 @@
 # Pokey's X4 mods
 
-Mods for X4: Foundations (v9.0), one directory per mod — each directory is
-a complete X4 extension that can be symlinked into the game's `extensions/`
-folder for development and published to Steam Workshop / Nexus on its own.
+Mods for [X4: Foundations](https://www.egosoft.com/games/x4/) (v9.0). Each
+folder is a self-contained extension, published to the Steam Workshop on its
+own.
 
-| Mod | Status | What it does |
+## Mods
+
+| Mod | Get it | What it does |
 |---|---|---|
-| weapon-mod-rebalance | v1 built, awaiting in-game verification | Rebalances weapon equipment mods into meaningful choices ([design](docs/weapon-mod-rebalance-design.md), [shipped table](docs/weapon-mod-rebalance-v1.md)) |
+| **weapon-mod-rebalance** | [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3765994517) | Turns weapon equipment mods into meaningful choices: no roll RNG (what you craft is what you get), quality tiers that form a real power ladder, and each mod a distinct role instead of raw DPS. Numbers only — no new wares, savegame-safe. [The full mod table](docs/weapon-mod-rebalance-table.png) · [why it's built this way](docs/weapon-mod-rebalance-design.md) |
 
-## Docs
+## Installing manually
 
-- [X4 extension anatomy: content.xml, diff patches, load order](docs/x4-mod-structure.md)
-- [Publishing to Steam Workshop](docs/steam-workshop.md)
-- [Weapon-mod rebalance: analysis & design](docs/weapon-mod-rebalance-design.md)
-- `docs/reference/` — vanilla `equipmentmods.xml` (v9.0) and real diff-patch examples
-
-Per-mod tooling lives under `tools/<mod-name>/`;
-`tools/weapon-mod-rebalance/evaluate.py` is the balance acceptance harness
-(run: `uv run --project ~/devel/x4-analyzer python tools/weapon-mod-rebalance/evaluate.py`;
-exit 0 = all targets pass) and `report.py` beside it renders the
-vanilla-vs-rebalance review dashboard into `output/`.
-Analysis/validation tooling lives in the sibling repo
-[`x4-analyzer`](../x4-analyzer) (weapon×mod firing-cycle simulator and
-comparison dashboard built from the game files).
+Not using the Workshop? Drop the mod's folder into your
+`X4 Foundations/extensions/` directory and enable it in the in-game
+Extensions menu (a restart is required).
 
 ## License
 

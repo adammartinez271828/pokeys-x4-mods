@@ -36,10 +36,15 @@ pokeys-x4-mods/
   **Built, all three tiers** (Basic/Enhanced/Exceptional): each mod is a
   distinct effect-set identity on a power ladder that mirrors the in-game
   research ladder (`research_mod_weapon_mk1/2/3`), no roll ranges crossing
-  1.0. Design: `docs/weapon-mod-rebalance-design.md`; shipped scorecard:
+  1.0. **Published to Steam Workshop** as `ws_3765994517` (first publish
+  2026-07; `content.xml` `id` is that ws_ id). Design:
+  `docs/weapon-mod-rebalance-design.md`; shipped scorecard:
   `docs/weapon-mod-rebalance-v1.md`. Validate with
   `tools/weapon-mod-rebalance/evaluate.py` (applies the diff itself; exit 0
-  = all targets pass); prototype values in the slider tool
+  = all targets pass; run:
+  `uv run --project ~/devel/x4-analyzer python tools/weapon-mod-rebalance/evaluate.py`);
+  `report.py` beside it renders the vanilla-vs-rebalance review dashboard
+  into `output/`; prototype values in the slider tool
   `tools/weapon-mod-rebalance/tuner.html` (rebuild via `dump_data.py`).
 
 ## Critical domain knowledge (validated in-game — do not "fix")
