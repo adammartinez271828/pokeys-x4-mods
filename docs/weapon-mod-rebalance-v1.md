@@ -107,7 +107,7 @@ of it. Primaries pinned at (or retuned from) their vanilla best roll.
 | Gimbal (rotationspeed_01_mk1) | rot 1.05–1.2 | rot ×1.2, dmg ×1.08 | **Turret tracking.** Faster slew for turrets chasing small, fast targets. |
 | Gum (sticktime_01_mk1) | stick 1.05–1.2 | stick ×1.2, dmg ×1.08 | **Sticky weapons.** Longer stick time for the leech/disruptor projectile family. |
 | Intruder (surfaceelement_01_mk1) | surf 1.2–1.35 | surf ×1.35, dmg ×1.08 | **Destroying surface elements** — turrets, shield generators, engines on stations and capital ships. |
-| Digger (mining_01_mk1) | mining 5.25–6 | mining ×6 (no rider) | **Mining yield.** Deliberately no damage rider: a combat bonus on a mining mod re-opens the combat-cheat door. Mining weapons are excluded from all combat-mod evaluations. |
+| Digger (mining_01_mk1) | mining 5.25–6 | mining ×3.5 (no rider) | **Mining yield.** Lowered well below Excavator's ×6.74 so the Exceptional mining mod is a real upgrade. Deliberately no damage rider: a combat bonus on a mining mod re-opens the combat-cheat door. Mining weapons are excluded from all combat-mod evaluations. |
 
 ## Enhanced (q2) & Exceptional (q3)
 

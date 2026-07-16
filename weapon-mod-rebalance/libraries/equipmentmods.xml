@@ -123,7 +123,8 @@
       <speed min="1.1" max="1.1"/>
     </bonus>
   </add>
-  <replace sel="/equipmentmods/weapon/mining[@ware='mod_weapon_mining_01_mk1']/@min">6</replace><!-- vanilla 5.25, max 6 -->
+  <replace sel="/equipmentmods/weapon/mining[@ware='mod_weapon_mining_01_mk1']/@min">3.5</replace><!-- vanilla 5.25 -->
+  <replace sel="/equipmentmods/weapon/mining[@ware='mod_weapon_mining_01_mk1']/@max">3.5</replace><!-- vanilla 6; lowered well below Excavator's 6.74 so the Exceptional mining mod is a real upgrade -->
   <replace sel="/equipmentmods/weapon/rotationspeed[@ware='mod_weapon_rotationspeed_01_mk1']/@min">1.2</replace><!-- vanilla 1.05, max 1.2 -->
   <add sel="/equipmentmods/weapon/rotationspeed[@ware='mod_weapon_rotationspeed_01_mk1']">
     <bonus chance="1.0" max="1">
