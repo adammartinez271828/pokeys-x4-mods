@@ -38,9 +38,10 @@ ARCHETYPE = {
     "mod_ship_regiondamage_01_mk3": "Explorer",
     "mod_ship_radarrange_01_mk1": "Recon",
     "mod_ship_countermeasurecapacity_01_mk1": "Loadout",
+    "mod_ship_deployablecapacity_01_mk1": "Smuggler",
 }
 ARCH_ORDER = {"Racer": 0, "Tank": 1, "Ghost": 2, "Explorer": 3, "Recon": 4,
-              "Loadout": 5, "degenerate": 9}
+              "Loadout": 5, "Smuggler": 6, "degenerate": 9}
 
 # (stat, label). direction comes from shipmods (LOWER_BETTER / ADDITIVE).
 COLS = [
@@ -129,20 +130,24 @@ def load_rows():
     return rows
 
 
+CAP = {"countermeasurecapacity", "deployablecapacity", "missilecapacity",
+       "unitcapacity"}
+
+
 def cell(stat, value):
     """(css class, display) for a raw modifier value, coloured by goodness."""
     neutral = 0.0 if stat in SM.ADDITIVE else 1.0
     if abs(value - neutral) < 1e-9:
         return "n", ""
-    g = SM.goodness(stat, value)          # higher = better
-    good = g > (0.0 if stat in SM.ADDITIVE else 1.0)
-    if stat in SM.ADDITIVE:
-        span = abs(value) / 0.8
-        disp = f"{value:+.2f}"
-    else:
-        dev = abs(g - 1.0)
-        span = dev / (2.0 if g > 1.8 else 0.5)   # capacities (x3) read strong
-        disp = f"{value:.2f}"
+    good = SM.goodness(stat, value) > SM.goodness(stat, neutral)
+    if stat == "radarcloak":
+        span, disp = abs(value) / 0.8, f"{value:+.2f}"
+    elif stat == "hidecargochance":
+        span, disp = abs(value), f"{value:g}"
+    elif stat in CAP:                       # flat +N consumables
+        span, disp = abs(value) / 8.0, f"+{int(round(value))}"
+    else:                                   # multiplier stats
+        span, disp = abs(SM.goodness(stat, value) - 1.0) / 0.5, f"{value:.2f}"
     step = 1 if span < 0.2 else 2 if span < 0.4 else 3 if span < 0.6 else 4 if span < 0.85 else 5
     return f"{'b' if good else 'r'}{step}", disp
 
@@ -184,6 +189,7 @@ CSS = """
 .hmr .dot.Racer{background:#eb6834;}.hmr .dot.Tank{background:#2f7fdf;}
 .hmr .dot.Ghost{background:#4a3aa7;}.hmr .dot.Explorer{background:#1baf7a;}
 .hmr .dot.Recon{background:#d6871f;}.hmr .dot.Loadout{background:#8a72d6;}
+.hmr .dot.Smuggler{background:#37a89a;}
 .hmr .dot.degenerate{background:var(--mut);opacity:.5;}
 .hmr .scroll{overflow-x:auto;border:1px solid var(--grid);border-radius:10px;background:var(--sf);}
 .hmr table{border-collapse:separate;border-spacing:2px;width:100%;font-variant-numeric:tabular-nums;}
@@ -238,7 +244,8 @@ def main():
     sr = "".join(f"<i class='r{i}'></i>" for i in (5, 4, 3, 2, 1))
     roles = [("Racer", "Racer (mass+drag)"), ("Tank", "Tank (hull+sensors+loadout)"),
              ("Ghost", "Ghost (stealth)"), ("Explorer", "Explorer (hazard)"),
-             ("Recon", "Recon"), ("Loadout", "Loadout"), ("degenerate", "degenerate")]
+             ("Recon", "Recon"), ("Loadout", "Loadout"), ("Smuggler", "Smuggler (hide cargo)"),
+             ("degenerate", "degenerate")]
     rk = "".join(f"<span class='rkey'><span class='dot {k}'></span>{html.escape(l)}</span>" for k, l in roles)
 
     p = [f"<style>{CSS}</style>", "<div class='hmr'><div id='tip'></div><div class='wrap'>"]
