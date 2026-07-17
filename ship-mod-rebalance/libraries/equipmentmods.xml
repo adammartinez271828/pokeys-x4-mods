@@ -141,16 +141,18 @@
   <!-- Explorer = Tenacity: TOTAL hazard immunity + hull + hide cargo. -->
   <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk3']/@min">0.0</replace><!-- vanilla 1.0 -->
   <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk3']/@max">0.0</replace>
-  <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk3']/bonus/@max">2</replace>
+  <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk3']/bonus/@max">4</replace>
   <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk3']/bonus/maxhull/@min">1.2</replace>
   <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk3']/bonus/maxhull/@max">1.2</replace>
   <add sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk3']/bonus"><hidecargochance min="1.0" max="1.0"/></add>
+  <add sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk3']/bonus"><mass min="0.95" max="0.95"/></add>
+  <add sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk3']/bonus"><drag min="0.95" max="0.95"/></add>
 
   <!-- Tank = Mirage: the support/command capstone. Big hull + strong radar
        (+100%) + heavy ALL-capacity loadout. Cargo-hide neutralised (that role
        lives on the Explorer line). -->
   <replace sel="/equipmentmods/ship/hidecargochance[@ware='mod_ship_hidecargo_01']/@min">0.0</replace><!-- no cargo hide -->
   <replace sel="/equipmentmods/ship/hidecargochance[@ware='mod_ship_hidecargo_01']/@max">0.0</replace>
-  <add sel="/equipmentmods/ship/hidecargochance[@ware='mod_ship_hidecargo_01']"><bonus chance="1.0" max="6"><maxhull min="1.6" max="1.6"/><radarrange min="2.0" max="2.0"/><countermeasurecapacity min="8" max="8"/><deployablecapacity min="8" max="8"/><missilecapacity min="8" max="8"/><unitcapacity min="8" max="8"/></bonus></add>
+  <add sel="/equipmentmods/ship/hidecargochance[@ware='mod_ship_hidecargo_01']"><bonus chance="1.0" max="8"><maxhull min="1.6" max="1.6"/><radarrange min="2.0" max="2.0"/><mass min="0.95" max="0.95"/><drag min="0.95" max="0.95"/><countermeasurecapacity min="8" max="8"/><deployablecapacity min="8" max="8"/><missilecapacity min="8" max="8"/><unitcapacity min="8" max="8"/></bonus></add>
 
 </diff>
