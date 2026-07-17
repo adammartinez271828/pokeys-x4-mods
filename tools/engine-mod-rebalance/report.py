@@ -78,23 +78,27 @@ OWN_TAG = {
 }
 
 
+# carrier ware -> archetype (everything else is a parked "degenerate" mod)
+ARCHETYPE = {
+    "mod_engine_forwardthrust_02_mk1": "Interceptor",
+    "mod_engine_forwardthrust_02_mk2": "Interceptor",
+    "mod_engine_forwardthrust_01_mk3": "Interceptor",
+    "mod_engine_strafethrust_02_mk1": "Dogfighter",
+    "mod_engine_boostthrust_01_mk2": "Dogfighter",
+    "mod_engine_rotationthrust_01_mk3": "Dogfighter",
+    "mod_engine_travelstartthrust_01_mk1": "Booster",
+    "mod_engine_boostthrust_02_mk2": "Booster",
+    "mod_engine_boostthrust_01_mk3": "Booster",
+    "mod_engine_travelchargetime_01_mk1": "Voyager",
+    "mod_engine_travelthrust_02_mk2": "Voyager",
+    "mod_engine_travelthrust_01_mk3": "Voyager",
+}
+ARCH_ORDER = {"Interceptor": 0, "Dogfighter": 1, "Booster": 2, "Voyager": 3,
+              "degenerate": 9}
+
+
 def role_of(m: dict) -> str:
-    if m["quality"] == 3:
-        return "capstone"
-    has_malus = m["forced"] and any(
-        (b["stat"] in ("travelattacktime", "travelchargetime")
-         and max(b["min"], b["max"]) > 1.0)
-        or (b["stat"] not in ("travelattacktime", "travelchargetime")
-            and min(b["min"], b["max"]) < 1.0)
-        for b in m["bonuses"])
-    if has_malus:
-        return "specialist"
-    if m["stat"] == "forwardthrust":
-        return "generalist"
-    if m["stat"] in ("boostduration", "boostacc", "strafeacc",
-                     "travelattacktime", "travelchargetime"):
-        return "utility"
-    return "clean"
+    return ARCHETYPE.get(m["ware"], "degenerate")
 
 
 def load_mods() -> list[dict]:
@@ -129,10 +133,7 @@ def load_mods() -> list[dict]:
         comb = {k: (d[k] / base_stats[k] if base_stats[k] else 1.0)
                 for k, _, _ in COMB_COLS}
         rows.append({"mod": m, "role": role_of(m), "raw": raw, "comb": comb})
-    order = {"forwardthrust": 0, "boostthrust": 1, "travelthrust": 2,
-             "rotationthrust": 3, "strafethrust": 4}
-    rows.sort(key=lambda r: (r["mod"]["quality"],
-                             order.get(r["mod"]["stat"], 9),
+    rows.sort(key=lambda r: (r["mod"]["quality"], ARCH_ORDER[r["role"]],
                              r["mod"]["ware"]))
     return rows
 
@@ -169,7 +170,8 @@ def heatmap(rows: list[dict], cols, kind: str) -> str:
             last_q = m["quality"]
             out.append(f"<tr class='grp'><td colspan='{len(cols)+1}'>"
                        f"{QN[last_q]}</td></tr>")
-        out.append("<tr>")
+        deg = " deg" if r["role"] == "degenerate" else ""
+        out.append(f"<tr class='{deg.strip()}'>")
         out.append(
             f"<td class='rowh'><span class='dot {r['role']}'></span>"
             f"<span class='nm'>{html.escape(m['name'])}</span>"
@@ -235,11 +237,12 @@ CSS = """
 .emr .rkey{display:flex;align-items:center;gap:6px;}
 .emr .dot{width:9px;height:9px;border-radius:50%;flex:none;
  box-shadow:0 0 0 1px rgba(0,0,0,.15) inset;}
-.emr .dot.generalist{background:var(--acc);}
-.emr .dot.specialist{background:var(--b4);}
-.emr .dot.clean{background:var(--mut);}
-.emr .dot.utility{background:#8a72d6;}
-.emr .dot.capstone{background:#37a89a;}
+.emr .dot.Interceptor{background:#2a78d6;}
+.emr .dot.Dogfighter{background:#eb6834;}
+.emr .dot.Booster{background:#d6871f;}
+.emr .dot.Voyager{background:#4a3aa7;}
+.emr .dot.degenerate{background:var(--mut);opacity:.5;}
+.emr tr.deg td.rowh .nm{color:var(--mut);font-weight:500;}
 .emr .scroll{overflow-x:auto;border:1px solid var(--grid);border-radius:10px;
  background:var(--sf);}
 .emr table.hm{border-collapse:separate;border-spacing:2px;width:100%;
@@ -304,11 +307,11 @@ def main() -> int:
     rows = load_mods()
     swatch_b = "".join(f"<i class='b{i}'></i>" for i in (1, 2, 3, 4, 5))
     swatch_r = "".join(f"<i class='r{i}'></i>" for i in (5, 4, 3, 2, 1))
-    roles = [("generalist", "generalist (broad speed)"),
-             ("specialist", "specialist (peaks one axis)"),
-             ("clean", "clean single-axis"),
-             ("utility", "utility niche"),
-             ("capstone", "Exceptional capstone")]
+    roles = [("Interceptor", "Interceptor (speed)"),
+             ("Dogfighter", "Dogfighter (turn + strafe)"),
+             ("Booster", "Booster (boost burst)"),
+             ("Voyager", "Voyager (travel + spool)"),
+             ("degenerate", "degenerate (parked)")]
     rkeys = "".join(
         f"<span class='rkey'><span class='dot {k}'></span>{html.escape(lbl)}</span>"
         for k, lbl in roles)
@@ -316,14 +319,18 @@ def main() -> int:
     parts = [f"<style>{CSS}</style>", "<div class='emr'><div id='tip'></div>",
              "<div class='wrap'>"]
     parts.append("<p class='eyebrow'>Pokey&rsquo;s Engine Mod Rebalance</p>")
-    parts.append("<h1>Engine mod effects: declared vs. delivered</h1>")
+    parts.append("<h1>Engine mod archetypes: declared vs. delivered</h1>")
     parts.append(
-        "<p class='lede'>Every mod pins a fixed set of modifiers (top grid). "
-        "But forward thrust also drives boost and travel speed, so what a "
-        "ship actually gains (bottom grid) can spread well beyond what the "
-        "mod declares. Cells read blue where performance improves, red where "
-        "it drops; dashed cells are <strong>leak</strong> &mdash; a stat moved "
-        "by another lever, not its own. Hover any cell for the exact factor.</p>")
+        "<p class='lede'>Each tier offers four clear archetypes &mdash; "
+        "<strong>Interceptor</strong> (speed), <strong>Dogfighter</strong> "
+        "(turn + strafe), <strong>Booster</strong> (boost burst) and "
+        "<strong>Voyager</strong> (travel + spool) &mdash; one carrier mod "
+        "each; every other mod is parked at a token &ldquo;degenerate&rdquo; "
+        "value. The top grid is what a mod declares; the bottom is what the "
+        "ship actually gains. Cells read blue where performance improves; "
+        "dashed cells are <strong>leak</strong> &mdash; a stat moved by "
+        "forward thrust, not its own lever (why the Interceptor spreads "
+        "across boost and travel). Hover any cell for the exact factor.</p>")
 
     parts.append("<div class='legend'>")
     parts.append(
@@ -342,9 +349,10 @@ def main() -> int:
 
     parts.append("<h2>Combined effects &mdash; what the ship actually gets</h2>")
     parts.append("<p class='sub'>The same mods run through the movement model. "
-                 "Note how the forward-thrust mods (Pusher, Nudger, Propeller, "
-                 "Impeller, Slingshot) light up boost, travel and boost-accel "
-                 "they never declared &mdash; the dashed leak cells.</p>")
+                 "The four archetype carriers per tier light up their cluster; "
+                 "the degenerate rows barely register. The Interceptors "
+                 "(Nudger, Impeller, Slingshot) spread across boost and travel "
+                 "via the dashed leak cells.</p>")
     parts.append(heatmap(rows, COMB_COLS, "comb"))
 
     parts.append(

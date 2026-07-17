@@ -95,78 +95,73 @@ whose stated cost is refunded by the physics. Unlike Slasher the maluses
 never cross 1.0 (they stay < 1.0 literally), but the leak makes them
 inert.
 
-## Design direction (proposal)
+## Design direction — the ARCHETYPE model
 
-Mirror the shipped weapon model: **no RNG, a per-tier power ladder, and one
-distinct effect-set identity per mod, with niches carved by physics rather
-than by (impossible) per-ship gating.** Concretely:
+Decided 2026-07. The earlier draft made all 15 Basic mods mutually
+non-dominated; in play that is still *too many options*. Instead each tier
+offers **four legible archetypes**, one carrier mod each, and every other mod
+is **parked at a token "degenerate" value** — present (the wares can't be
+removed from the game) but plainly not the pick. The result is a handful of
+real choices per tier.
 
-- **Pin every range (min = max).** What you craft is what you get.
-- **Basic tier = one honest specialist per movement axis**, no duplicate
-  filler. The redundant clean `_01` mods get repurposed — either folded to
-  distinct utility identities (boost *duration*, travel *spool-up*, strafe)
-  or given an honest cross-axis trade — so no mod Pareto-dominates another.
-- **Roles come from the four things forward thrust cannot buy:**
-  - **Agility** (`rotationthrust` + `strafethrust`) — turn rate and strafe
-    are pure thruster stats; forward thrust cannot touch them. This is the
-    cleanest un-substitutable niche (the dogfighter identity).
-  - **Boost** as burst-escape (`boostthrust` + `boostduration`) — duration
-    especially is forward-thrust-proof.
-  - **Travel** spool-up (`travelchargetime` / `travelattacktime`) — getting
-    *into* travel fast, which raw travel speed doesn't give.
-  - **Raw speed/accel** (`forwardthrust`) — still the king of the straight
-    line, but see the open fork.
-- **Honest maluses only.** A malus must be charged in a currency the mod's
-  buff cannot silently repay. Forward-thrust mods therefore cannot pay in
-  boost/travel (the leak refunds it); if they carry a cost it must be in an
-  axis forward thrust never feeds — agility.
-- **Retune existing wares + add riders** (both verified savegame-safe:
-  rebalancing retunes existing installs; newly *added* bonus children only
-  attach to freshly crafted mods). Prefer editing values; add a rider only
-  to sharpen an identity the vanilla lever set is too thin to express.
-- **Tier ladder** mirrors the research ladder (Basic/Enhanced/Exceptional):
-  higher tiers widen the specialist peaks, they don't add new axes.
+**The four archetypes** (the natural clusters of the movement levers):
 
-### THE FORK — how to treat forward thrust — DECIDED: (A)
+| Archetype | Feel | Stat bundle |
+|---|---|---|
+| **Interceptor** | straight-line speed | forward thrust (leaks to boost + travel) |
+| **Dogfighter** | turn + juke | rotation + strafe |
+| **Booster** | burst / escape | boost speed + duration + accel |
+| **Voyager** | long-haul cruise | travel speed + fast spool-up |
 
-Chosen 2026-07: **(A) give rivals real niches.** Forward thrust stays the
-straight-line king; the other mods win by peaking stats it physically can't
-reach (turn, strafe, boost duration, travel spool-up), and any forward-thrust
-malus is charged in agility (the one currency the leak can't refund).
+**Carriers per tier** (chosen for what the mod's *name* evokes in English, not
+its vanilla stat — riders are added to fill out the identity):
 
-- **(A) Give rivals real niches** *(chosen)* — keep `forwardthrust` strong as the
-  straight-line king, and make the other mods peak stats it physically can't
-  reach (turn, strafe, boost duration, travel spool-up) hard enough that
-  agility/logistics builds genuinely prefer them. Forward thrust's malus, if
-  any, is charged in agility. Preserves the "go-fast" fantasy; risk is
-  forward thrust staying a strong default for combat ships that also want
-  speed.
-- **(B) Nerf the leak** — pin the boost/travel malus on `forwardthrust`
-  mods so the leak nets exactly 1.0 (forward becomes a clean forward-only
-  lever like the rest). More symmetric, but flattens the fantasy and makes
-  forward thrust just one axis among five.
+| Archetype | Basic | Enhanced | Exceptional |
+|---|---|---|---|
+| Interceptor | Nudger | Impeller | Slingshot |
+| Dogfighter | Sidewinder | Antares\* | Whirlygig |
+| Booster | Afterburner | Delta | Atlas |
+| Voyager | Overdrive | Vinci | Vikas |
+
+\* Enhanced has no rotation/strafe *ware*, so the boost mod Antares is
+repurposed into the agility carrier via rotation + strafe riders.
+
+**Key rules:**
+
+- **Forward thrust is a broad lever, priced modestly.** Because +X% forward
+  lands on forward, boost, travel *and* boost-accel at once, the Interceptor
+  is pinned low (Basic **+10%**) — that +10% is worth as much as a
+  specialist's bigger single-axis number. This also defuses the vanilla
+  super-lever/fake-malus problem: there are no maluses at all now
+  (archetypes are pure upside), so nothing to secretly refund.
+- **No RNG** (every range pinned `min = max`).
+- **Tiered floor keeps the power curve monotonic.** The weakest mod pays
+  **+5%** at Basic, **+10%** at Enhanced; Exceptional is all archetypes
+  (primary **≥ +20%**). Carriers scale above their tier's floor
+  (~+10–20% Basic, +20–30% Enhanced, +30–40% Exceptional).
+- **Retune existing wares + add riders** (both savegame-safe). Carriers whose
+  vanilla ware lacks the needed lever get forced riders added (e.g. Afterburner
+  gains boost-speed + duration); the old `_02` "strong" mods that aren't
+  carriers are neutralised to the floor.
 
 ## Balance acceptance targets (harness)
 
-To be enforced by `tools/engine-mod-rebalance/evaluate.py` (applies the diff,
-scores mods on a ship sample via the sim; exit 0 = all pass), adapted from
-the weapon harness:
+Enforced by `tools/engine-mod-rebalance/evaluate.py` (applies the diff, scores
+via the sim; exit 0 = all pass). A mod is **degenerate** when no derived stat
+moves past its tier's cap (`VESTIGIAL_CAP` = +7.5% / +15% / +25%, tracking the
+rising floor); degenerate mods are *meant* to be dominated and are exempt from
+E3/E4.
 
-- **E1 — no RNG.** Every roll range is pinned (`min = max`).
-- **E2 — no range crosses 1.0**, and **no fake malus**: a stat the mod
-  labels a malus must have realized net effect ≤ 1.0 *after* the
-  forward-thrust leak (kills the Nudger defect).
-- **E3 — no redundancy.** Within a quality tier, no mod is Pareto-dominated
-  by another (≥ on every derived stat, > on one) and no two mods are
-  identical. A non-dominated mod is a best pick for *some* ship weighting,
-  so speed+agility **generalists are legitimate** — the Basic tier has more
-  mods (15) than independent movement stats (~10), so not every mod can
-  solely own one. The per-stat "peaks" list is reported for information.
-- **E4 — tier order can't invert:** no lower-quality mod beats a
-  higher-quality mod of the same variant on its primary axis.
-
-(The earlier draft split E3/E4 into a strict single-peak rule plus a Pareto
-rule; folded into one E3 for the reason above — decided 2026-07.)
+- **E1 — no RNG.** Every range pinned (`min = max`).
+- **E2 — no range crosses 1.0**, and no fake malus (net effect of a declared
+  malus stays ≤ 1.0 after the forward-thrust leak). Moot now — the design
+  ships no maluses.
+- **E3 — no redundancy among archetypes.** Within a tier, no *non-degenerate*
+  mod is Pareto-dominated by or identical to another; each archetype owns a
+  distinct corner. The per-stat "peaks" list is informational.
+- **E4 — tier order can't invert:** among non-degenerate mods, no lower tier
+  beats a higher tier of the same variant (primary + forced-rider stat set)
+  on its primary stat.
 
 ## Hard constraints (shared with the weapon mod)
 
@@ -178,11 +173,13 @@ rule; folded into one E3 for the reason above — decided 2026-07.)
 - **Scenario mods are left untouched** (`*_transport_refugees`,
   `*_escort_scenario` — already fixed-value, availability-gated).
 
-## Open sim TODOs before the harness is trustworthy
+## Sim fixes applied (were open TODOs)
 
-- `strafeacc` and `strafethrust` both currently map to strafe thrust in the
-  sim (`MOD_STAT_TARGET`) — dedupe or model a separate strafe-accel field so
-  Anchor vs. Crab isn't a false domination.
-- Surface `boost_accel` and `travel_attack` as derived stats so the minor
-  utility mods (Afterburner/`boostacc`, Spur/`travelattacktime`) aren't
-  scored as all-1.0 no-ops.
+- `strafeacc` now scales only strafe *acceleration* (a derived post-multiplier),
+  distinct from `strafethrust` which scales strafe thrust (speed + accel).
+- `boost_accel` and `travel_attack` are scored as derived stats, so the
+  boost-accel / spool-up levers register.
+
+Still open: the design is **not yet verified in-game** — absolute boost/travel
+speeds read low vs the encyclopedia (the mod-vs-mod ratios are exact), and no
+play-test has confirmed the archetypes feel distinct on real hulls.

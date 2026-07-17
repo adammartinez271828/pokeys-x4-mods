@@ -25,24 +25,26 @@ What it does (mirrors tools/weapon-mod-rebalance/evaluate.py):
 
 Acceptance targets, made mechanical:
 
+Design uses an ARCHETYPE model: each tier has four archetype carriers
+(Interceptor / Dogfighter / Booster / Voyager); every other mod is parked at
+a token "degenerate" value and is SUPPOSED to be dominated, so it is exempt
+from the redundancy and ladder checks. A mod is degenerate when no derived
+stat moves by more than its tier's VESTIGIAL_CAP (the floor rises per tier).
+
   E1 no RNG       every scored mod pins min == max on its primary and on
-                  every forced bonus (pool entries too where present).
+                  every forced bonus.
   E2 honest       no roll range crosses 1.0, AND no fake malus: a forced
                   bonus declared as a malus must still leave the mod's NET
                   effect on that stat's derived quantity <= 1.0 after the
-                  forward-thrust leak (kills the Nudger defect, where +45%
-                  forward refunds a -25% boost/travel malus).
-  E3 no redundancy  within a quality tier, no mod is Pareto-dominated by
-                  another (>= on every derived stat, > on one) and no two
-                  mods are identical. A mod that is not dominated is a best
-                  pick for SOME ship weighting, so generalists (speed+agility
-                  hybrids) are legitimate; the per-stat "peaks" list is
-                  informational only. (Folds the old single-peak + Pareto
-                  checks - the Basic tier has more mods than independent
-                  stats, so not all can solely own one.)
-  E4 tier order   no lower-quality mod beats a higher-quality mod of the same
-                  variant (same primary stat + forced-malus/rider signature)
-                  on that variant's primary derived stat.
+                  forward-thrust leak.
+  E3 no redundancy  among the NON-degenerate (archetype) mods, within a tier
+                  no mod is Pareto-dominated by or identical to another - each
+                  archetype must own a distinct corner. Degenerate mods are
+                  exempt (they are meant to be dominated); the "peaks" list is
+                  informational.
+  E4 tier order   among non-degenerate mods, no lower-quality mod beats a
+                  higher-quality mod of the same variant (same primary stat +
+                  forced-rider stat set) on that variant's primary stat.
 
 Scenario mods (wares not ending in _mk<n>: *_transport_refugees,
 *_escort_scenario) are availability-gated and untouched; excluded from the
@@ -73,6 +75,12 @@ _MK_WARE = re.compile(r"_mk\d$")
 
 EPS_TIE = 0.005     # within 0.5% = tied / same peak
 EPS_INV = 0.01      # >1% = tier inversion / fake malus
+# A mod whose every derived stat moves by <= its tier's cap is degenerate (a
+# parked "default"/floor) and exempt from E3/E4. The cap is TIER-RELATIVE
+# because the degenerate floor rises per tier (Basic +5%, Enhanced +10%,
+# Exceptional +20%) while archetype carriers sit above it - so +10% is a real
+# archetype at Basic but the floor at Enhanced.
+VESTIGIAL_CAP = {1: 0.075, 2: 0.15, 3: 0.25}
 
 # Canonical derived stats scored, and whether higher is better. Coupled stats
 # that always move together with another (forward_accel~forward_speed,
@@ -281,15 +289,23 @@ def evaluate(mods, ship, engine, thruster):
                     if net > 1.0 + EPS_INV:
                         fake.append((m["ware"], b["stat"], dstat, net))
 
-    # E3: within a quality tier, no mod may be Pareto-dominated by another
-    # (>= on every derived stat, > on one) nor be an exact duplicate of
-    # another - either way it is a strictly redundant pick. `peaks` (which
-    # derived stats each mod uniquely or jointly tops) is kept for the
-    # informational specialists report only.
+    # VESTIGIAL: intentionally-degenerate mods parked at a token value (the
+    # "default" forward mods and every non-carrier). They are SUPPOSED to be
+    # dominated by the archetype carriers, so they are exempt from E3/E4 - but
+    # they must actually be weak: no derived stat moves by more than the cap.
+    vestigial = {m["ware"] for m in scored
+                 if max(abs(vecs[m["ware"]][k] - 1.0) for k in EVAL_STATS)
+                 <= VESTIGIAL_CAP[m["quality"]]}
+    real = [m for m in scored if m["ware"] not in vestigial]
+
+    # E3: among the NON-vestigial (archetype) mods, within a quality tier no
+    # mod may be Pareto-dominated by or identical to another - each archetype
+    # must own a distinct corner. `peaks` (which stats each tops) is kept for
+    # the informational report.
     dominated, duplicates = [], []
     peaks = {}
     for q in (1, 2, 3):
-        tier = [m for m in scored if m["quality"] == q]
+        tier = [m for m in real if m["quality"] == q]
         if not tier:
             continue
         for k in EVAL_STATS:
@@ -315,16 +331,20 @@ def evaluate(mods, ship, engine, thruster):
                        for k in EVAL_STATS):
                     duplicates.append((a, b))
 
-    # E4: tier inversion within a variant (primary + forced signature)
+    # E4: tier inversion within a variant. A variant keys on the primary stat
+    # and the SET of forced-rider stats (not their values), so the same
+    # archetype at different tiers matches and the ladder is actually checked.
+    # Only non-vestigial mods ladder (a Basic carrier legitimately beats a
+    # higher-tier default of the same primary - the default is exempt).
     def variant(m):
-        sig = frozenset((b["stat"], round(min(b["min"], b["max"]), 3))
-                        for b in m["bonuses"] if m["forced"])
+        sig = frozenset(b["stat"] for b in m["bonuses"]
+                        if m["forced"] and not (b["min"] == 1.0 == b["max"]))
         primary = None if (m["min"] == 1.0 == m["max"]) else m["stat"]
         return (primary, sig)
 
     inversions = []
-    for a in scored:
-        for b in scored:
+    for a in real:
+        for b in real:
             if variant(a) != variant(b) or a["quality"] >= b["quality"]:
                 continue
             dstat = STAT_DERIVED.get(a["stat"])
@@ -337,7 +357,7 @@ def evaluate(mods, ship, engine, thruster):
     return {"scored": scored, "scenario": scenario, "vecs": vecs,
             "peaks": peaks, "rng": rng, "crossings": crossings, "fake": fake,
             "dominated": dominated, "duplicates": duplicates,
-            "inversions": inversions}
+            "inversions": inversions, "vestigial": vestigial}
 
 
 def report(r, judge):

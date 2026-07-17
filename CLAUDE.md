@@ -47,11 +47,15 @@ pokeys-x4-mods/
   into `output/`; prototype values in the slider tool
   `tools/weapon-mod-rebalance/tuner.html` (rebuild via `dump_data.py`).
 - **engine-mod-rebalance** — rebalances the `<engine>` section of
-  `libraries/equipmentmods.xml`. **Built, all three tiers**, on fork A:
-  forward thrust stays the straight-line generalist (it feeds forward +
-  boost + travel speed at once), rivals win on what it can't buy (turn,
-  strafe, boost duration, travel spool-up); no RNG (ranges pinned), maluses
-  honest (no forward-leak refund), strict tier ladder. **NOT yet published**
+  `libraries/equipmentmods.xml`. **Built, all three tiers**, on the
+  ARCHETYPE model: each tier has four archetype carriers — Interceptor
+  (Nudger/Impeller/Slingshot), Dogfighter (Sidewinder/Antares/Whirlygig),
+  Booster (Afterburner/Delta/Atlas), Voyager (Overdrive/Vinci/Vikas) —
+  chosen by what the mod NAME evokes, with riders added to complete the
+  identity; every other mod is parked at a token "degenerate" value (Basic
+  +5%, Enhanced +10% floor). Forward thrust is priced modestly (Interceptor
+  Basic +10%) because it leaks into boost+travel; no RNG, no maluses, tiered
+  floor keeps the power curve monotonic. **NOT yet published**
   (`content.xml` `id` is the placeholder `pokeys_engine_mod_rebalance`).
   Design: `docs/engine-mod-rebalance-design.md`; scorecard:
   `docs/engine-mod-rebalance-v1.md`. Validate (exit 0 = E1-E4 pass; applies
