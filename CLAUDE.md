@@ -82,7 +82,8 @@ pokeys-x4-mods/
   No RNG, no maluses. Only 2 Enhanced wares, so Resilient (delay) is folded
   into the Enhanced/Exceptional Regenerator (decided: don't fill the gap with
   new wares). **NOT published** (placeholder id `pokeys_shield_mod_rebalance`).
-  Design: `docs/shield-mod-rebalance-design.md`. Validate (exit 0 = E1-E4):
+  Design: `docs/shield-mod-rebalance-design.md`; scorecard:
+  `docs/shield-mod-rebalance-v1.md`. Validate (exit 0 = E1-E4):
   `uv run --project ~/devel/x4-analyzer python tools/shield-mod-rebalance/evaluate.py`;
   `report.py` beside it renders the review dashboard (capacity/rate/delay +
   refill-time trade-off) into `output/shield-mod-dashboard.html`. Shield model:
