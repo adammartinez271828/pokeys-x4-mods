@@ -46,6 +46,24 @@ pokeys-x4-mods/
   `report.py` beside it renders the vanilla-vs-rebalance review dashboard
   into `output/`; prototype values in the slider tool
   `tools/weapon-mod-rebalance/tuner.html` (rebuild via `dump_data.py`).
+- **engine-mod-rebalance** — rebalances the `<engine>` section of
+  `libraries/equipmentmods.xml`. **Built, all three tiers**, on fork A:
+  forward thrust stays the straight-line generalist (it feeds forward +
+  boost + travel speed at once), rivals win on what it can't buy (turn,
+  strafe, boost duration, travel spool-up); no RNG (ranges pinned), maluses
+  honest (no forward-leak refund), strict tier ladder. **NOT yet published**
+  (`content.xml` `id` is the placeholder `pokeys_engine_mod_rebalance`).
+  Design: `docs/engine-mod-rebalance-design.md`; scorecard:
+  `docs/engine-mod-rebalance-v1.md`. Validate (exit 0 = E1-E4 pass; applies
+  the diff itself):
+  `uv run --project ~/devel/x4-analyzer python tools/engine-mod-rebalance/evaluate.py`.
+  Movement sim lives in x4-analyzer `gamedata/engines.py` (the engine
+  counterpart to `weapons.py`/`weaponsim.py`); engine-mod effect vectors are
+  ship-independent (mass/drag/inertia cancel in the modded/base ratio), so
+  the harness scores on one representative ship. NOTE: absolute boost/travel
+  m/s read low vs the encyclopedia (omitted global constants) but the
+  constant cancels in mod-vs-mod comparison; the design is NOT yet
+  in-game-verified (unlike the weapon mod's rules).
 
 ## Critical domain knowledge (validated in-game — do not "fix")
 

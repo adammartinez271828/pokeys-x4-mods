@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pokey's Engine Mod Rebalance - engine section of equipmentmods.xml only.
+
+     Design: docs/engine-mod-rebalance-design.md (fork A - forward thrust
+     stays the straight-line king; rivals win on stats it physically can't
+     buy: turn, strafe, boost duration, travel spool-up).
+     Validate: tools/engine-mod-rebalance/evaluate.py (exit 0 = E1-E4 pass;
+     the harness applies this diff itself, so a sel typo is a hard error).
+
+     THE MODEL (all ranges pinned min = max - no RNG):
+     - forwardthrust feeds forward speed AND (as a multiplier of forward
+       thrust) boost speed, travel speed and boost-accel. So a forward mod is
+       a GENERALIST: it moves four stats at once. Its cost, if any, is charged
+       in AGILITY (turn), the one currency the leak cannot refund.
+     - Every specialist (_02) buffs its axis ABOVE the forward generalist's
+       leak and pays an HONEST malus in a stat its own buff cannot refund.
+     - Every clean single-axis mod (_01) sits just above the generalist leak,
+       so it stays a valid "no-downside" pick (it wins the stat the matching
+       _02 sacrificed).
+     - The five utility mods own stats forward thrust never touches
+       (boost duration, boost-accel, strafe-accel, travel charge/attack).
+     Scenario mods (*_transport_refugees, *_escort_scenario) are
+     availability-gated and left untouched. -->
+<diff>
+
+  <!-- ============================ BASIC (quality 1) ==================== -->
+
+  <!-- Pusher = FORWARD GENERALIST. +20% forward thrust leaks +20% to boost,
+       travel and boost-accel: the universal "faster everywhere" pick, the
+       benchmark the specialists must beat on their own axis. -->
+  <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_01_mk1']/@min">1.2</replace><!-- vanilla 1.025 -->
+  <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_01_mk1']/@max">1.2</replace><!-- vanilla 1.1 -->
+
+  <!-- Juno = clean BOOST (+25%, no downside). Just above the generalist's
+       +20% boost leak, so it is never a strictly worse Pusher. -->
+  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk1']/@min">1.25</replace><!-- vanilla 1.05 -->
+  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk1']/@max">1.25</replace><!-- vanilla 1.2 -->
+
+  <!-- Creatine = BOOST DURATION specialist (+30%). Forward thrust cannot buy
+       duration, so this is an un-contested niche. -->
+  <replace sel="/equipmentmods/engine/boostduration[@ware='mod_engine_boostduration_01_mk1']/@min">1.3</replace><!-- vanilla 1.05 -->
+  <replace sel="/equipmentmods/engine/boostduration[@ware='mod_engine_boostduration_01_mk1']/@max">1.3</replace><!-- vanilla 1.2 -->
+
+  <!-- Aestus = clean TRAVEL (+25%, no downside), just above the generalist
+       travel leak. -->
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk1']/@min">1.25</replace><!-- vanilla 1.05 -->
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk1']/@max">1.25</replace><!-- vanilla 1.2 -->
+
+  <!-- Afterburner = BOOST-ACCEL specialist (+45%). Forward thrust leaks into
+       boost-accel too (Nudger reaches 1.35), so this must clear 1.35 to own
+       the stat. -->
+  <replace sel="/equipmentmods/engine/boostacc[@ware='mod_engine_travelstartthrust_01_mk1']/@min">1.45</replace><!-- vanilla 1.05 -->
+  <replace sel="/equipmentmods/engine/boostacc[@ware='mod_engine_travelstartthrust_01_mk1']/@max">1.45</replace><!-- vanilla 1.2 -->
+
+  <!-- Spur = TRAVEL ATTACK (spool-up) specialist. Lower time = faster into
+       travel; forward thrust cannot buy spool-up. -->
+  <replace sel="/equipmentmods/engine/travelattacktime[@ware='mod_engine_travelattacktime_01_mk1']/@min">0.75</replace><!-- vanilla 0.8 -->
+  <replace sel="/equipmentmods/engine/travelattacktime[@ware='mod_engine_travelattacktime_01_mk1']/@max">0.75</replace><!-- vanilla 0.95 -->
+
+  <!-- Overdrive = TRAVEL CHARGE (spool-up) specialist. -->
+  <replace sel="/equipmentmods/engine/travelchargetime[@ware='mod_engine_travelchargetime_01_mk1']/@min">0.75</replace><!-- vanilla 0.8 -->
+  <replace sel="/equipmentmods/engine/travelchargetime[@ware='mod_engine_travelchargetime_01_mk1']/@max">0.75</replace><!-- vanilla 0.95 -->
+
+  <!-- Anchor = STRAFE-ACCEL specialist (+30%). Quick sideways response;
+       distinct from Crab/Sidewinder which raise strafe top speed. -->
+  <replace sel="/equipmentmods/engine/strafeacc[@ware='mod_engine_travelreleasetime_01_mk1']/@min">1.3</replace><!-- vanilla 1.1 -->
+  <replace sel="/equipmentmods/engine/strafeacc[@ware='mod_engine_travelreleasetime_01_mk1']/@max">1.3</replace><!-- vanilla 1.3 -->
+
+  <!-- Spinner = clean ROTATION (+25%, no downside). Agility is un-leakable,
+       so this is safe from the forward generalist. -->
+  <replace sel="/equipmentmods/engine/rotationthrust[@ware='mod_engine_rotationthrust_01_mk1']/@min">1.25</replace><!-- vanilla 1.05 -->
+  <replace sel="/equipmentmods/engine/rotationthrust[@ware='mod_engine_rotationthrust_01_mk1']/@max">1.25</replace><!-- vanilla 1.2 -->
+
+  <!-- Crab = clean STRAFE (+25%, no downside). -->
+  <replace sel="/equipmentmods/engine/strafethrust[@ware='mod_engine_strafethrust_01_mk1']/@min">1.25</replace><!-- vanilla 1.05 -->
+  <replace sel="/equipmentmods/engine/strafethrust[@ware='mod_engine_strafethrust_01_mk1']/@max">1.25</replace><!-- vanilla 1.2 -->
+
+  <!-- Nudger = FORWARD SPECIALIST (+35%, leaks +35% to boost/travel/boost-
+       accel) paying an HONEST -15% turn. Vanilla charged this in boost+travel
+       - which forward thrust silently refunds - so we swap that fake malus
+       for a real agility cost: remove the boost/travel maluses, add a turn
+       malus, collapse the bonus to one child. -->
+  <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_02_mk1']/@min">1.35</replace><!-- vanilla 1.35 -->
+  <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_02_mk1']/@max">1.35</replace><!-- vanilla 1.45 -->
+  <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_02_mk1']/bonus/@max">1</replace><!-- vanilla 2 -->
+  <remove sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_02_mk1']/bonus/boostthrust"/><!-- fake malus (leak refunds it) -->
+  <remove sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_02_mk1']/bonus/travelthrust"/><!-- fake malus (leak refunds it) -->
+  <add sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_02_mk1']/bonus"><rotationthrust min="0.85" max="0.85"/></add><!-- honest agility cost -->
+
+  <!-- Minuteman = BOOST SPECIALIST (+45%, above the forward leak) paying an
+       honest -15% travel. Vanilla travel malus 0.7-0.75 -> pinned 0.85. -->
+  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_02_mk1']/@min">1.45</replace><!-- vanilla 1.35 -->
+  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_02_mk1']/@max">1.45</replace><!-- vanilla 1.45 -->
+  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_02_mk1']/bonus/travelthrust/@min">0.85</replace><!-- vanilla 0.7 -->
+  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_02_mk1']/bonus/travelthrust/@max">0.85</replace><!-- vanilla 0.75 -->
+
+  <!-- Reaver = TRAVEL SPECIALIST (+45%) paying an honest -15% boost. -->
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_02_mk1']/@min">1.45</replace><!-- vanilla 1.35 -->
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_02_mk1']/@max">1.45</replace><!-- vanilla 1.45 -->
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_02_mk1']/bonus/boostthrust/@min">0.85</replace><!-- vanilla 0.7 -->
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_02_mk1']/bonus/boostthrust/@max">0.85</replace><!-- vanilla 0.75 -->
+
+  <!-- Twister = ROTATION SPECIALIST (+45%) paying an honest -15% strafe. -->
+  <replace sel="/equipmentmods/engine/rotationthrust[@ware='mod_engine_rotationthrust_02_mk1']/@min">1.45</replace><!-- vanilla 1.35 -->
+  <replace sel="/equipmentmods/engine/rotationthrust[@ware='mod_engine_rotationthrust_02_mk1']/@max">1.45</replace><!-- vanilla 1.45 -->
+  <replace sel="/equipmentmods/engine/rotationthrust[@ware='mod_engine_rotationthrust_02_mk1']/bonus/strafethrust/@min">0.85</replace><!-- vanilla 0.8 -->
+  <replace sel="/equipmentmods/engine/rotationthrust[@ware='mod_engine_rotationthrust_02_mk1']/bonus/strafethrust/@max">0.85</replace><!-- vanilla 0.9 -->
+
+  <!-- Sidewinder = STRAFE SPECIALIST (+45%) paying an honest -15% turn. -->
+  <replace sel="/equipmentmods/engine/strafethrust[@ware='mod_engine_strafethrust_02_mk1']/@min">1.45</replace><!-- vanilla 1.35 -->
+  <replace sel="/equipmentmods/engine/strafethrust[@ware='mod_engine_strafethrust_02_mk1']/@max">1.45</replace><!-- vanilla 1.45 -->
+  <replace sel="/equipmentmods/engine/strafethrust[@ware='mod_engine_strafethrust_02_mk1']/bonus/rotationthrust/@min">0.85</replace><!-- vanilla 0.7 -->
+  <replace sel="/equipmentmods/engine/strafethrust[@ware='mod_engine_strafethrust_02_mk1']/bonus/rotationthrust/@max">0.85</replace><!-- vanilla 0.75 -->
+
+  <!-- ========================= ENHANCED (quality 2) =================== -->
+  <!-- Same variants as Basic, one power step up (the research ladder). Only
+       forward/boost/travel exist at q2. The _01 pools stay optional but are
+       pinned (selection RNG is engine-side and cannot be removed). -->
+
+  <!-- Propeller = FORWARD GENERALIST +30% (> Basic Pusher +20%). -->
+  <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_01_mk2']/@min">1.3</replace><!-- vanilla 1.05 -->
+  <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_01_mk2']/@max">1.3</replace><!-- vanilla 1.1 -->
+  <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_01_mk2']/bonus/rotationthrust/@min">1.2</replace><!-- pin pool -->
+  <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_01_mk2']/bonus/rotationthrust/@max">1.2</replace>
+  <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_01_mk2']/bonus/strafethrust/@min">1.2</replace><!-- pin pool -->
+  <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_01_mk2']/bonus/strafethrust/@max">1.2</replace>
+
+  <!-- Antares = clean BOOST +35% (> Basic Juno +25%). -->
+  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk2']/@min">1.35</replace><!-- vanilla 1.1 -->
+  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk2']/@max">1.35</replace><!-- vanilla 1.2 -->
+  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk2']/bonus/boostduration/@min">1.2</replace><!-- pin pool -->
+  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk2']/bonus/boostduration/@max">1.2</replace>
+  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk2']/bonus/boostacc/@min">1.2</replace><!-- pin pool -->
+  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk2']/bonus/boostacc/@max">1.2</replace>
+  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk2']/bonus/strafethrust/@min">1.2</replace><!-- pin pool -->
+  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk2']/bonus/strafethrust/@max">1.2</replace>
+
+  <!-- Mira = clean TRAVEL +35% (> Basic Aestus +25%). -->
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk2']/@min">1.35</replace><!-- vanilla 1.1 -->
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk2']/@max">1.35</replace><!-- vanilla 1.2 -->
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk2']/bonus/travelstartthrust/@min">1.2</replace><!-- pin pool -->
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk2']/bonus/travelstartthrust/@max">1.2</replace>
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk2']/bonus/travelattacktime/@min">0.85</replace><!-- pin pool -->
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk2']/bonus/travelattacktime/@max">0.85</replace>
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk2']/bonus/travelchargetime/@min">0.85</replace><!-- pin pool -->
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk2']/bonus/travelchargetime/@max">0.85</replace>
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk2']/bonus/rotationthrust/@min">1.2</replace><!-- pin pool -->
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk2']/bonus/rotationthrust/@max">1.2</replace>
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk2']/bonus/strafethrust/@min">1.2</replace><!-- pin pool -->
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk2']/bonus/strafethrust/@max">1.2</replace>
+
+  <!-- Impeller = FORWARD SPECIALIST +45% (> Basic Nudger +35%) with the same
+       honest -15% turn cost: swap the fake boost/travel malus for rotation. -->
+  <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_02_mk2']/@min">1.45</replace><!-- vanilla 1.2 -->
+  <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_02_mk2']/@max">1.45</replace><!-- vanilla 1.25 -->
+  <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_02_mk2']/bonus/@max">1</replace><!-- vanilla 2 -->
+  <remove sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_02_mk2']/bonus/boostthrust"/><!-- fake malus -->
+  <remove sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_02_mk2']/bonus/travelthrust"/><!-- fake malus -->
+  <add sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_02_mk2']/bonus"><rotationthrust min="0.85" max="0.85"/></add><!-- honest agility cost -->
+
+  <!-- Delta = BOOST SPECIALIST +55% (> Basic Minuteman +45%), honest -15% travel. -->
+  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_02_mk2']/@min">1.55</replace><!-- vanilla 1.2 -->
+  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_02_mk2']/@max">1.55</replace><!-- vanilla 1.25 -->
+  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_02_mk2']/bonus/travelthrust/@min">0.85</replace><!-- vanilla 0.9 -->
+  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_02_mk2']/bonus/travelthrust/@max">0.85</replace><!-- vanilla 0.95 -->
+
+  <!-- Vinci = TRAVEL SPECIALIST +55% (> Basic Reaver +45%), honest -15% boost. -->
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_02_mk2']/@min">1.55</replace><!-- vanilla 1.2 -->
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_02_mk2']/@max">1.55</replace><!-- vanilla 1.25 -->
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_02_mk2']/bonus/boostthrust/@min">0.85</replace><!-- vanilla 0.9 -->
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_02_mk2']/bonus/boostthrust/@max">0.85</replace><!-- vanilla 0.95 -->
+
+  <!-- ======================= EXCEPTIONAL (quality 3) ================== -->
+  <!-- Four capstones, each a rich FORCED set on a distinct identity. Pinned;
+       riders are all buffs (no maluses), so the tier is pure upside - the
+       best you can craft. Values sit above the Enhanced specialists. -->
+
+  <!-- Slingshot = SPEED capstone: +40% forward (leaks to boost/travel) PLUS
+       explicit boost/travel/turn/strafe-accel riders. The ultimate go-fast. -->
+  <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_01_mk3']/@min">1.4</replace><!-- vanilla 1.1 -->
+  <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_01_mk3']/@max">1.4</replace><!-- vanilla 1.3 -->
+  <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_01_mk3']/bonus/boostthrust/@min">1.3</replace>
+  <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_01_mk3']/bonus/boostthrust/@max">1.3</replace>
+  <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_01_mk3']/bonus/travelthrust/@min">1.3</replace>
+  <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_01_mk3']/bonus/travelthrust/@max">1.3</replace>
+  <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_01_mk3']/bonus/rotationthrust/@min">1.2</replace>
+  <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_01_mk3']/bonus/rotationthrust/@max">1.2</replace>
+  <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_01_mk3']/bonus/strafeacc/@min">1.3</replace>
+  <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_01_mk3']/bonus/strafeacc/@max">1.3</replace>
+
+  <!-- Whirlygig = AGILITY capstone: +50% turn + forward + strafe. -->
+  <replace sel="/equipmentmods/engine/rotationthrust[@ware='mod_engine_rotationthrust_01_mk3']/@min">1.5</replace><!-- vanilla 1.2 -->
+  <replace sel="/equipmentmods/engine/rotationthrust[@ware='mod_engine_rotationthrust_01_mk3']/@max">1.5</replace><!-- vanilla 1.5 -->
+  <replace sel="/equipmentmods/engine/rotationthrust[@ware='mod_engine_rotationthrust_01_mk3']/bonus/forwardthrust/@min">1.15</replace>
+  <replace sel="/equipmentmods/engine/rotationthrust[@ware='mod_engine_rotationthrust_01_mk3']/bonus/forwardthrust/@max">1.15</replace>
+  <replace sel="/equipmentmods/engine/rotationthrust[@ware='mod_engine_rotationthrust_01_mk3']/bonus/strafethrust/@min">1.4</replace>
+  <replace sel="/equipmentmods/engine/rotationthrust[@ware='mod_engine_rotationthrust_01_mk3']/bonus/strafethrust/@max">1.4</replace>
+
+  <!-- Atlas = BOOST capstone: +30% boost + forward + duration + accel + strafe. -->
+  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk3']/@min">1.3</replace><!-- vanilla 1.1 -->
+  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk3']/@max">1.3</replace><!-- vanilla 1.3 -->
+  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk3']/bonus/forwardthrust/@min">1.15</replace>
+  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk3']/bonus/forwardthrust/@max">1.15</replace>
+  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk3']/bonus/boostduration/@min">1.3</replace>
+  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk3']/bonus/boostduration/@max">1.3</replace>
+  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk3']/bonus/boostacc/@min">1.3</replace>
+  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk3']/bonus/boostacc/@max">1.3</replace>
+  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk3']/bonus/strafethrust/@min">1.25</replace>
+  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk3']/bonus/strafethrust/@max">1.25</replace>
+
+  <!-- Vikas = TRAVEL capstone: +40% travel + forward + start-thrust + fast
+       spool (attack/charge) + turn + strafe. The long-haul king. -->
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk3']/@min">1.4</replace><!-- vanilla 1.1 -->
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk3']/@max">1.4</replace><!-- vanilla 1.3 -->
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk3']/bonus/forwardthrust/@min">1.15</replace>
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk3']/bonus/forwardthrust/@max">1.15</replace>
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk3']/bonus/travelstartthrust/@min">1.3</replace>
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk3']/bonus/travelstartthrust/@max">1.3</replace>
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk3']/bonus/travelattacktime/@min">0.75</replace>
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk3']/bonus/travelattacktime/@max">0.75</replace>
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk3']/bonus/travelchargetime/@min">0.75</replace>
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk3']/bonus/travelchargetime/@max">0.75</replace>
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk3']/bonus/rotationthrust/@min">1.2</replace>
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk3']/bonus/rotationthrust/@max">1.2</replace>
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk3']/bonus/strafethrust/@min">1.2</replace>
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk3']/bonus/strafethrust/@max">1.2</replace>
+
+</diff>
