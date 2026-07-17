@@ -44,10 +44,11 @@
   <replace sel="/equipmentmods/ship/radarcloak[@ware='mod_ship_radarcloak_01_mk1']/bonus/radarrange/@min">0.85</replace><!-- vanilla 0.55 -->
   <replace sel="/equipmentmods/ship/radarcloak[@ware='mod_ship_radarcloak_01_mk1']/bonus/radarrange/@max">0.85</replace><!-- vanilla 0.7 -->
 
-  <!-- Explorer = Grit: -60% hazard damage + hide cargo (folds in Smuggler).
-       Vanilla hull malus dropped. -->
-  <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk1']/@min">0.4</replace><!-- vanilla 0.6 -->
-  <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk1']/@max">0.4</replace><!-- vanilla 0.9 -->
+  <!-- Explorer = Grit: 60% hazard-damage reduction + hide cargo (folds in
+       Smuggler). regiondamage = reduction fraction (higher = better, 1.0 =
+       immunity, 0 = neutral). Vanilla hull malus dropped. -->
+  <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk1']/@min">0.6</replace><!-- vanilla 0.6-0.9 -->
+  <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk1']/@max">0.6</replace>
   <remove sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk1']/bonus"/><!-- drop maxhull malus -->
   <add sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk1']"><bonus chance="1.0" max="1"><hidecargochance min="0.7" max="0.7"/></bonus></add>
 
@@ -84,11 +85,11 @@
 
   <!-- Tank = Mettle (regiondamage ware): hull + radar + ALL capacity. Region
        damage pinned neutral. Add the whole logistics bonus. -->
-  <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk2']/@min">1.0</replace><!-- neutral: Tank is not an Explorer -->
-  <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk2']/@max">1.0</replace>
+  <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk2']/@min">0.0</replace><!-- neutral (0% reduction): Tank is not an Explorer -->
+  <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk2']/@max">0.0</replace>
   <add sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk2']"><bonus chance="1.0" max="6"><maxhull min="1.4" max="1.4"/><radarrange min="1.667" max="1.667"/><countermeasurecapacity min="6" max="6"/><deployablecapacity min="6" max="6"/><missilecapacity min="6" max="6"/><unitcapacity min="6" max="6"/></bonus></add>
 
-  <!-- Explorer = Composite (mass ware): -80% hazard + hull + hide cargo. Mass
+  <!-- Explorer = Composite (mass ware): 80% hazard reduction + hull + hide cargo. Mass
        pinned neutral; keep the pool's maxhull, add regiondamage + hidecargo. -->
   <replace sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk2']/@min">1.0</replace><!-- neutral: Explorer is not a Racer -->
   <replace sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk2']/@max">1.0</replace>
@@ -100,7 +101,7 @@
   <remove sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk2']/bonus/unitcapacity"/>
   <replace sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk2']/bonus/maxhull/@min">1.1</replace>
   <replace sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk2']/bonus/maxhull/@max">1.1</replace>
-  <add sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk2']/bonus"><regiondamage min="0.2" max="0.2"/></add>
+  <add sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk2']/bonus"><regiondamage min="0.8" max="0.8"/></add>
   <add sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk2']/bonus"><hidecargochance min="0.85" max="0.85"/></add>
 
   <!-- Ghost = Veil: -0.5 signature + hull. -->
@@ -133,8 +134,8 @@
   <!-- Tank = Tenacity (regiondamage ware): the support/command capstone. Big
        hull + strong radar (+100%) + heavy ALL-capacity loadout. Region damage
        pinned neutral. -->
-  <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk3']/@min">1.0</replace><!-- neutral -->
-  <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk3']/@max">1.0</replace>
+  <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk3']/@min">0.0</replace><!-- neutral (0% reduction): Tank -->
+  <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk3']/@max">0.0</replace>
   <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk3']/bonus/@max">6</replace>
   <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk3']/bonus/maxhull/@min">1.6</replace>
   <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk3']/bonus/maxhull/@max">1.6</replace>
@@ -148,6 +149,6 @@
        hull + a little mobility. Hidecargo primary is the cargo-hide. -->
   <replace sel="/equipmentmods/ship/hidecargochance[@ware='mod_ship_hidecargo_01']/@min">1.0</replace>
   <replace sel="/equipmentmods/ship/hidecargochance[@ware='mod_ship_hidecargo_01']/@max">1.0</replace>
-  <add sel="/equipmentmods/ship/hidecargochance[@ware='mod_ship_hidecargo_01']"><bonus chance="1.0" max="4"><regiondamage min="0.0" max="0.0"/><maxhull min="1.2" max="1.2"/><mass min="0.95" max="0.95"/><drag min="0.95" max="0.95"/></bonus></add>
+  <add sel="/equipmentmods/ship/hidecargochance[@ware='mod_ship_hidecargo_01']"><bonus chance="1.0" max="4"><regiondamage min="1.0" max="1.0"/><maxhull min="1.2" max="1.2"/><mass min="0.95" max="0.95"/><drag min="0.95" max="0.95"/></bonus></add>
 
 </diff>

@@ -48,7 +48,10 @@ The other six Basic wares (drag, radarrange, and all four capacity mods) are
 - **Honest / flavour touches.** Ghost keeps a mild *stealth-costs-radar* trade
   at Basic (Exceptional flips to a radar buff). Explorer's vanilla
   *hazard-resist-costs-hull* malus is dropped, and hazard resist scales
-  **−60% / −80% / −100%** (Grit / Mettle / **Tenacity** = total immunity).
+  **60% / 80% / 100%** along the Explorer line (Grit / Composite / **Mirage** =
+  total immunity). NB: `regiondamage` is a hazard-damage **reduction fraction**
+  (higher = better, 1.0 = 100% reduction/immunity, 0 = neutral, negative =
+  extra damage) — NOT a damage multiplier; the Tank mods pin it to 0 (neutral).
 - **Degenerate (Basic only, parked):** the redundant `drag` ware + the
   missile/unit capacity mods (folded into Tank above Basic anyway).
 - **No RNG** (every range pinned).

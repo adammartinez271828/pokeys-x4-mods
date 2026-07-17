@@ -147,6 +147,8 @@ def cell(stat, value):
         span, disp = abs(value) / 0.8, f"{value:+.2f}"
     elif stat == "hidecargochance":
         span, disp = abs(value), f"{value:g}"
+    elif stat == "regiondamage":            # reduction fraction, higher better
+        span, disp = abs(value), f"{value:.0%}"
     elif stat in CAP:                       # flat +N consumables
         span, disp = abs(value) / 8.0, f"+{int(round(value))}"
     else:                                   # multiplier stats
@@ -234,7 +236,7 @@ r.addEventListener('mouseout',function(e){if(e.target.closest('.c[data-tip]'))ti
 
 LABELS = {
     "maxhull": "hull HP", "mass": "mass (lighter=faster)", "drag": "drag (less=faster)",
-    "radarrange": "radar range", "radarcloak": "signature", "regiondamage": "hazard damage taken",
+    "radarrange": "radar range", "radarcloak": "signature", "regiondamage": "hazard damage reduction",
     "countermeasurecapacity": "countermeasure capacity", "deployablecapacity": "deployable capacity",
     "missilecapacity": "missile capacity", "unitcapacity": "unit capacity",
     "hidecargochance": "hide cargo",
