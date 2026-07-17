@@ -10,3 +10,6 @@ __pycache__/
 # generated tuner build (rebuild: uv run ... tools/weapon-mod-rebalance/dump_data.py)
 tools/weapon-mod-rebalance/tuner.html
 tools/weapon-mod-rebalance/tuner-data.json
+
+# editor backups
+*~
