@@ -16,8 +16,10 @@ Three separate defects combine to cause this:
    at optimal roll, a ×2 fire-rate BUFF. Rerolling is cheap, so realized
    value = range max.
 2. **Maluses are charged in currencies many weapons don't spend.** The
-   cooling penalty is free on the ~57 heatless weapons (all pure clip
-   weapons, most L/XL turrets) and cheap wherever firing time dominates.
+   cooling penalty is free on the 143 heatless weapons (28 clip/heatless
+   main guns plus all 115 turrets — every turret in the game, every size,
+   is heatless; verified against v9.0 game files) and cheap wherever
+   firing time dominates.
 3. **All mods trade in one scalar (DPS)**, and Slasher's ×1.503 is the
    game's largest damage multiplier — larger than every Exceptional damage
    primary (max ×1.348). Tier means nothing.

@@ -27,9 +27,10 @@ Four separate defects combine to produce the lottery:
 2. **The reroll makes ranges free.** Since you can reroll cheaply, you always
    realize the best end. A wide range is pure upside, not a risk.
 3. **Penalties are charged in currencies many weapons don't spend.** The
-   cooling malus costs nothing on the ~57 heatless weapons (pure clip guns,
-   most L/XL turrets) and little wherever firing time dominates the cycle.
-   The "cost" of the buff is waived for most of the roster.
+   cooling malus costs nothing on the 143 heatless weapons (28 clip/heatless
+   main guns plus all 115 turrets — every turret is heatless, every size)
+   and little wherever firing time dominates the cycle. The "cost" of the
+   buff is waived for most of the roster.
 4. **Everything trades in one scalar (DPS), and tier is meaningless.**
    Slasher's ×1.503 is the largest damage multiplier in the game — larger
    than every *Exceptional* damage primary (max ×1.348). A common Basic mod
