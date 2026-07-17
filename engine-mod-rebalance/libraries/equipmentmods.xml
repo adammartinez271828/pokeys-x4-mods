@@ -103,28 +103,35 @@
        token, turn + strafe riders replace the vanilla pool. -->
   <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk2']/@min">1.05</replace><!-- vanilla 1.1 (token) -->
   <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk2']/@max">1.05</replace><!-- vanilla 1.2 -->
-  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk2']/bonus/@max">2</replace>
+  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk2']/bonus/@max">3</replace>
   <remove sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk2']/bonus/boostduration"/>
   <remove sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk2']/bonus/boostacc"/>
   <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk2']/bonus/strafethrust/@min">1.2</replace>
   <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk2']/bonus/strafethrust/@max">1.2</replace>
-  <add sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk2']/bonus"><rotationthrust min="1.25" max="1.25"/></add>
+  <add sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk2']/bonus"><rotationthrust min="1.2" max="1.2"/></add><!-- 1.25 trimmed to offset the fwd rider -->
+  <add sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk2']/bonus"><forwardthrust min="1.075" max="1.075"/></add><!-- +7.5% speed vs Basic -->
+
 
   <!-- BOOSTER = Delta. +30% boost + duration rider (vanilla travel malus
        swapped for the buff). -->
-  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_02_mk2']/@min">1.3</replace><!-- vanilla 1.2 -->
-  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_02_mk2']/@max">1.3</replace><!-- vanilla 1.25 -->
+  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_02_mk2']/@min">1.25</replace><!-- vanilla 1.2; 1.30 trimmed to offset fwd rider -->
+  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_02_mk2']/@max">1.25</replace><!-- vanilla 1.25 -->
+  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_02_mk2']/bonus/@max">2</replace>
   <remove sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_02_mk2']/bonus/travelthrust"/>
   <add sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_02_mk2']/bonus"><boostduration min="1.2" max="1.2"/></add>
+  <add sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_02_mk2']/bonus"><forwardthrust min="1.075" max="1.075"/></add><!-- +7.5% speed vs Basic -->
+
 
   <!-- VOYAGER = Vinci. +30% travel + fast spool riders (vanilla boost malus
        swapped for spool). -->
-  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_02_mk2']/@min">1.3</replace><!-- vanilla 1.2 -->
-  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_02_mk2']/@max">1.3</replace><!-- vanilla 1.25 -->
-  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_02_mk2']/bonus/@max">2</replace>
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_02_mk2']/@min">1.25</replace><!-- vanilla 1.2; 1.30 trimmed to offset fwd rider -->
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_02_mk2']/@max">1.25</replace><!-- vanilla 1.25 -->
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_02_mk2']/bonus/@max">3</replace>
   <remove sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_02_mk2']/bonus/boostthrust"/>
   <add sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_02_mk2']/bonus"><travelchargetime min="0.8" max="0.8"/></add>
   <add sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_02_mk2']/bonus"><travelattacktime min="0.82" max="0.82"/></add>
+  <add sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_02_mk2']/bonus"><forwardthrust min="1.075" max="1.075"/></add><!-- +7.5% speed vs Basic -->
+
 
   <!-- ---- Enhanced degenerate (parked at +10%, pools neutralised to 1.0) ---- -->
   <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_01_mk2']/@min">1.1</replace><!-- Propeller -->
@@ -170,9 +177,11 @@
   <replace sel="/equipmentmods/engine/rotationthrust[@ware='mod_engine_rotationthrust_01_mk3']/bonus/strafethrust/@min">1.3</replace>
   <replace sel="/equipmentmods/engine/rotationthrust[@ware='mod_engine_rotationthrust_01_mk3']/bonus/strafethrust/@max">1.3</replace>
 
-  <!-- BOOSTER = Atlas: +35% boost + forward + duration + accel + strafe. -->
-  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk3']/@min">1.35</replace><!-- vanilla 1.1 -->
-  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk3']/@max">1.35</replace><!-- vanilla 1.3 -->
+  <!-- BOOSTER = Atlas: +50% boost + forward + duration + accel + strafe. Must
+       clearly out-boost Slingshot, whose forward leak x boost rider reaches
+       ~1.56 boost speed; +50% boost x its 1.15 forward rider = ~1.73. -->
+  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk3']/@min">1.5</replace><!-- vanilla 1.1 -->
+  <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk3']/@max">1.5</replace><!-- vanilla 1.3 -->
   <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk3']/bonus/forwardthrust/@min">1.15</replace>
   <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk3']/bonus/forwardthrust/@max">1.15</replace>
   <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk3']/bonus/boostduration/@min">1.3</replace>
@@ -182,10 +191,11 @@
   <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk3']/bonus/strafethrust/@min">1.2</replace>
   <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk3']/bonus/strafethrust/@max">1.2</replace>
 
-  <!-- VOYAGER = Vikas: +35% travel + forward + start-thrust + fast spool +
-       turn + strafe. -->
-  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk3']/@min">1.35</replace><!-- vanilla 1.1 -->
-  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk3']/@max">1.35</replace><!-- vanilla 1.3 -->
+  <!-- VOYAGER = Vikas: +50% travel + forward + start-thrust + fast spool +
+       turn + strafe. Must clearly out-travel Slingshot's ~1.56 leaked travel
+       speed; +50% travel x its 1.15 forward rider = ~1.73. -->
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk3']/@min">1.5</replace><!-- vanilla 1.1 -->
+  <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk3']/@max">1.5</replace><!-- vanilla 1.3 -->
   <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk3']/bonus/forwardthrust/@min">1.15</replace>
   <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk3']/bonus/forwardthrust/@max">1.15</replace>
   <replace sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_01_mk3']/bonus/travelstartthrust/@min">1.25</replace>

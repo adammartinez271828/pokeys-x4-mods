@@ -128,12 +128,16 @@ repurposed into the agility carrier via rotation + strafe riders.
 
 **Key rules:**
 
-- **Forward thrust is a broad lever, priced modestly.** Because +X% forward
-  lands on forward, boost, travel *and* boost-accel at once, the Interceptor
-  is pinned low (Basic **+10%**) — that +10% is worth as much as a
-  specialist's bigger single-axis number. This also defuses the vanilla
-  super-lever/fake-malus problem: there are no maluses at all now
-  (archetypes are pure upside), so nothing to secretly refund.
+- **Forward thrust is the "always good" stat** — the engine analog of weapon
+  *damage*: it's never wasted, so it reads as a plain "this is generally
+  better" bump. Because +X% forward also lands on boost, travel *and*
+  boost-accel at once, the Interceptor is pinned low (Basic **+10%**) — that
+  +10% is worth as much as a specialist's bigger single-axis number — and the
+  non-Interceptor carriers from Enhanced up carry a small forward rider
+  (**+7.5%**) as their "higher tier = generally better" signature, offset by a
+  light trim elsewhere. This framing also defuses the vanilla
+  super-lever/fake-malus problem: there are no maluses at all now (archetypes
+  are pure upside), so nothing to secretly refund.
 - **No RNG** (every range pinned `min = max`).
 - **Tiered floor keeps the power curve monotonic.** The weakest mod pays
   **+5%** at Basic, **+10%** at Enhanced; Exceptional is all archetypes
