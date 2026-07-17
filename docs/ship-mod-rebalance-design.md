@@ -16,18 +16,19 @@ crowded into Basic, only 4 each at Enhanced/Exceptional. Everything rolls RNG.
 that fold into Tank above Basic. Wares are repurposed where a ware's stat
 doesn't match its archetype, using its existing bonus pool.
 
-| Role | Feel | Levers | Basic / Enhanced / Exceptional |
-|---|---|---|---|
-| **Racer** | accel + top speed | mass + drag | mass_mk1 / mass_mk2 / mass_mk3 |
-| **Tank** | durability + loaded logistics | maxhull + radar + ALL capacity | maxhull_mk1 / drag_mk2\* / hidecargo\* |
-| **Ghost** | stealth | radarcloak | radarcloak_mk1/mk2/mk3 |
-| **Explorer** | hazard resist + hide cargo | regiondamage (+ hidecargo) | regiondamage_mk1/mk2/mk3 |
-| **Recon** | sensors (folds → Tank) | radarrange | radarrange_mk1 |
-| **Loadout / Barrage** | all capacity (folds → Tank) | CM/deploy/missile/unit | countermeasure_mk1 |
-| **Smuggler** | hide cargo (folds → Explorer) | hidecargo | deployable_mk1 |
+Carriers are chosen so each ware's **name** fits the archetype (bundles are
+moved onto whatever ware is best-named; a mismatched primary stat is pinned
+neutral and the bundle rides on the bonus):
 
-\* The Enhanced `drag` ware and Exceptional `hidecargo` ware are repurposed as
-Tank — their vanilla pools already carry the maxhull/radar/capacity riders.
+| Role | Feel | Basic / Enhanced / Exceptional (ware — name) |
+|---|---|---|
+| **Racer** | accel + top speed | mass_mk1 (Honeycomb) / **drag_mk2 (Lubricator)** / mass_mk3 (Nanotube) |
+| **Tank** | durability + loaded logistics | maxhull_mk1 (Buttress) / **regiondamage_mk2 (Mettle)** / **regiondamage_mk3 (Tenacity)** |
+| **Ghost** | stealth | radarcloak_mk1/mk2/mk3 (Cloak/Veil/Shroud) |
+| **Explorer** | hazard resist + hide cargo | regiondamage_mk1 (Grit) / **mass_mk2 (Composite)** / **hidecargo (Mirage)** |
+| **Recon** | sensors (folds → Tank) | radarrange_mk1 (Scope) |
+| **Loadout** | all capacity (folds → Tank) | **missilecapacity_mk1 (Bandolier)** — one-stop-shop, +4 to all four |
+| **Smuggler** | hide cargo (folds → Explorer) | deployable_mk1 (Rack) |
 
 - **maxhull is the always-good stat** (hull analog of damage / forward speed /
   shield capacity): the **tier sweetener** — it rides on *every*

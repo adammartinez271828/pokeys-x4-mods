@@ -53,7 +53,7 @@ STATS = ["maxhull", "mass", "drag", "radarrange", "radarcloak", "regiondamage",
 # archetype, so exempt from E3/E4. (The deployable ware is the Smuggler.)
 DEGENERATE = {
     "mod_ship_drag_01_mk1",
-    "mod_ship_missilecapacity_01_mk1",
+    "mod_ship_countermeasurecapacity_01_mk1",
     "mod_ship_unitcapacity_01_mk1",
 }
 

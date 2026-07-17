@@ -2,61 +2,56 @@
 <!-- Pokey's Hull Mod Rebalance - ship section of equipmentmods.xml only.
      DRAFT for review.
 
-     The <ship> section is the most heterogeneous (~11 stat families). Four
-     archetypes span all three tiers, plus Basic-only utility picks:
+     Four archetypes span all three tiers, plus Basic-only utility picks.
+     Carriers are chosen so the ware's NAME fits the archetype:
 
-       Archetype  Feel                     Levers                Carriers (Q1/Q2/Q3)
-       Racer      mobility (accel+speed)   mass + drag           mass_mk1/mk2/mk3
-       Tank       durability + support     maxhull + radar +     maxhull_mk1 /
-                  (loaded logistics)       ALL capacity          drag_mk2 / hidecargo
-       Ghost      stealth (+ hide cargo)   radarcloak            radarcloak_mk1/mk2/mk3
-       Explorer   hazard resistance        regiondamage          regiondamage_mk1/mk2/mk3
-       Recon      sensors (Basic; folds)   radarrange            radarrange_mk1
-       Loadout    countermeasures (Basic)  countermeasurecap     countermeasure_mk1
-       Smuggler   hide cargo (Basic)       hidecargo+deployable  deployable_mk1
+       Role       Levers                    Basic / Enhanced / Exceptional ware
+       Racer      mass + drag               mass_mk1(Honeycomb)/drag_mk2(Lubricator)/mass_mk3(Nanotube)
+       Tank       maxhull + radar + ALL cap maxhull_mk1(Buttress)/regiondamage_mk2(Mettle)/regiondamage_mk3(Tenacity)
+       Ghost      radarcloak (stealth)      radarcloak_mk1(Cloak)/mk2(Veil)/mk3(Shroud)
+       Explorer   regiondamage + hide cargo regiondamage_mk1(Grit)/mass_mk2(Composite)/hidecargo(Mirage)
+       Recon      radarrange                radarrange_mk1(Scope)
+       Loadout    ALL capacity (one-stop)   missilecapacity_mk1(Bandolier)
+       Smuggler   hide cargo                deployable_mk1(Rack)
 
-     - MAXHULL is the always-good stat (hull analog of damage / forward speed /
-       shield capacity): it scales each tier and rides on EVERY Enhanced (+10%)
-       and Exceptional (+20%) mod. Tank is built on it.
-     - CAPACITY mods are FLAT (+N consumables; base ~8 on S to ~20 on L), so we
-       can be generous. Tank is the loaded logistics mod: it folds in Recon +
-       Loadout and carries ALL capacity types, scaling per tier.
-     - Cargo hiding lives on the Smuggler (Basic), Shroud (Exc Ghost) and Mirage
-       (Exc Tank).
-     - No RNG. Ghost keeps a mild stealth-costs-radar cost at Basic (flips to a
-       radar buff at Exceptional). Explorer's vanilla hull malus dropped; at
-       Exceptional it is total hazard immunity.
-     - Degenerate (Basic only, parked): the redundant drag ware + missile/unit
-       capacity (folded into Tank above Basic anyway). -->
+     - MAXHULL is the always-good tier sweetener (+10% Enh, +20% Exc on every
+       mod). CAPACITY is FLAT additive (+N); Bandolier / Tank give all four
+       types. Radar scales +33/67/100%; hazard resist 60/80/100%.
+     - Cargo hiding folds into the EXPLORER line (Rack -> Composite -> Mirage).
+     - Ghost keeps a mild stealth-costs-radar cost at Basic (radar buff at Exc).
+       Explorer's vanilla hull malus dropped. No RNG.
+     - Where a ware's own stat doesn't fit its archetype it is pinned neutral
+       and the archetype rides on the bonus (repurposed container).
+     - Degenerate (Basic, parked): drag ware + countermeasure/unit capacity. -->
 <diff>
 
   <!-- ============================ BASIC (quality 1) ==================== -->
 
-  <!-- Racer = mass: -10% mass (accel) + -10% drag (top speed). -->
+  <!-- Racer = Honeycomb: -10% mass (accel) + -10% drag (top speed). -->
   <replace sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk1']/@min">0.9</replace><!-- vanilla 0.833 -->
   <replace sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk1']/@max">0.9</replace><!-- vanilla 0.953 -->
   <add sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk1']"><bonus chance="1.0" max="1"><drag min="0.9" max="0.9"/></bonus></add>
 
-  <!-- Tank = maxhull: +20% hull. -->
+  <!-- Tank = Buttress: +20% hull. -->
   <replace sel="/equipmentmods/ship/maxhull[@ware='mod_ship_maxhull_01_mk1']/@min">1.2</replace><!-- vanilla 1.05 -->
   <replace sel="/equipmentmods/ship/maxhull[@ware='mod_ship_maxhull_01_mk1']/@max">1.2</replace><!-- vanilla 1.2 -->
 
-  <!-- Recon = radar range: +33% (folds into Tank above Basic). -->
+  <!-- Recon = Scope: +33% radar range (folds into Tank above Basic). -->
   <replace sel="/equipmentmods/ship/radarrange[@ware='mod_ship_radarrange_01_mk1']/@min">1.333</replace><!-- vanilla 1.05 -->
   <replace sel="/equipmentmods/ship/radarrange[@ware='mod_ship_radarrange_01_mk1']/@max">1.333</replace><!-- vanilla 1.2 -->
 
-  <!-- Loadout = Barrage: the one-stop-shop capacity mod, +4 to ALL of
-       CM/deploy/missile/unit (folds into Tank above Basic). -->
-  <replace sel="/equipmentmods/ship/countermeasurecapacity[@ware='mod_ship_countermeasurecapacity_01_mk1']/@min">4</replace><!-- vanilla 1 -->
-  <replace sel="/equipmentmods/ship/countermeasurecapacity[@ware='mod_ship_countermeasurecapacity_01_mk1']/@max">4</replace><!-- vanilla 4 -->
-  <add sel="/equipmentmods/ship/countermeasurecapacity[@ware='mod_ship_countermeasurecapacity_01_mk1']"><bonus chance="1.0" max="3"><deployablecapacity min="4" max="4"/><missilecapacity min="4" max="4"/><unitcapacity min="4" max="4"/></bonus></add>
+  <!-- Loadout = Bandolier: the one-stop-shop, +4 to ALL of CM/deploy/missile/
+       unit (folds into Tank above Basic). Missile ware carries it. -->
+  <replace sel="/equipmentmods/ship/missilecapacity[@ware='mod_ship_missilecapacity_01_mk1']/@min">4</replace><!-- vanilla 1 -->
+  <replace sel="/equipmentmods/ship/missilecapacity[@ware='mod_ship_missilecapacity_01_mk1']/@max">4</replace><!-- vanilla 4 -->
+  <add sel="/equipmentmods/ship/missilecapacity[@ware='mod_ship_missilecapacity_01_mk1']"><bonus chance="1.0" max="3"><countermeasurecapacity min="4" max="4"/><deployablecapacity min="4" max="4"/><unitcapacity min="4" max="4"/></bonus></add>
 
   <!-- Smuggler = Rack: pure cargo shielder (hide cargo, no deployables). -->
   <replace sel="/equipmentmods/ship/deployablecapacity[@ware='mod_ship_deployablecapacity_01_mk1']/@min">0</replace><!-- vanilla 1: no deployables -->
   <replace sel="/equipmentmods/ship/deployablecapacity[@ware='mod_ship_deployablecapacity_01_mk1']/@max">0</replace>
   <add sel="/equipmentmods/ship/deployablecapacity[@ware='mod_ship_deployablecapacity_01_mk1']"><bonus chance="1.0" max="1"><hidecargochance min="1.0" max="1.0"/></bonus></add>
 
-  <!-- Ghost = radarcloak: -0.35 signature, mild honest radar cost. -->
+  <!-- Ghost = Cloak: -0.35 signature, mild honest radar cost. -->
   <replace sel="/equipmentmods/ship/radarcloak[@ware='mod_ship_radarcloak_01_mk1']/@min">-0.35</replace><!-- vanilla -0.45 -->
   <replace sel="/equipmentmods/ship/radarcloak[@ware='mod_ship_radarcloak_01_mk1']/@max">-0.35</replace><!-- vanilla -0.3 -->
   <replace sel="/equipmentmods/ship/radarcloak[@ware='mod_ship_radarcloak_01_mk1']/bonus/radarrange/@min">0.85</replace><!-- vanilla 0.55 -->
@@ -67,21 +62,42 @@
   <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk1']/@max">0.4</replace><!-- vanilla 0.9 -->
   <remove sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk1']/bonus"/><!-- drop maxhull malus -->
 
-  <!-- ---- Basic degenerate (parked; folded into Tank above Basic) ---- -->
-  <replace sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk1']/@min">0.97</replace><!-- redundant with Racer -->
+  <!-- ---- Basic degenerate (parked; folded into Bandolier/Tank above) ---- -->
+  <replace sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk1']/@min">0.97</replace><!-- Polisher: redundant with Racer -->
   <replace sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk1']/@max">0.97</replace>
-  <replace sel="/equipmentmods/ship/missilecapacity[@ware='mod_ship_missilecapacity_01_mk1']/@min">3</replace>
-  <replace sel="/equipmentmods/ship/missilecapacity[@ware='mod_ship_missilecapacity_01_mk1']/@max">3</replace>
-  <replace sel="/equipmentmods/ship/unitcapacity[@ware='mod_ship_unitcapacity_01_mk1']/@min">3</replace>
+  <replace sel="/equipmentmods/ship/countermeasurecapacity[@ware='mod_ship_countermeasurecapacity_01_mk1']/@min">3</replace><!-- Barrage -->
+  <replace sel="/equipmentmods/ship/countermeasurecapacity[@ware='mod_ship_countermeasurecapacity_01_mk1']/@max">3</replace>
+  <replace sel="/equipmentmods/ship/unitcapacity[@ware='mod_ship_unitcapacity_01_mk1']/@min">3</replace><!-- Garage -->
   <replace sel="/equipmentmods/ship/unitcapacity[@ware='mod_ship_unitcapacity_01_mk1']/@max">3</replace>
 
   <!-- ========================= ENHANCED (quality 2) =================== -->
   <!-- Every mod gains a +10% maxhull sweetener. -->
 
-  <!-- Racer = mass: -15% mass + -15% drag + hull. -->
-  <replace sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk2']/@min">0.85</replace><!-- vanilla 0.833 -->
-  <replace sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk2']/@max">0.85</replace><!-- vanilla 0.909 -->
-  <replace sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk2']/bonus/@max">2</replace>
+  <!-- Racer = Lubricator (drag ware): -15% drag + -15% mass + hull. Pool ->
+       forced {mass, maxhull}. -->
+  <replace sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk2']/@min">0.85</replace><!-- vanilla 0.833 -->
+  <replace sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk2']/@max">0.85</replace><!-- vanilla 0.909 -->
+  <replace sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk2']/bonus/@max">2</replace>
+  <remove sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk2']/bonus/radarrange"/>
+  <remove sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk2']/bonus/countermeasurecapacity"/>
+  <remove sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk2']/bonus/deployablecapacity"/>
+  <remove sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk2']/bonus/missilecapacity"/>
+  <remove sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk2']/bonus/unitcapacity"/>
+  <replace sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk2']/bonus/maxhull/@min">1.1</replace>
+  <replace sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk2']/bonus/maxhull/@max">1.1</replace>
+  <add sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk2']/bonus"><mass min="0.85" max="0.85"/></add>
+
+  <!-- Tank = Mettle (regiondamage ware): hull + radar + ALL capacity. Region
+       damage pinned neutral. Add the whole logistics bonus. -->
+  <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk2']/@min">1.0</replace><!-- neutral: Tank is not an Explorer -->
+  <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk2']/@max">1.0</replace>
+  <add sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk2']"><bonus chance="1.0" max="6"><maxhull min="1.4" max="1.4"/><radarrange min="1.667" max="1.667"/><countermeasurecapacity min="6" max="6"/><deployablecapacity min="6" max="6"/><missilecapacity min="6" max="6"/><unitcapacity min="6" max="6"/></bonus></add>
+
+  <!-- Explorer = Composite (mass ware): -80% hazard + hull + hide cargo. Mass
+       pinned neutral; keep the pool's maxhull, add regiondamage + hidecargo. -->
+  <replace sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk2']/@min">1.0</replace><!-- neutral: Explorer is not a Racer -->
+  <replace sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk2']/@max">1.0</replace>
+  <replace sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk2']/bonus/@max">3</replace>
   <remove sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk2']/bonus/radarrange"/>
   <remove sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk2']/bonus/countermeasurecapacity"/>
   <remove sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk2']/bonus/deployablecapacity"/>
@@ -89,40 +105,18 @@
   <remove sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk2']/bonus/unitcapacity"/>
   <replace sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk2']/bonus/maxhull/@min">1.1</replace>
   <replace sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk2']/bonus/maxhull/@max">1.1</replace>
-  <add sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk2']/bonus"><drag min="0.85" max="0.85"/></add>
+  <add sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk2']/bonus"><regiondamage min="0.2" max="0.2"/></add>
+  <add sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk2']/bonus"><hidecargochance min="1.0" max="1.0"/></add>
 
-  <!-- Tank = drag ware repurposed into loaded logistics: hull + radar + ALL
-       capacity. NO drag reduction (token neutral). Pool -> force all 6. -->
-  <replace sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk2']/@min">1.0</replace><!-- neutral: Tank is not a Racer -->
-  <replace sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk2']/@max">1.0</replace>
-  <replace sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk2']/bonus/@max">6</replace>
-  <replace sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk2']/bonus/maxhull/@min">1.4</replace>
-  <replace sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk2']/bonus/maxhull/@max">1.4</replace>
-  <replace sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk2']/bonus/radarrange/@min">1.667</replace>
-  <replace sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk2']/bonus/radarrange/@max">1.667</replace>
-  <replace sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk2']/bonus/countermeasurecapacity/@min">6</replace>
-  <replace sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk2']/bonus/countermeasurecapacity/@max">6</replace>
-  <replace sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk2']/bonus/deployablecapacity/@min">6</replace>
-  <replace sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk2']/bonus/deployablecapacity/@max">6</replace>
-  <replace sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk2']/bonus/missilecapacity/@min">6</replace>
-  <replace sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk2']/bonus/missilecapacity/@max">6</replace>
-  <replace sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk2']/bonus/unitcapacity/@min">6</replace>
-  <replace sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk2']/bonus/unitcapacity/@max">6</replace>
-
-  <!-- Ghost = radarcloak: -0.5 signature + hull. -->
+  <!-- Ghost = Veil: -0.5 signature + hull. -->
   <replace sel="/equipmentmods/ship/radarcloak[@ware='mod_ship_radarcloak_01_mk2']/@min">-0.5</replace><!-- vanilla -0.35 -->
   <replace sel="/equipmentmods/ship/radarcloak[@ware='mod_ship_radarcloak_01_mk2']/@max">-0.5</replace><!-- vanilla -0.1 -->
   <add sel="/equipmentmods/ship/radarcloak[@ware='mod_ship_radarcloak_01_mk2']"><bonus chance="1.0" max="1"><maxhull min="1.1" max="1.1"/></bonus></add>
 
-  <!-- Explorer = Mettle: -80% hazard + hull + hide cargo (Smuggler folds in). -->
-  <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk2']/@min">0.2</replace><!-- vanilla 0.4 -->
-  <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk2']/@max">0.2</replace><!-- vanilla 0.65 -->
-  <add sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk2']"><bonus chance="1.0" max="2"><maxhull min="1.1" max="1.1"/><hidecargochance min="1.0" max="1.0"/></bonus></add>
-
   <!-- ======================= EXCEPTIONAL (quality 3) ================== -->
   <!-- Every mod gains a +20% maxhull sweetener. -->
 
-  <!-- Racer = mass (speed demon): -20% mass + -20% drag + hull. -->
+  <!-- Racer = Nanotube: -20% mass + -20% drag + hull. -->
   <replace sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk3']/@min">0.8</replace><!-- vanilla 0.769 -->
   <replace sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk3']/@max">0.8</replace><!-- vanilla 0.909 -->
   <replace sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk3']/bonus/@max">2</replace>
@@ -141,21 +135,24 @@
   <add sel="/equipmentmods/ship/radarcloak[@ware='mod_ship_radarcloak_01_mk3']/bonus"><mass min="0.95" max="0.95"/></add>
   <add sel="/equipmentmods/ship/radarcloak[@ware='mod_ship_radarcloak_01_mk3']/bonus"><drag min="0.95" max="0.95"/></add>
 
-  <!-- Explorer = Tenacity: TOTAL hazard immunity + hull + hide cargo. -->
-  <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk3']/@min">0.0</replace><!-- vanilla 1.0 -->
-  <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk3']/@max">0.0</replace>
-  <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk3']/bonus/@max">4</replace>
-  <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk3']/bonus/maxhull/@min">1.2</replace>
-  <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk3']/bonus/maxhull/@max">1.2</replace>
-  <add sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk3']/bonus"><hidecargochance min="1.0" max="1.0"/></add>
-  <add sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk3']/bonus"><mass min="0.95" max="0.95"/></add>
-  <add sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk3']/bonus"><drag min="0.95" max="0.95"/></add>
+  <!-- Tank = Tenacity (regiondamage ware): the support/command capstone. Big
+       hull + strong radar (+100%) + heavy ALL-capacity loadout. Region damage
+       pinned neutral. -->
+  <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk3']/@min">1.0</replace><!-- neutral -->
+  <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk3']/@max">1.0</replace>
+  <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk3']/bonus/@max">6</replace>
+  <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk3']/bonus/maxhull/@min">1.6</replace>
+  <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk3']/bonus/maxhull/@max">1.6</replace>
+  <add sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk3']/bonus"><radarrange min="2.0" max="2.0"/></add>
+  <add sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk3']/bonus"><countermeasurecapacity min="8" max="8"/></add>
+  <add sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk3']/bonus"><deployablecapacity min="8" max="8"/></add>
+  <add sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk3']/bonus"><missilecapacity min="8" max="8"/></add>
+  <add sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk3']/bonus"><unitcapacity min="8" max="8"/></add>
 
-  <!-- Tank = Mirage: the support/command capstone. Big hull + strong radar
-       (+100%) + heavy ALL-capacity loadout. Cargo-hide neutralised (that role
-       lives on the Explorer line). -->
-  <replace sel="/equipmentmods/ship/hidecargochance[@ware='mod_ship_hidecargo_01']/@min">0.0</replace><!-- no cargo hide -->
-  <replace sel="/equipmentmods/ship/hidecargochance[@ware='mod_ship_hidecargo_01']/@max">0.0</replace>
-  <add sel="/equipmentmods/ship/hidecargochance[@ware='mod_ship_hidecargo_01']"><bonus chance="1.0" max="6"><maxhull min="1.6" max="1.6"/><radarrange min="2.0" max="2.0"/><countermeasurecapacity min="8" max="8"/><deployablecapacity min="8" max="8"/><missilecapacity min="8" max="8"/><unitcapacity min="8" max="8"/></bonus></add>
+  <!-- Explorer = Mirage (hidecargo ware): TOTAL hazard immunity + hide cargo +
+       hull + a little mobility. Hidecargo primary is the cargo-hide. -->
+  <replace sel="/equipmentmods/ship/hidecargochance[@ware='mod_ship_hidecargo_01']/@min">1.0</replace>
+  <replace sel="/equipmentmods/ship/hidecargochance[@ware='mod_ship_hidecargo_01']/@max">1.0</replace>
+  <add sel="/equipmentmods/ship/hidecargochance[@ware='mod_ship_hidecargo_01']"><bonus chance="1.0" max="4"><regiondamage min="0.0" max="0.0"/><maxhull min="1.2" max="1.2"/><mass min="0.95" max="0.95"/><drag min="0.95" max="0.95"/></bonus></add>
 
 </diff>

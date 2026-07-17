@@ -28,16 +28,20 @@ _PARSER = etree.XMLParser(recover=True, huge_tree=True)
 QN = {1: "Basic", 2: "Enhanced", 3: "Exceptional"}
 
 ARCHETYPE = {
-    "mod_ship_mass_01_mk1": "Racer", "mod_ship_mass_01_mk2": "Racer",
+    # Racer: mass_mk1, drag_mk2, mass_mk3
+    "mod_ship_mass_01_mk1": "Racer", "mod_ship_drag_01_mk2": "Racer",
     "mod_ship_mass_01_mk3": "Racer",
-    "mod_ship_maxhull_01_mk1": "Tank", "mod_ship_drag_01_mk2": "Tank",
-    "mod_ship_hidecargo_01": "Tank",
+    # Tank: maxhull_mk1, regiondamage_mk2, regiondamage_mk3
+    "mod_ship_maxhull_01_mk1": "Tank", "mod_ship_regiondamage_01_mk2": "Tank",
+    "mod_ship_regiondamage_01_mk3": "Tank",
+    # Ghost
     "mod_ship_radarcloak_01_mk1": "Ghost", "mod_ship_radarcloak_01_mk2": "Ghost",
     "mod_ship_radarcloak_01_mk3": "Ghost",
-    "mod_ship_regiondamage_01_mk1": "Explorer", "mod_ship_regiondamage_01_mk2": "Explorer",
-    "mod_ship_regiondamage_01_mk3": "Explorer",
+    # Explorer: regiondamage_mk1, mass_mk2, hidecargo
+    "mod_ship_regiondamage_01_mk1": "Explorer", "mod_ship_mass_01_mk2": "Explorer",
+    "mod_ship_hidecargo_01": "Explorer",
     "mod_ship_radarrange_01_mk1": "Recon",
-    "mod_ship_countermeasurecapacity_01_mk1": "Loadout",
+    "mod_ship_missilecapacity_01_mk1": "Loadout",
     "mod_ship_deployablecapacity_01_mk1": "Smuggler",
 }
 ARCH_ORDER = {"Racer": 0, "Tank": 1, "Ghost": 2, "Explorer": 3, "Recon": 4,
