@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- id is a local placeholder until first Workshop publish, when the
+     WorkshopTool replaces it with ws_<workshopitemid> (commit that back). -->
+<content id="pokeys_ship_mod_rebalance" name="Pokey's Hull Mod Rebalance" description="DRAFT. Turns ship/hull mods into four archetypes: Racer (mass+drag, mobility), Tank (hull + sensors + loadout), Ghost (stealth), Explorer (hazard resist). Hull is the always-good stat that scales each tier and rides on every Enhanced/Exceptional mod. No roll RNG. Numbers only, no new wares, savegame-safe." author="Pokey" version="100" date="2026-07-17" save="0" sync="false">
+  <text language="44" name="Pokey's Hull Mod Rebalance" description="DRAFT. Ship mods as four archetypes: Racer (mobility), Tank (hull+sensors+loadout), Ghost (stealth), Explorer (hazard resist). Hull scales each tier. No roll RNG. Numbers only, savegame-safe." author="Pokey"/>
+</content>

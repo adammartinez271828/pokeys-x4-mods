@@ -88,6 +88,24 @@ pokeys-x4-mods/
   `report.py` beside it renders the review dashboard (capacity/rate/delay +
   refill-time trade-off) into `output/shield-mod-dashboard.html`. Shield model:
   x4-analyzer `gamedata/shields.py`. NOT yet in-game verified.
+- **ship-mod-rebalance** (hull mods) — rebalances the `<ship>` section of
+  `libraries/equipmentmods.xml`. **DRAFT, all three tiers**, ARCHETYPE model
+  on the most heterogeneous section (~11 stat families, 18 mods): four
+  archetypes span all tiers — Racer (mass+drag: mass_mk1/mk2/mk3), Tank
+  (maxhull+radar+loadout: maxhull_mk1 / drag_mk2 / hidecargo — the last two
+  repurposed via their pools), Ghost (radarcloak ×3), Explorer (regiondamage
+  ×3). maxhull is the always-good tier sweetener (+10% Enh, +20% Exc on EVERY
+  mod). Basic-only Recon (radarrange) + Loadout (countermeasure) fold into Tank
+  above Basic. Degenerate (Basic, parked): the redundant drag ware +
+  deployable/missile/unit capacity. Ghost keeps a mild stealth-costs-radar
+  trade; Explorer's vanilla hull malus dropped. No RNG. **NOT published**
+  (placeholder id `pokeys_ship_mod_rebalance`). Design:
+  `docs/ship-mod-rebalance-design.md`. Validate (exit 0 = E1-E4):
+  `uv run --project ~/devel/x4-analyzer python tools/ship-mod-rebalance/evaluate.py`;
+  `report.py` renders `output/ship-mod-dashboard.html`. Model: x4-analyzer
+  `gamedata/shipmods.py`. The `<ship>` harness names parked mods explicitly
+  (`DEGENERATE`) since the stats are on very different scales. NOT in-game
+  verified.
 
 ## Critical domain knowledge (validated in-game — do not "fix")
 
