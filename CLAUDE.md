@@ -95,13 +95,13 @@ pokeys-x4-mods/
   (maxhull+radar+loadout: maxhull_mk1 / drag_mk2 / hidecargo — the last two
   repurposed via their pools), Ghost (radarcloak ×3), Explorer (regiondamage
   ×3). maxhull is the always-good tier sweetener (+10% Enh, +20% Exc on EVERY
-  mod). Capacity mods are FLAT additive (+N consumables); Tank is the loaded-
-  logistics mod carrying all four capacity types (scaling) + folding in Recon
-  (radarrange) + Loadout (countermeasure). Cargo-hide on Smuggler (Basic
-  deployable ware) + Shroud (Exc Ghost) + Mirage (Exc Tank). Degenerate (Basic,
-  parked): the redundant drag ware + missile/unit capacity. Ghost keeps a mild
-  stealth-costs-radar trade; Explorer's hull malus dropped (Exc = total hazard
-  immunity). No RNG. **NOT published**
+  mod). Capacity mods are FLAT additive (+N consumables); Barrage (Basic
+  Loadout ware) is the one-stop-shop giving all four types, Tank carries all
+  four scaling + folds in Recon (radarrange). Cargo-hide folds into the EXPLORER
+  line: Smuggler (Basic Rack/deployable ware) + Mettle (Enh) + Tenacity (Exc);
+  Ghost/Tank don't hide cargo. Radar scales +33/67/100%, hazard resist
+  60/80/100% (Tenacity = total immunity). Degenerate (Basic, parked): drag ware
+  + missile/unit capacity. No RNG. **NOT published**
   (placeholder id `pokeys_ship_mod_rebalance`). Design:
   `docs/ship-mod-rebalance-design.md`. Validate (exit 0 = E1-E4):
   `uv run --project ~/devel/x4-analyzer python tools/ship-mod-rebalance/evaluate.py`;

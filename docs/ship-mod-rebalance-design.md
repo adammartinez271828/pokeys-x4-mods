@@ -20,11 +20,11 @@ doesn't match its archetype, using its existing bonus pool.
 |---|---|---|---|
 | **Racer** | accel + top speed | mass + drag | mass_mk1 / mass_mk2 / mass_mk3 |
 | **Tank** | durability + loaded logistics | maxhull + radar + ALL capacity | maxhull_mk1 / drag_mk2\* / hidecargo\* |
-| **Ghost** | stealth (+ hide cargo) | radarcloak | radarcloak_mk1/mk2/mk3 |
-| **Explorer** | hazard resistance | regiondamage | regiondamage_mk1/mk2/mk3 |
+| **Ghost** | stealth | radarcloak | radarcloak_mk1/mk2/mk3 |
+| **Explorer** | hazard resist + hide cargo | regiondamage (+ hidecargo) | regiondamage_mk1/mk2/mk3 |
 | **Recon** | sensors (folds → Tank) | radarrange | radarrange_mk1 |
-| **Loadout** | countermeasures (folds → Tank) | countermeasurecap | countermeasure_mk1 |
-| **Smuggler** | hide cargo | hidecargo + deployable | deployable_mk1 |
+| **Loadout / Barrage** | all capacity (folds → Tank) | CM/deploy/missile/unit | countermeasure_mk1 |
+| **Smuggler** | hide cargo (folds → Explorer) | hidecargo | deployable_mk1 |
 
 \* The Enhanced `drag` ware and Exceptional `hidecargo` ware are repurposed as
 Tank — their vanilla pools already carry the maxhull/radar/capacity riders.
@@ -33,15 +33,17 @@ Tank — their vanilla pools already carry the maxhull/radar/capacity riders.
   shield capacity): the **tier sweetener** — it rides on *every*
   Enhanced (+10%) and Exceptional (+20%) mod. Tank is built on it.
 - **Capacity is a FLAT additive count** (+N consumables; base ~8 on S ships to
-  ~20 on L), so the numbers are generous. **Tank is the loaded-logistics mod**:
-  it folds in Recon + Loadout and carries *all four* capacity types, scaling
-  per tier (Enh +6 each, Exc +8 each).
-- **Cargo hiding** lives on the Smuggler (Basic), Shroud (Exc Ghost) and Mirage
-  (Exc Tank).
+  ~20 on L), so the numbers are generous. **Barrage** (Basic Loadout) is the
+  one-stop-shop, +4 to *all four* types; **Tank is the loaded-logistics mod**
+  carrying all four scaling per tier (Enh +6, Exc +8). **Radar** is generous
+  too: +33% / +67% / +100% (Recon → Tank; Shroud gets +33%).
+- **Cargo hiding folds into the Explorer line:** Smuggler (Basic Rack, pure
+  hide-cargo), Mettle (Enh Explorer), Tenacity (Exc Explorer). Ghost and Tank
+  do not hide cargo.
 - **Honest / flavour touches.** Ghost keeps a mild *stealth-costs-radar* trade
   at Basic (Exceptional flips to a radar buff). Explorer's vanilla
-  *hazard-resist-costs-hull* malus is dropped; at Exceptional (**Tenacity**) it
-  is *total* hazard immunity (regiondamage → 0).
+  *hazard-resist-costs-hull* malus is dropped, and hazard resist scales
+  **−60% / −80% / −100%** (Grit / Mettle / **Tenacity** = total immunity).
 - **Degenerate (Basic only, parked):** the redundant `drag` ware + the
   missile/unit capacity mods (folded into Tank above Basic anyway).
 - **No RNG** (every range pinned).
