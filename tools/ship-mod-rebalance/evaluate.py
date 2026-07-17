@@ -48,12 +48,15 @@ STATS = ["maxhull", "mass", "drag", "radarrange", "radarcloak", "regiondamage",
          "countermeasurecapacity", "deployablecapacity", "missilecapacity",
          "unitcapacity", "hidecargochance"]
 
-# Intentionally-parked mods (redundant drag ware + the missile/unit capacity
-# mods, folded into Tank above Basic). Meant to be dominated by their
-# archetype, so exempt from E3/E4. (The deployable ware is the Smuggler.)
+# Intentionally-parked Basic mods: only the 4 archetypes are picks, so the
+# redundant drag ware, the radar ware (folded into Tank) and all four capacity
+# wares (folded into Tank) are parked. Meant to be dominated, so exempt E3/E4.
 DEGENERATE = {
     "mod_ship_drag_01_mk1",
+    "mod_ship_radarrange_01_mk1",
     "mod_ship_countermeasurecapacity_01_mk1",
+    "mod_ship_deployablecapacity_01_mk1",
+    "mod_ship_missilecapacity_01_mk1",
     "mod_ship_unitcapacity_01_mk1",
 }
 

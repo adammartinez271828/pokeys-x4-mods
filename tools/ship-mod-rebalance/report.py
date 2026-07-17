@@ -40,9 +40,8 @@ ARCHETYPE = {
     # Explorer: regiondamage_mk1, mass_mk2, hidecargo
     "mod_ship_regiondamage_01_mk1": "Explorer", "mod_ship_mass_01_mk2": "Explorer",
     "mod_ship_hidecargo_01": "Explorer",
-    "mod_ship_radarrange_01_mk1": "Recon",
-    "mod_ship_missilecapacity_01_mk1": "Loadout",
-    "mod_ship_deployablecapacity_01_mk1": "Smuggler",
+    # radarrange / all capacity wares are Basic degenerate (folded into Tank);
+    # deployable's cargo-hide folded into Explorer.
 }
 ARCH_ORDER = {"Racer": 0, "Tank": 1, "Ghost": 2, "Explorer": 3, "Recon": 4,
               "Loadout": 5, "Smuggler": 6, "degenerate": 9}
@@ -247,22 +246,21 @@ def main():
     sb = "".join(f"<i class='b{i}'></i>" for i in (1, 2, 3, 4, 5))
     sr = "".join(f"<i class='r{i}'></i>" for i in (5, 4, 3, 2, 1))
     roles = [("Racer", "Racer (mass+drag)"), ("Tank", "Tank (hull+sensors+loadout)"),
-             ("Ghost", "Ghost (stealth)"), ("Explorer", "Explorer (hazard)"),
-             ("Recon", "Recon"), ("Loadout", "Loadout"), ("Smuggler", "Smuggler (hide cargo)"),
+             ("Ghost", "Ghost (stealth)"), ("Explorer", "Explorer (hazard+hide cargo)"),
              ("degenerate", "degenerate")]
     rk = "".join(f"<span class='rkey'><span class='dot {k}'></span>{html.escape(l)}</span>" for k, l in roles)
 
     p = [f"<style>{CSS}</style>", "<div class='hmr'><div id='tip'></div><div class='wrap'>"]
     p.append("<p class='eyebrow'>Pokey&rsquo;s Hull Mod Rebalance &middot; draft</p>")
     p.append("<h1>Hull mod archetypes</h1>")
-    p.append("<p class='lede'>Four archetypes span every tier: <b>Racer</b> "
-             "(mass + drag &mdash; accel &amp; top speed), <b>Tank</b> (hull, and it "
-             "folds in sensors + loadout above Basic), <b>Ghost</b> (stealth) and "
-             "<b>Explorer</b> (hazard resistance). Basic adds two utility picks "
-             "(Recon, Loadout) that merge into Tank higher up. <b>Hull is the "
+    p.append("<p class='lede'>Exactly four archetypes at every tier: <b>Racer</b> "
+             "(mass + drag &mdash; accel &amp; top speed), <b>Tank</b> (hull + "
+             "sensors + full capacity loadout), <b>Ghost</b> (stealth) and "
+             "<b>Explorer</b> (hazard resistance + hide cargo). <b>Hull is the "
              "always-good stat</b> &mdash; it scales each tier and rides on every "
              "Enhanced/Exceptional mod. Cells show the raw modifier, blue where it "
-             "helps; a few Basic mods are parked <b>degenerate</b>. Hover for detail.</p>")
+             "helps; the other six Basic wares are parked <b>degenerate</b> (their "
+             "roles fold into Tank/Explorer). Hover for detail.</p>")
     p.append(f"<div class='legend'><div class='scale'><span>worse</span>"
              f"<span class='swatch'>{sr}</span><span style='color:var(--mut)'>neutral</span>"
              f"<span class='swatch'>{sb}</span><span>better</span></div>"

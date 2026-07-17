@@ -16,19 +16,23 @@ crowded into Basic, only 4 each at Enhanced/Exceptional. Everything rolls RNG.
 that fold into Tank above Basic. Wares are repurposed where a ware's stat
 doesn't match its archetype, using its existing bonus pool.
 
-Carriers are chosen so each ware's **name** fits the archetype (bundles are
-moved onto whatever ware is best-named; a mismatched primary stat is pinned
-neutral and the bundle rides on the bonus):
+**Exactly four archetypes at every tier** (no Basic-only utility mods — radar,
+capacity and cargo-hide all fold into Tank/Explorer). Carriers are chosen so
+each ware's **name** fits the archetype; a mismatched primary stat is pinned
+neutral and the bundle rides on the bonus.
 
 | Role | Feel | Basic / Enhanced / Exceptional (ware — name) |
 |---|---|---|
 | **Racer** | accel + top speed | mass_mk1 (Honeycomb) / **drag_mk2 (Lubricator)** / mass_mk3 (Nanotube) |
-| **Tank** | durability + loaded logistics | maxhull_mk1 (Buttress) / **regiondamage_mk2 (Mettle)** / **regiondamage_mk3 (Tenacity)** |
+| **Tank** | durability + loaded logistics (hull + radar + ALL capacity) | maxhull_mk1 (Buttress) / **regiondamage_mk2 (Mettle)** / **regiondamage_mk3 (Tenacity)** |
 | **Ghost** | stealth | radarcloak_mk1/mk2/mk3 (Cloak/Veil/Shroud) |
 | **Explorer** | hazard resist + hide cargo | regiondamage_mk1 (Grit) / **mass_mk2 (Composite)** / **hidecargo (Mirage)** |
-| **Recon** | sensors (folds → Tank) | radarrange_mk1 (Scope) |
-| **Loadout** | all capacity (folds → Tank) | **missilecapacity_mk1 (Bandolier)** — one-stop-shop, +4 to all four |
-| **Smuggler** | hide cargo (folds → Explorer) | deployable_mk1 (Rack) |
+
+Ladders: hull ×1.2/1.4/1.6; radar +33/67/100%; capacity +4/6/8 each type;
+hazard resist 60/80/100%; cargo-hide 70/85/100%.
+
+The other six Basic wares (drag, radarrange, and all four capacity mods) are
+**degenerate** — parked at a token, since their roles fold into Tank/Explorer.
 
 - **maxhull is the always-good stat** (hull analog of damage / forward speed /
   shield capacity): the **tier sweetener** — it rides on *every*

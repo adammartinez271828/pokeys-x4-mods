@@ -32,24 +32,11 @@
   <replace sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk1']/@max">0.9</replace><!-- vanilla 0.953 -->
   <add sel="/equipmentmods/ship/mass[@ware='mod_ship_mass_01_mk1']"><bonus chance="1.0" max="1"><drag min="0.9" max="0.9"/></bonus></add>
 
-  <!-- Tank = Buttress: +20% hull. -->
+  <!-- Tank = Buttress: +20% hull + radar + ALL capacity (folds in Recon +
+       Loadout). The loaded-logistics mod, Basic tier. -->
   <replace sel="/equipmentmods/ship/maxhull[@ware='mod_ship_maxhull_01_mk1']/@min">1.2</replace><!-- vanilla 1.05 -->
   <replace sel="/equipmentmods/ship/maxhull[@ware='mod_ship_maxhull_01_mk1']/@max">1.2</replace><!-- vanilla 1.2 -->
-
-  <!-- Recon = Scope: +33% radar range (folds into Tank above Basic). -->
-  <replace sel="/equipmentmods/ship/radarrange[@ware='mod_ship_radarrange_01_mk1']/@min">1.333</replace><!-- vanilla 1.05 -->
-  <replace sel="/equipmentmods/ship/radarrange[@ware='mod_ship_radarrange_01_mk1']/@max">1.333</replace><!-- vanilla 1.2 -->
-
-  <!-- Loadout = Bandolier: the one-stop-shop, +4 to ALL of CM/deploy/missile/
-       unit (folds into Tank above Basic). Missile ware carries it. -->
-  <replace sel="/equipmentmods/ship/missilecapacity[@ware='mod_ship_missilecapacity_01_mk1']/@min">4</replace><!-- vanilla 1 -->
-  <replace sel="/equipmentmods/ship/missilecapacity[@ware='mod_ship_missilecapacity_01_mk1']/@max">4</replace><!-- vanilla 4 -->
-  <add sel="/equipmentmods/ship/missilecapacity[@ware='mod_ship_missilecapacity_01_mk1']"><bonus chance="1.0" max="3"><countermeasurecapacity min="4" max="4"/><deployablecapacity min="4" max="4"/><unitcapacity min="4" max="4"/></bonus></add>
-
-  <!-- Smuggler = Rack: pure cargo shielder (hide cargo, no deployables). -->
-  <replace sel="/equipmentmods/ship/deployablecapacity[@ware='mod_ship_deployablecapacity_01_mk1']/@min">0</replace><!-- vanilla 1: no deployables -->
-  <replace sel="/equipmentmods/ship/deployablecapacity[@ware='mod_ship_deployablecapacity_01_mk1']/@max">0</replace>
-  <add sel="/equipmentmods/ship/deployablecapacity[@ware='mod_ship_deployablecapacity_01_mk1']"><bonus chance="1.0" max="1"><hidecargochance min="0.7" max="0.7"/></bonus></add>
+  <add sel="/equipmentmods/ship/maxhull[@ware='mod_ship_maxhull_01_mk1']"><bonus chance="1.0" max="5"><radarrange min="1.333" max="1.333"/><countermeasurecapacity min="4" max="4"/><deployablecapacity min="4" max="4"/><missilecapacity min="4" max="4"/><unitcapacity min="4" max="4"/></bonus></add>
 
   <!-- Ghost = Cloak: -0.35 signature, mild honest radar cost. -->
   <replace sel="/equipmentmods/ship/radarcloak[@ware='mod_ship_radarcloak_01_mk1']/@min">-0.35</replace><!-- vanilla -0.45 -->
@@ -57,16 +44,24 @@
   <replace sel="/equipmentmods/ship/radarcloak[@ware='mod_ship_radarcloak_01_mk1']/bonus/radarrange/@min">0.85</replace><!-- vanilla 0.55 -->
   <replace sel="/equipmentmods/ship/radarcloak[@ware='mod_ship_radarcloak_01_mk1']/bonus/radarrange/@max">0.85</replace><!-- vanilla 0.7 -->
 
-  <!-- Explorer = Grit: -60% hazard damage. Vanilla hull malus dropped. -->
+  <!-- Explorer = Grit: -60% hazard damage + hide cargo (folds in Smuggler).
+       Vanilla hull malus dropped. -->
   <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk1']/@min">0.4</replace><!-- vanilla 0.6 -->
   <replace sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk1']/@max">0.4</replace><!-- vanilla 0.9 -->
   <remove sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk1']/bonus"/><!-- drop maxhull malus -->
+  <add sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk1']"><bonus chance="1.0" max="1"><hidecargochance min="0.7" max="0.7"/></bonus></add>
 
-  <!-- ---- Basic degenerate (parked; folded into Bandolier/Tank above) ---- -->
+  <!-- ---- Basic degenerate (parked; only the 4 archetypes are the picks) ---- -->
   <replace sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk1']/@min">0.97</replace><!-- Polisher: redundant with Racer -->
   <replace sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk1']/@max">0.97</replace>
+  <replace sel="/equipmentmods/ship/radarrange[@ware='mod_ship_radarrange_01_mk1']/@min">1.1</replace><!-- Scope: folded into Buttress -->
+  <replace sel="/equipmentmods/ship/radarrange[@ware='mod_ship_radarrange_01_mk1']/@max">1.1</replace>
   <replace sel="/equipmentmods/ship/countermeasurecapacity[@ware='mod_ship_countermeasurecapacity_01_mk1']/@min">3</replace><!-- Barrage -->
   <replace sel="/equipmentmods/ship/countermeasurecapacity[@ware='mod_ship_countermeasurecapacity_01_mk1']/@max">3</replace>
+  <replace sel="/equipmentmods/ship/deployablecapacity[@ware='mod_ship_deployablecapacity_01_mk1']/@min">3</replace><!-- Rack: cargo-hide folded into Grit -->
+  <replace sel="/equipmentmods/ship/deployablecapacity[@ware='mod_ship_deployablecapacity_01_mk1']/@max">3</replace>
+  <replace sel="/equipmentmods/ship/missilecapacity[@ware='mod_ship_missilecapacity_01_mk1']/@min">3</replace><!-- Bandolier: folded into Buttress -->
+  <replace sel="/equipmentmods/ship/missilecapacity[@ware='mod_ship_missilecapacity_01_mk1']/@max">3</replace>
   <replace sel="/equipmentmods/ship/unitcapacity[@ware='mod_ship_unitcapacity_01_mk1']/@min">3</replace><!-- Garage -->
   <replace sel="/equipmentmods/ship/unitcapacity[@ware='mod_ship_unitcapacity_01_mk1']/@max">3</replace>
 
