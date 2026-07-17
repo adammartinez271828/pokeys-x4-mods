@@ -57,6 +57,9 @@ pokeys-x4-mods/
   `docs/engine-mod-rebalance-v1.md`. Validate (exit 0 = E1-E4 pass; applies
   the diff itself):
   `uv run --project ~/devel/x4-analyzer python tools/engine-mod-rebalance/evaluate.py`.
+  `report.py` beside it renders the declared-vs-delivered heatmap dashboard
+  (raw modifiers vs combined ship effects, flagging the forward-thrust leak)
+  into `output/engine-mod-dashboard.html`.
   Movement sim lives in x4-analyzer `gamedata/engines.py` (the engine
   counterpart to `weapons.py`/`weaponsim.py`); engine-mod effect vectors are
   ship-independent (mass/drag/inertia cancel in the modded/base ratio), so
