@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pokey's Shield Mod Rebalance - shield section of equipmentmods.xml only.
+     DRAFT for review.
+
+     Shields have three levers: capacity (shield HP), rechargerate (HP/s) and
+     rechargedelay (seconds before recharge starts, lower = better). Only 8
+     mods exist, so unlike engines there is no "degenerate" parking - every
+     mod is a real archetype.
+
+       Archetype    Feel                 Lever          Carriers (Q1/Q2/Q3)
+       Bastion      big buffer / tank    capacity       Buckler / Kite / Pavise
+       Regenerator  fast refill          rechargerate   Bandage / Cast / Traction
+       Resilient    regen sooner         rechargedelay  Medic (Q1 only)
+       Bulwark      balanced all-rounder capacity+both  Targe (Q3 only)
+
+     - CAPACITY is the "always good" stat (the shield analog of weapon damage
+       / engine forward speed): it never hurts, so it is the tier
+       differentiator - it scales up each tier and rides on higher-tier
+       recovery mods as their "this tier is generally better" signal.
+     - THE TRADE-OFF: capacity raises the buffer but SLOWS refill
+       (time-to-full ~= delay + capacity/rate), so Bastion tanks harder but
+       recovers slower; Regenerator/Resilient recover faster.
+     - No RNG (every range pinned min = max).
+     - Only 2 wares exist at Enhanced, so Resilient (delay) is folded into the
+       Enhanced Regenerator (Cast = rate + delay). GAPS to discuss: no
+       standalone Resilient above Basic. -->
+<diff>
+
+  <!-- ============================ BASIC (quality 1) ==================== -->
+
+  <!-- Bastion = Buckler: +20% capacity. -->
+  <replace sel="/equipmentmods/shield/capacity[@ware='mod_shield_capacity_01_mk1']/@min">1.2</replace><!-- vanilla 1.05 -->
+  <replace sel="/equipmentmods/shield/capacity[@ware='mod_shield_capacity_01_mk1']/@max">1.2</replace><!-- vanilla 1.2 -->
+
+  <!-- Regenerator = Bandage: +20% recharge rate. -->
+  <replace sel="/equipmentmods/shield/rechargerate[@ware='mod_shield_rechargerate_01_mk1']/@min">1.2</replace><!-- vanilla 1.05 -->
+  <replace sel="/equipmentmods/shield/rechargerate[@ware='mod_shield_rechargerate_01_mk1']/@max">1.2</replace><!-- vanilla 1.2 -->
+
+  <!-- Resilient = Medic: -20% recharge delay (regen starts sooner). -->
+  <replace sel="/equipmentmods/shield/rechargedelay[@ware='mod_shield_rechargedelay_01_mk1']/@min">0.8</replace><!-- vanilla 0.8 -->
+  <replace sel="/equipmentmods/shield/rechargedelay[@ware='mod_shield_rechargedelay_01_mk1']/@max">0.8</replace><!-- vanilla 0.95 -->
+
+  <!-- ========================= ENHANCED (quality 2) =================== -->
+
+  <!-- Bastion = Kite: +30% capacity + a touch of recovery (rate). Pool -> one
+       forced rate rider. -->
+  <replace sel="/equipmentmods/shield/capacity[@ware='mod_shield_capacity_01_mk2']/@min">1.3</replace><!-- vanilla 1.1 -->
+  <replace sel="/equipmentmods/shield/capacity[@ware='mod_shield_capacity_01_mk2']/@max">1.3</replace><!-- vanilla 1.2 -->
+  <remove sel="/equipmentmods/shield/capacity[@ware='mod_shield_capacity_01_mk2']/bonus/rechargedelay"/>
+  <replace sel="/equipmentmods/shield/capacity[@ware='mod_shield_capacity_01_mk2']/bonus/rechargerate/@min">1.1</replace>
+  <replace sel="/equipmentmods/shield/capacity[@ware='mod_shield_capacity_01_mk2']/bonus/rechargerate/@max">1.1</replace>
+
+  <!-- Regenerator = Cast: +30% rate + delay (folds Resilient) + a small
+       always-good capacity rider. Pool {delay, capacity} -> both forced. -->
+  <replace sel="/equipmentmods/shield/rechargerate[@ware='mod_shield_rechargerate_01_mk2']/@min">1.3</replace><!-- vanilla 1.1 -->
+  <replace sel="/equipmentmods/shield/rechargerate[@ware='mod_shield_rechargerate_01_mk2']/@max">1.3</replace><!-- vanilla 1.2 -->
+  <replace sel="/equipmentmods/shield/rechargerate[@ware='mod_shield_rechargerate_01_mk2']/bonus/@max">2</replace>
+  <replace sel="/equipmentmods/shield/rechargerate[@ware='mod_shield_rechargerate_01_mk2']/bonus/rechargedelay/@min">0.85</replace>
+  <replace sel="/equipmentmods/shield/rechargerate[@ware='mod_shield_rechargerate_01_mk2']/bonus/rechargedelay/@max">0.85</replace>
+  <replace sel="/equipmentmods/shield/rechargerate[@ware='mod_shield_rechargerate_01_mk2']/bonus/capacity/@min">1.075</replace>
+  <replace sel="/equipmentmods/shield/rechargerate[@ware='mod_shield_rechargerate_01_mk2']/bonus/capacity/@max">1.075</replace>
+
+  <!-- ======================= EXCEPTIONAL (quality 3) ================== -->
+
+  <!-- Bastion = Pavise: +50% capacity + rate rider (a huge buffer that still
+       recovers). Add a forced rate rider (vanilla has none). -->
+  <replace sel="/equipmentmods/shield/capacity[@ware='mod_shield_capacity_01_mk3']/@min">1.5</replace><!-- vanilla 1.3 -->
+  <replace sel="/equipmentmods/shield/capacity[@ware='mod_shield_capacity_01_mk3']/@max">1.5</replace><!-- vanilla 1.7 -->
+  <add sel="/equipmentmods/shield/capacity[@ware='mod_shield_capacity_01_mk3']"><bonus chance="1.0" max="1"><rechargerate min="1.15" max="1.15"/></bonus></add>
+
+  <!-- Regenerator = Traction: +50% rate + fast restart (delay) + always-good
+       capacity rider (fast-cycling). Add capacity to the vanilla delay bonus. -->
+  <replace sel="/equipmentmods/shield/rechargerate[@ware='mod_shield_rechargerate_01_mk3']/@min">1.5</replace><!-- vanilla 1.3 -->
+  <replace sel="/equipmentmods/shield/rechargerate[@ware='mod_shield_rechargerate_01_mk3']/@max">1.5</replace><!-- vanilla 1.7 -->
+  <replace sel="/equipmentmods/shield/rechargerate[@ware='mod_shield_rechargerate_01_mk3']/bonus/@max">2</replace>
+  <replace sel="/equipmentmods/shield/rechargerate[@ware='mod_shield_rechargerate_01_mk3']/bonus/rechargedelay/@min">0.6</replace>
+  <replace sel="/equipmentmods/shield/rechargerate[@ware='mod_shield_rechargerate_01_mk3']/bonus/rechargedelay/@max">0.6</replace>
+  <add sel="/equipmentmods/shield/rechargerate[@ware='mod_shield_rechargerate_01_mk3']/bonus"><capacity min="1.1" max="1.1"/></add>
+
+  <!-- Bulwark = Targe: balanced all-rounder, +25% capacity + rate + delay. -->
+  <replace sel="/equipmentmods/shield/capacity[@ware='mod_shield_capacity_02_mk3']/@min">1.25</replace><!-- vanilla 1.1 -->
+  <replace sel="/equipmentmods/shield/capacity[@ware='mod_shield_capacity_02_mk3']/@max">1.25</replace><!-- vanilla 1.3 -->
+  <replace sel="/equipmentmods/shield/capacity[@ware='mod_shield_capacity_02_mk3']/bonus/rechargerate/@min">1.2</replace>
+  <replace sel="/equipmentmods/shield/capacity[@ware='mod_shield_capacity_02_mk3']/bonus/rechargerate/@max">1.2</replace>
+  <replace sel="/equipmentmods/shield/capacity[@ware='mod_shield_capacity_02_mk3']/bonus/rechargedelay/@min">0.8</replace>
+  <replace sel="/equipmentmods/shield/capacity[@ware='mod_shield_capacity_02_mk3']/bonus/rechargedelay/@max">0.8</replace>
+
+</diff>
