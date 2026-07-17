@@ -71,6 +71,22 @@ pokeys-x4-mods/
   m/s read low vs the encyclopedia (omitted global constants) but the
   constant cancels in mod-vs-mod comparison; the design is NOT yet
   in-game-verified (unlike the weapon mod's rules).
+- **shield-mod-rebalance** — rebalances the `<shield>` section of
+  `libraries/equipmentmods.xml`. **DRAFT, all three tiers**, ARCHETYPE model:
+  only 8 wares exist so every mod is a real archetype (no degenerate parking)
+  — Bastion (capacity: Buckler/Kite/Pavise), Regenerator (rechargerate:
+  Bandage/Cast/Traction), Resilient (rechargedelay: Medic, Basic only),
+  Bulwark (balanced: Targe, Exceptional only). Capacity is the always-good
+  tier scalar (like forward/damage); the physical trade-off is capacity
+  raises the buffer but SLOWS refill (`time-to-full ~= delay + capacity/rate`).
+  No RNG, no maluses. Only 2 Enhanced wares, so Resilient (delay) is folded
+  into the Enhanced/Exceptional Regenerator (decided: don't fill the gap with
+  new wares). **NOT published** (placeholder id `pokeys_shield_mod_rebalance`).
+  Design: `docs/shield-mod-rebalance-design.md`. Validate (exit 0 = E1-E4):
+  `uv run --project ~/devel/x4-analyzer python tools/shield-mod-rebalance/evaluate.py`;
+  `report.py` beside it renders the review dashboard (capacity/rate/delay +
+  refill-time trade-off) into `output/shield-mod-dashboard.html`. Shield model:
+  x4-analyzer `gamedata/shields.py`. NOT yet in-game verified.
 
 ## Critical domain knowledge (validated in-game — do not "fix")
 
