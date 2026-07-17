@@ -154,7 +154,9 @@ pokeys-x4-mods/
   mod (pick a high unique id, e.g. 100027xx).
 - `content.xml` `version` is ×100 (v1.20 → `version="120"`); bump every
   release. The `id` is replaced with `ws_<workshopid>` on first Workshop
-  publish — see `docs/steam-workshop.md` for the whole pipeline.
+  publish. **Release runbook (Steam update, Nexus zip, re-stamp commit,
+  machine paths like the `S:` Proton drive): `docs/releasing.md`**;
+  first-publish background: `docs/steam-workshop.md`.
 - `docs/` is never shipped: the Workshop tool packs only game-relevant
   files, but keep it out of any manual zip for Nexus.
 - Commit locally without asking; push/publish only when Adam asks.
