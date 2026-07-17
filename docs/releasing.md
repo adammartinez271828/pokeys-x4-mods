@@ -78,8 +78,10 @@ so it extracts to `extensions/<mod>/`. Zip only the mod dir (it already holds
 just the shipping files; `docs/` and `tools/` live outside it):
 
 ```
-V=$(grep -oP 'version="\K\d+' weapon-mod-rebalance/content.xml)
-zip -r "output/weapon-mod-rebalance-v${V}-nexus.zip" weapon-mod-rebalance -x '*.DS_Store'
+# read the content version (the lookahead skips the XML decl's version="1.0")
+V=$(grep -oP 'version="\K\d+(?=")' weapon-mod-rebalance/content.xml)
+LABEL="$((V/100)).$(printf '%02d' $((V%100)))"   # 101 -> 1.01
+zip -rq "output/weapon-mod-rebalance-v${LABEL}-nexus.zip" weapon-mod-rebalance -x '*.DS_Store'
 ```
 
 Upload that zip on the mod's Nexus page → **Files** tab as a new file
