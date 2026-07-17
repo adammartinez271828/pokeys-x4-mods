@@ -51,7 +51,7 @@
   <remove sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk1']/bonus"/><!-- drop maxhull malus -->
   <add sel="/equipmentmods/ship/regiondamage[@ware='mod_ship_regiondamage_01_mk1']"><bonus chance="1.0" max="1"><hidecargochance min="0.7" max="0.7"/></bonus></add>
 
-  <!-- ---- Basic degenerate (parked; only the 4 archetypes are the picks) ---- -->
+  <!-- Basic degenerate (parked; only the 4 archetypes are the picks) -->
   <replace sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk1']/@min">0.97</replace><!-- Polisher: redundant with Racer -->
   <replace sel="/equipmentmods/ship/drag[@ware='mod_ship_drag_01_mk1']/@max">0.97</replace>
   <replace sel="/equipmentmods/ship/radarrange[@ware='mod_ship_radarrange_01_mk1']/@min">1.1</replace><!-- Scope: folded into Buttress -->

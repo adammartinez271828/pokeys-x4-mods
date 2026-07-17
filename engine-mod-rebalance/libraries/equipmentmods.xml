@@ -57,7 +57,7 @@
   <replace sel="/equipmentmods/engine/travelchargetime[@ware='mod_engine_travelchargetime_01_mk1']/@max">0.8</replace><!-- vanilla 0.95 -->
   <add sel="/equipmentmods/engine/travelchargetime[@ware='mod_engine_travelchargetime_01_mk1']"><bonus chance="1.0" max="2"><travelthrust min="1.2" max="1.2"/><travelattacktime min="0.82" max="0.82"/></bonus></add>
 
-  <!-- ---- Basic degenerate (parked at +5%, times x0.95) ---- -->
+  <!-- Basic degenerate (parked at +5%, times x0.95) -->
   <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_01_mk1']/@min">1.05</replace><!-- Pusher -->
   <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_01_mk1']/@max">1.05</replace>
   <replace sel="/equipmentmods/engine/boostthrust[@ware='mod_engine_boostthrust_01_mk1']/@min">1.05</replace><!-- Juno -->
@@ -133,7 +133,7 @@
   <add sel="/equipmentmods/engine/travelthrust[@ware='mod_engine_travelthrust_02_mk2']/bonus"><forwardthrust min="1.075" max="1.075"/></add><!-- +7.5% speed vs Basic -->
 
 
-  <!-- ---- Enhanced degenerate (parked at +10%, pools neutralised to 1.0) ---- -->
+  <!-- Enhanced degenerate (parked at +10%, pools neutralised to 1.0) -->
   <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_01_mk2']/@min">1.1</replace><!-- Propeller -->
   <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_01_mk2']/@max">1.1</replace>
   <replace sel="/equipmentmods/engine/forwardthrust[@ware='mod_engine_forwardthrust_01_mk2']/bonus/rotationthrust/@min">1.0</replace>

@@ -554,6 +554,13 @@ def main() -> int:
 
     # apply OUR diff - unmatched sel = hard error (proves sels match)
     patched = deepcopy(merged)
+    # STRICT well-formedness check (the game's libxml2 rejects e.g. "--" in a
+    # comment and SKIPS the whole file; recover=True would silently tolerate it).
+    try:
+        etree.parse(str(args.diff), etree.XMLParser(recover=False))
+    except etree.XMLSyntaxError as e:
+        print(f"\nDIFF NOT WELL-FORMED - the game will skip it: {e}")
+        return 2
     our_diff = etree.parse(str(args.diff), _PARSER).getroot()
     n_ops = sum(1 for op in our_diff if isinstance(op.tag, str))
     errs = apply_diff(patched, our_diff, args.diff.name)
