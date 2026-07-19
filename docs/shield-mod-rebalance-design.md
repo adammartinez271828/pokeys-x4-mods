@@ -4,7 +4,7 @@ Third equipment rebalance after weapons and engines, same philosophy applied
 to the `<shield>` section of `libraries/equipmentmods.xml`. Built with the
 shield model in `~/devel/x4-analyzer` (`x4analyzer.gamedata.shields`).
 
-**Status: DRAFT** (harness-validated, not yet in-game verified).
+**Status: Built** (harness-validated, playtested in-game 2026-07).
 
 ## The levers
 

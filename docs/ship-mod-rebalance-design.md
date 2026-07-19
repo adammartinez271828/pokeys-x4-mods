@@ -1,8 +1,8 @@
-# Hull-mod rebalance: design (DRAFT)
+# Hull-mod rebalance: design
 
 Fourth equipment rebalance (after weapons, engines, shields), applied to the
 `<ship>` section of `libraries/equipmentmods.xml`. Built with
-`x4analyzer.gamedata.shipmods`. **Not yet in-game verified.**
+`x4analyzer.gamedata.shipmods`. **Playtested in-game 2026-07.**
 
 ## The problem
 

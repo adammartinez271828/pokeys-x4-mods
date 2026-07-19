@@ -7,9 +7,9 @@ is produced with the new engine-mod sim in `~/devel/x4-analyzer`
 cross-checked against the v9 game files). Rerun the analysis scripts in
 `tools/engine-mod-rebalance/`.
 
-**Status: DRAFT for review.** The model below is a proposal; the one open
-fork (how to treat the forward-thrust super-lever) is called out explicitly
-and not yet decided.
+**Status: Built and playtested in-game (2026-07).** The forward-thrust
+super-lever fork was resolved by pricing it as the "always good" stat (see
+below); the archetypes play as intended.
 
 ## The movement model (what a mod actually changes)
 
@@ -184,6 +184,7 @@ E3/E4.
 - `boost_accel` and `travel_attack` are scored as derived stats, so the
   boost-accel / spool-up levers register.
 
-Still open: the design is **not yet verified in-game** — absolute boost/travel
-speeds read low vs the encyclopedia (the mod-vs-mod ratios are exact), and no
-play-test has confirmed the archetypes feel distinct on real hulls.
+**Playtested in-game 2026-07** — the archetypes feel distinct on real hulls.
+One sim caveat remains (display-only): absolute boost/travel speeds read low
+vs the encyclopedia because of omitted global constants, but the mod-vs-mod
+ratios are exact, so this never affected the balance verdicts or play.

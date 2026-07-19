@@ -69,10 +69,13 @@ pokeys-x4-mods/
   ship-independent (mass/drag/inertia cancel in the modded/base ratio), so
   the harness scores on one representative ship. NOTE: absolute boost/travel
   m/s read low vs the encyclopedia (omitted global constants) but the
-  constant cancels in mod-vs-mod comparison; the design is NOT yet
-  in-game-verified (unlike the weapon mod's rules).
+  constant cancels in mod-vs-mod comparison. **Playtested in-game 2026-07**
+  (archetypes play as intended; the low absolute m/s is a sim-display
+  artifact, not a gameplay issue). Reference image (all mods, archetype ×
+  tier grid): `docs/engine-mod-rebalance-table.png` (rebuild from its
+  `.html`).
 - **shield-mod-rebalance** — rebalances the `<shield>` section of
-  `libraries/equipmentmods.xml`. **DRAFT, all three tiers**, ARCHETYPE model:
+  `libraries/equipmentmods.xml`. **Built, all three tiers**, ARCHETYPE model:
   only 8 wares exist so every mod is a real archetype (no degenerate parking)
   — Bastion (capacity: Buckler/Kite/Pavise), Regenerator (rechargerate:
   Bandage/Cast/Traction), Resilient (rechargedelay: Medic, Basic only),
@@ -87,28 +90,35 @@ pokeys-x4-mods/
   `uv run --project ~/devel/x4-analyzer python tools/shield-mod-rebalance/evaluate.py`;
   `report.py` beside it renders the review dashboard (capacity/rate/delay +
   refill-time trade-off) into `output/shield-mod-dashboard.html`. Shield model:
-  x4-analyzer `gamedata/shields.py`. NOT yet in-game verified.
+  x4-analyzer `gamedata/shields.py`. **Playtested in-game 2026-07.** Reference
+  image: `docs/shield-mod-rebalance-table.png` (rebuild from its `.html`).
 - **ship-mod-rebalance** (hull mods) — rebalances the `<ship>` section of
-  `libraries/equipmentmods.xml`. **DRAFT, all three tiers**, ARCHETYPE model
+  `libraries/equipmentmods.xml`. **Built, all three tiers**, ARCHETYPE model
   on the most heterogeneous section (~11 stat families, 18 mods): four
-  archetypes span all tiers — Racer (mass+drag: mass_mk1/mk2/mk3), Tank
-  (maxhull+radar+loadout: maxhull_mk1 / drag_mk2 / hidecargo — the last two
-  repurposed via their pools), Ghost (radarcloak ×3), Explorer (regiondamage
-  ×3). maxhull is the always-good tier sweetener (+10% Enh, +20% Exc on EVERY
-  mod). Capacity mods are FLAT additive (+N consumables); Barrage (Basic
-  Loadout ware) is the one-stop-shop giving all four types, Tank carries all
-  four scaling + folds in Recon (radarrange). Cargo-hide folds into the EXPLORER
-  line: Smuggler (Basic Rack/deployable ware) + Mettle (Enh) + Tenacity (Exc);
-  Ghost/Tank don't hide cargo. Radar scales +33/67/100%, hazard resist
-  60/80/100% (Tenacity = total immunity). Degenerate (Basic, parked): drag ware
-  + missile/unit capacity. No RNG. **NOT published**
+  archetypes span all tiers (carrier ware in parens) — Racer (mass+drag:
+  Honeycomb mass_mk1 / Lubricator drag_mk2 / Nanotube mass_mk3), Tank
+  (hull+radar+loadout: Buttress maxhull_mk1 / Mettle regiondamage_mk2 /
+  Tenacity regiondamage_mk3 — the mk2/mk3 regiondamage wares repurposed, their
+  regiondamage pinned neutral), Ghost (radarcloak ×3: Cloak/Veil/Shroud),
+  Explorer (hazard+hide-cargo: Grit regiondamage_mk1 / Composite mass_mk2 /
+  Mirage hidecargo). maxhull is the always-good tier sweetener (+10% Enh, +20%
+  Exc on EVERY mod). Capacity mods are FLAT additive (+N consumables); Tank is
+  the loaded-logistics carrier, giving all four consumable stores at once
+  (+4/6/8 per tier) plus radar (+33/67/100%). Cargo-hide rides the EXPLORER
+  line (Grit 70% / Composite 85% / Mirage 100%); Ghost/Tank don't hide cargo.
+  Hazard resist scales 60/80/100% along Explorer (Mirage = total immunity).
+  Degenerate (Basic, parked): Polisher (drag), Scope (radarrange), and the four
+  single-store capacity mods Barrage/Rack/Bandolier/Garage (+3 each — Tank
+  supersedes them). No RNG. **NOT published**
   (placeholder id `pokeys_ship_mod_rebalance`). Design:
-  `docs/ship-mod-rebalance-design.md`. Validate (exit 0 = E1-E4):
+  `docs/ship-mod-rebalance-design.md`; reference image (archetype × tier grid):
+  `docs/ship-mod-rebalance-table.png` (rebuild from its `.html`). Validate
+  (exit 0 = E1-E4):
   `uv run --project ~/devel/x4-analyzer python tools/ship-mod-rebalance/evaluate.py`;
   `report.py` renders `output/ship-mod-dashboard.html`. Model: x4-analyzer
   `gamedata/shipmods.py`. The `<ship>` harness names parked mods explicitly
-  (`DEGENERATE`) since the stats are on very different scales. NOT in-game
-  verified.
+  (`DEGENERATE`) since the stats are on very different scales. **Playtested
+  in-game 2026-07.**
 
 ## Critical domain knowledge (validated in-game — do not "fix")
 

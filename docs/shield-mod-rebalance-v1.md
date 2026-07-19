@@ -8,7 +8,7 @@ The table shipped in `shield-mod-rebalance/libraries/equipmentmods.xml`
 hard error). Review dashboard:
 `tools/shield-mod-rebalance/report.py` → `output/shield-mod-dashboard.html`.
 
-**Status: DRAFT** — harness-validated, not yet in-game verified.
+**Status: Built** — harness-validated, playtested in-game 2026-07.
 
 ## The system — three levers, three archetypes
 
@@ -63,4 +63,4 @@ slower to refill**, the capacity trade-off.
 
 Each tier's archetypes are mutually non-dominated: Bastion owns capacity,
 Regenerator owns rate (and delay via the fold), Targe is the balanced pick
-(refill ≈ ×1.0 — no weakness). **Not yet verified in-game.**
+(refill ≈ ×1.0 — no weakness). **Playtested in-game 2026-07.**

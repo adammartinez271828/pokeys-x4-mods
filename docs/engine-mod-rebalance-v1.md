@@ -77,4 +77,4 @@ Bold = archetype carrier; the rest are degenerate (parked at the floor).
 | Exceptional | **Vikas** (Voyager) | travel ×1.35 + riders | travel + spool |
 
 Scenario mods (`*_transport_refugees`, `*_escort_scenario`) untouched.
-**Not yet verified in-game.**
+**Playtested in-game 2026-07.**
