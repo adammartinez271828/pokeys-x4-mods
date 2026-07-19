@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- id is a local placeholder until first Workshop publish, when the
      WorkshopTool replaces it with ws_<workshopitemid> (commit that back). -->
-<content id="pokeys_shield_mod_rebalance" name="Pokey's Shield Mod Rebalance" description="DRAFT. Turns shield mods into clear archetypes: Bastion (capacity), Regenerator (recharge rate) and Resilient (recharge delay), with capacity as the always-good stat that scales up each tier. No roll RNG. Numbers only, no new wares, savegame-safe." author="Pokey" version="100" date="2026-07-17" save="0" sync="false">
-  <text language="44" name="Pokey's Shield Mod Rebalance" description="DRAFT. Shield mods as clear archetypes: Bastion (capacity), Regenerator (rate), Resilient (delay); capacity scales each tier. No roll RNG. Numbers only, savegame-safe." author="Pokey"/>
+<content id="ws_3767730768" name="Pokey's Shield Mod Rebalance" description="Turns shield mods into clear archetypes: Bastion (capacity), Regenerator (recharge rate) and Resilient (recharge delay), with capacity as the always-good stat that scales up each tier. No roll RNG. Numbers only, no new wares, savegame-safe." author="Pokey" version="100" date="2026-07-19" save="0" sync="false" lastupdate="1784464465">
+  <text language="44" name="Pokey's Shield Mod Rebalance" description="Shield mods as clear archetypes: Bastion (capacity), Regenerator (rate), Resilient (delay); capacity scales each tier. No roll RNG. Numbers only, savegame-safe." author="Pokey"/>
 </content>
