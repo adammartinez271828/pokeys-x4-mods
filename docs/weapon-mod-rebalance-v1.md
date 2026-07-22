@@ -61,34 +61,44 @@ property of the physics, not a tuning choice.
 
 - **Niches come from weapon physics**, exploiting how mods multiply the
   stored field literally: *heat level* (cooling is worthless on the
-  heatless majority, decisive on cooldown-dominated guns), *clip vs.
-  continuous* fire (clips only pay partial value on fire rate — the clip
-  reload is fixed), and the *chargetime* lever nobody but Jumper touches.
+  heatless majority, decisive on cooldown-dominated guns — including the
+  Paranid Mass Drivers, which the corrected 2026-07 sim models as
+  overheating charge weapons rather than heatless), *clip vs. continuous*
+  fire (clips only pay partial value on fire rate — the clip reload is
+  fixed, and the corrected sim makes that tax steeper still), and the
+  *chargetime* lever nobody but Jumper touches.
 
-- **Bounded everything**: no roll range crosses 1.0, no secondary bundle
-  is worth ≥25% cycle DPS on any weapon (measured max +14.4%, Annihilator
-  on the ATF XL Main Battery — a combo mod's secondaries are part of its
-  identity, so the cap sits near the strongest single-stat headline, not
-  the old 16%), and tier order can never invert within a variant.
+- **Bounded everything**: no roll range crosses 1.0, and tier order can
+  never invert within a variant. Secondary bundles are deliberately
+  uncapped (a combo mod's secondaries *are* its identity — the old ≥25%
+  T3 cap was removed); the biggest measured is a utility capstone's DPS
+  side (max +48.0%, Invader on the TEL M Muon Disintegrator), not a DPS
+  mod's.
 
 ## Basic DPS bucket
 
 Values below are the shipped equilibrium. **Strict wins** = weapons where
-the mod beats every other Basic DPS mod by >0.5% (the tuner's within-tier
-split, over the 211 obtainable non-KHA weapons; ties counted separately).
-`g`/`t` = wins on main guns / turrets. **best%** = share of a mod's
-eligible weapons where it is best-or-tied — the generalist signature is
-*high best%, low strict wins*.
+the mod beats every other Basic DPS mod by >0.5% (the within-tier split,
+over the 211 obtainable non-KHA weapons; ties counted separately). `g`/`t`
+= wins on main guns / turrets. **best%** = share of a mod's eligible
+weapons where it is best-or-tied — the generalist signature is *high
+best%, low strict wins*.
+
+Counts here reflect the corrected 2026-07 weapon sim (discrete heat +
+sustained clip rate); see `docs/weapon-mod-rebalance-sim-update-2026-07.md`
+for what moved and why. The `tools/weapon-mod-rebalance/tuner.html` slider
+tool still carries the *old* continuous-heat physics in its ported JS and
+is pending a re-port — trust these numbers, not the tuner, until then.
 
 | Mod | Class | Vanilla | New (fixed) | Strict | best% | Role |
 |---|---|---|---|---|---|---|
-| Piercer (damage_01_mk1) | **baseline** | dmg 1.05–1.2 | dmg ×1.15 | 37 (13g/24t) | 45% | **Universal default & benchmark.** Full value everywhere; contests the clip weapons and warm guns at once — the gravity well the generalists orbit. |
-| Cowboy (reload_01_mk1) | specialist | **reload 0.682–2** | rel ×1.225 | 21 (2g/19t) | 13% | **Reload.** Owns continuous heatless turrets cleanly; full value on clips, taxed on heat guns. Headline sits above a damage single's because reload is situational where damage is universal. |
-| Tramontane (cooling_01_mk1) | specialist | cool 1.048–1.216 | cool ×1.4 | 10 (10g) | 8% | **Cooling.** The hottest heat-limited main guns; pure coolrate, worthless on the heatless majority and on turrets. Narrow, high ceiling. |
-| Mistral (cooling_03_mk1) | specialist | cool 1.356–1.525, dmg 0.677–0.757, **reload 0.682–2** | cool ×1.32, rel ×1.125 *(dmg child pinned 1.0)* | 9 (9g) | 12% | **Cooling+reload — the one synergistic pair.** Coolrate pays the heat bill the fire rate runs up, so rate converts to DPS: the pick for hot rapid-fire guns where Cowboy overheats and Tramontane leaves rate on the table. No raw damage. |
-| Stabber (damage_02_mk1) | generalist | dmg 1.35–1.45, cooling 0.684–0.736 | dmg ×1.10, rel ×1.10 *(cool child pinned 1.0)* | 29 (11g/18t) | 38% | **Damage+reload.** Damage backbone with a fire-rate lean; contests the clip weapons against Piercer (they see-saw — winner-take-most on clips). Can't out-damage Piercer nor out-rate Cowboy — a damage-backed safe pick. |
-| Gregale (cooling_02_mk1) | generalist | cool 1.38–1.49, dmg 0.7–0.75 | cool ×1.2, dmg ×1.08 | 2 (2g) | 4% | **Damage+cooling.** Damage backbone with a cooling lean for warm main guns; can't out-cool Tramontane nor out-damage Piercer, so it sits in the tie band as a safe pick for heat guns. |
-| Slasher (damage_03_mk1) | generalist | dmg 1.338–1.503, cooling 0.681–0.74, **reload 0.682–2** | dmg ×1.115, cool ×1.07, rel ×1.045 | 7 (5g heat/2g heatless) | 18% | **Damage+cooling+reload — the pure all-rounder.** Lowest peak of any Basic mod, but the widest tie coverage (26 ties): a bit of everything, near-Piercer damage keeping it alive everywhere. Vanilla Slasher was the ×2-reroll lottery that dominated 210/223 weapons. |
+| Piercer (damage_01_mk1) | **baseline** | dmg 1.05–1.2 | dmg ×1.15 | 53 (15g/38t) | 47% | **Universal default & benchmark.** Full value everywhere; contests the clip weapons and warm guns at once — the gravity well the generalists orbit. Picked up more clip turrets outright once the sim fix steepened reload's clip tax. |
+| Cowboy (reload_01_mk1) | specialist | **reload 0.682–2** | rel ×1.225 | 22 (3g/19t) | 12% | **Reload.** Owns continuous heatless turrets cleanly; full value on clips, taxed on heat guns. Headline sits above a damage single's because reload is situational where damage is universal. |
+| Tramontane (cooling_01_mk1) | specialist | cool 1.048–1.216 | cool ×1.4 | 8 (8g) | 8% | **Cooling.** Pure coolrate: worthless on the heatless majority and on turrets, decisive on the hottest heat-limited guns — and now a live contender on the **Paranid Mass Drivers** (a heat weapon under the corrected sim; cooling did nothing there before). On the Plasma Cannon it is now a tie-band pick, not a clean win. Narrow, high ceiling. |
+| Mistral (cooling_03_mk1) | specialist | cool 1.356–1.525, dmg 0.677–0.757, **reload 0.682–2** | cool ×1.32, rel ×1.125 *(dmg child pinned 1.0)* | 19 (19g) | 15% | **Cooling+reload — the one synergistic pair.** Coolrate pays the heat bill the fire rate runs up, so rate converts to DPS: the pick for hot rapid-fire guns where Cowboy overheats and Tramontane leaves rate on the table. Its footprint doubled under the corrected sim (the beam guns and the small Muon/Bolt Repeater guns are now heat-limited). No raw damage. |
+| Stabber (damage_02_mk1) | generalist | dmg 1.35–1.45, cooling 0.684–0.736 | dmg ×1.10, rel ×1.10 *(cool child pinned 1.0)* | 23 (10g/13t) | 26% | **Damage+reload.** Damage backbone with a fire-rate lean; contests the clip weapons against Piercer. Reload's steeper clip tax under the corrected sim tipped several clips (Ion Blaster, Plasma/Flak/Needler turrets) to Piercer, trimming its coverage. Can't out-damage Piercer nor out-rate Cowboy — a damage-backed safe pick. |
+| Gregale (cooling_02_mk1) | generalist | cool 1.38–1.49, dmg 0.7–0.75 | cool ×1.2, dmg ×1.08 | 7 (7g) | 8% | **Damage+cooling.** Damage backbone with a cooling lean for warm main guns; can't out-cool Tramontane nor out-damage Piercer, so it sits in the tie band as a safe pick for heat guns. Gained ground under the corrected sim, where damage-backed cooling now edges pure cooling on several warm guns (Plasma Cannon, small Muon). |
+| Slasher (damage_03_mk1) | generalist | dmg 1.338–1.503, cooling 0.681–0.74, **reload 0.682–2** | dmg ×1.115, cool ×1.07, rel ×1.045 | 8 (8g) | 11% | **Damage+cooling+reload — the pure all-rounder.** Lowest peak of any Basic mod, near-Piercer damage keeping it alive across the tie band. Under the corrected sim it cedes some heat guns to Gregale/Mistral and some clips to Piercer, so its best% eased from ~18% to 11%. Vanilla Slasher was the ×2-reroll lottery that dominated 210/223 weapons. |
 | Jumper (chargetime_01_mk1) | specialist | charge 0.8–0.95 | charge ×0.75, dmg ×1.08 *(added rider)* | 2 (2g) | 1% | **Chargetime** (its own axis, outside the three-stat matrix). The charge family (Ray Ion Projector, Erlking, ...): charge time is a big slice of the volley interval there and nothing else can buy it. Utility-grade +8% anywhere else. |
 
 ## Basic utility bucket
@@ -185,7 +195,7 @@ mining weapons only count for mods that can roll a mining bonus.
   secondaries *are* its identity (Mistral = cooling+reload; the Exceptional
   capstones are deliberately rich forced sets), so there is no cap. The
   scorecard still prints the worst-case bundle worth for information (max
-  +38.3%, Invader on ATF XL Main Battery).
+  +48.0%, Invader on TEL M Muon Disintegrator under the corrected sim).
 - **T4 tier order** — no lower-quality mod beats a higher-quality mod of
   the same *variant* (same primary + same DPS-carrying guaranteed
   secondaries) by >1% anywhere: pass. Cross-variant comparisons are

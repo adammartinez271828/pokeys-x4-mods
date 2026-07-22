@@ -4,6 +4,12 @@ Everything here was produced with the tooling in `~/devel/x4-analyzer`
 (v9.0 game files + all official DLC; simulation rules validated in-game).
 Rerun anytime: `uv run x4-analyzer gamedata-dashboard` in that repo.
 
+> The vanilla problem numbers below (Slasher on 210/223 weapons, the "13
+> exceptions") were measured before the 2026-07 weapon-sim fix (discrete
+> heat + sustained clip rate). They still describe the vanilla disease
+> faithfully; exact counts would shift a little if re-measured. How the fix
+> affects the *shipped* table: `docs/weapon-mod-rebalance-sim-update-2026-07.md`.
+
 ## The problem: illusion of choice
 
 **Slasher** (`mod_weapon_damage_03_mk1`, Basic quality: damage ×1.338–1.503
@@ -67,8 +73,10 @@ therefore reorganized around a **two-class structural model** instead:
   sharpens with rarity — not on splitting the Basic tie band further.
 - **No roll ranges crossing 1.0** (every range pinned min = max — no RNG),
   and **no per-weapon gating** (impossible in data — see below); niches
-  are carved by weapon physics (heat level, clip vs. continuous fire,
-  chargetime), not by compatibility rules.
+  are carved by weapon physics (heat level — including the Paranid Mass
+  Drivers, which the corrected 2026-07 sim treats as overheating charge
+  weapons, not heatless; clip vs. continuous fire; chargetime), not by
+  compatibility rules.
 
 Original sketch, retained for context: pin the damage primary to tier
 (Basic/Enhanced/Exceptional ≈ ×1.17 / ×1.33 / ×1.5) with tight jitter;
